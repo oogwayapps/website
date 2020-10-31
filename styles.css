@@ -1,0 +1,50 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Lato", sans-serif;
+  color: #333;
+}
+body {
+  overflow-x: hidden;
+  margin: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 10px;
+}
+
+.brand-title {
+  font-size: 1.3rem;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+  color: #fff;
+}
+
+.gradient-wrap {
+  background: #126fed;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: -1;
+  transform-origin: top center;
+  transform: rotateZ(-10deg) scale(1.5) translateY(-25%) translateX(10%);
+}
