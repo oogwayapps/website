@@ -21,7 +21,7 @@ const quotes = {
 document.addEventListener("DOMContentLoaded", boot);
 
 function boot() {
-  schedule(updateQuote).runEvery(3000);
+  schedule(updateQuote).runOnEvery(3000);
 }
 
 function updateQuote() {
@@ -66,7 +66,7 @@ function schedule(fn) {
     }, interval);
   }
 
-  return { runEvery: loop };
+  return { runOnEvery: loop };
 }
 
 /**

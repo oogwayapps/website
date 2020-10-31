@@ -66,22 +66,9 @@ body {
   min-height: calc(100vh - 45px);
 }
 
-.image-area {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  left: -4%;
-}
-
-.image-area img {
-  /* width: 100%; */
-  max-height: 600px;
-}
-
 .quote-area {
   flex: 1;
+  width: 100%;
   color: #f4f4f4;
   display: flex;
   justify-content: center;
@@ -137,6 +124,76 @@ body {
   transition: 0.3s all ease-in-out;
 }
 
+.apps-area {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.apps-area img {
+  width: 100%;
+  height: 100%;
+}
+
+.app-card-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 7px 8px;
+  min-width: 140px;
+  min-height: 140px;
+  transition: 0.3s all ease-in-out;
+  border-radius: 4px;
+  /* box-shadow: 1px 1px 1px #000; */
+  /* border: 2px solid transparent; */
+}
+
+.app-card-container:hover {
+  /* border: 2px solid #126fed; */
+  transition: 0.3s all ease-in-out;
+  box-shadow: 2px 6px 14px 1px #00000029;
+}
+
+.app-card-icon {
+  width: 80px;
+}
+
+.card-root-container {
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  transform: translate(0, -60px);
+  cursor: pointer;
+}
+
+.app-name {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.app-meta {
+  width: 100%;
+  margin-top: 10px;
+  opacity: 0;
+  transition: 0.3s all ease-in-out;
+  color: #aeaeae;
+}
+
+.app-card-container:hover .app-meta {
+  opacity: 1;
+}
+
+.app-privacy-link {
+  font-size: 0.8rem;
+  text-align: right;
+  width: 100%;
+}
+
 @media (max-width: 1000px) {
   .body-contain {
     display: flex;
@@ -146,14 +203,33 @@ body {
   .gradient-wrap {
     transform: none;
     left: 0;
-    height: 65vh
+    height: 55vh;
+    position: absolute;
   }
 
   .brand-title {
-      color: #fff;
+    color: #fff;
+  }
+
+  .quote-area {
+    font-size: 1.3rem;
   }
 
   .container {
-      padding: 1rem;
+    padding: 1rem;
   }
+
+  .card-root-container {
+    width: 100%;
+  }
+}
+
+.default-link {
+  text-decoration: unset;
+  color: inherit;
+}
+
+.underline-link {
+  text-decoration: underline;
+  color: inherit;
 }
