@@ -169,12 +169,13 @@ body {
   gap: 14px;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
- 
 }
 
 .app-name {
   font-size: 0.9rem;
   margin-top: 5px;
+  width: 100%;
+  text-align: center;
 }
 
 .app-meta {
@@ -191,7 +192,7 @@ body {
 
 .app-privacy-link {
   font-size: 0.8rem;
-  text-align: right;
+  text-align: center;
   width: 100%;
 }
 
@@ -238,5 +239,26 @@ body {
 
 .underline-link {
   text-decoration: underline;
+  color: inherit;
+}
+
+#footer {
+  /* pointer-events: none; */
+  font-size: 0.9rem;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  color: #aeaeae;
+  overflow: hidden;
+  position: absolute;
+  top: 100%;
+  padding: 0.8rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#footer a {
+  margin-left: 5px;
   color: inherit;
 }

@@ -15,12 +15,17 @@ const quotes = {
   },
 };
 
-
-
 document.addEventListener("DOMContentLoaded", boot);
 
 function boot() {
   schedule(updateQuote).runOnEvery(3000);
+
+  const footer = document.getElementById("footer");
+
+  footer.innerHTML = `
+  ${new Date().getFullYear()} © Oogway Apps |  
+   <a href="mailto:oogwayapps@gmail.com">Contact Us</a>
+  `;
 }
 
 function updateQuote() {
@@ -46,10 +51,7 @@ function updateQuote() {
   }, 300);
 }
 
-
-function updateImage() {
-
-}
+function updateImage() {}
 
 function schedule(fn) {
   let lastScheduleUpdate = null;
