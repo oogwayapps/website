@@ -1,0 +1,9 @@
+body {
+  max-width: 1000px;
+  padding: 10px;
+  margin: auto;
+}
+
+.br {
+  padding: 10px 0;
+}

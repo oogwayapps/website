@@ -38,6 +38,9 @@ body {
   gap: 32px;
   color: #f4f4f4;
 }
+.nav a {
+  color: inherit;
+}
 
 .gradient-wrap {
   background: #126fed;
@@ -70,7 +73,6 @@ body {
   align-items: center;
   position: relative;
   left: -4%;
-
 }
 
 .image-area img {
@@ -133,4 +135,25 @@ body {
   transform: translateY(25%);
   opacity: 0;
   transition: 0.3s all ease-in-out;
+}
+
+@media (max-width: 1000px) {
+  .body-contain {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .gradient-wrap {
+    transform: none;
+    left: 0;
+    height: 65vh
+  }
+
+  .brand-title {
+      color: #fff;
+  }
+
+  .container {
+      padding: 1rem;
+  }
 }
