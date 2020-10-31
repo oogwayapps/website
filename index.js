@@ -2,7 +2,6 @@ const quotes = {
   list: suffleArr([
     "Yesterday is history, tomorrow is a mystery, and today is a gift. That’s why they call it the present.",
     "There is always something more to learn. Even for a master.",
-    "Your mind is like this water, my friend. When it is agitated, it becomes difficult to see. But if you allow it to settle, the answer becomes clear",
     "There are no accidents",
     "My time has come. You must continue your journey, without me.",
     "You are too concerned about what was and what will be",
