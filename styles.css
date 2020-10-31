@@ -228,6 +228,12 @@ body {
   .container {
     padding: 1rem;
   }
+
+  #footer {
+    bottom: unset;
+    top: 100%;
+    padding-top: 3.5rem;
+  }
 }
 
 .default-link {
@@ -249,11 +255,9 @@ body {
   width: 100%;
   height: auto;
   color: #aeaeae;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: absolute;
-  top: 100%;
-  padding: 0.8rem 0;
-  padding-top: 1.2rem;
+  bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
