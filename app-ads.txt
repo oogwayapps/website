@@ -3,4 +3,4 @@
 # oogwayapps inventory can only be purchased through greedygame.com or through greedygame ads API
 # and cannot be purchased programmatically through open exchanges.
 # Therefore there are no authorized sellers or resellers listed 
-# in this oogwayapps.com/ads.txt file.
+# in this oogwayapps.com/app-ads.txt file.
