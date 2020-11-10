@@ -2,8 +2,33 @@ body {
   max-width: 1000px;
   padding: 10px;
   margin: auto;
+  font-family: Roboto, sans-serif;
+  color: #666666;
+  font-size: 11pt;
 }
 
 .br {
   padding: 10px 0;
+}
+
+.pageHeader {
+  font-size: 34pt;
+  font-family: Arial;
+  background-color: transparent;
+  font-weight: 400;
+  font-style: normal;
+  color: #666666;
+  font-variant: normal;
+  text-decoration: none;
+  margin-top: 12px;
+  display: block;
+}
+
+.lastUpdate{
+  margin-top: 8px;
+  display: block;
+}
+
+.lastUpdate > span:first-child {
+  font-weight: bold;
 }
