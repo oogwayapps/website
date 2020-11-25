@@ -6,3 +6,4 @@
 # in this oogwayapps.com/app-ads.txt file.
 
 google.com, pub-7839649756834603, DIRECT, f08c47fec0942fa0 //Premium Google AdX Demand by sid@greedygame.com
+google.com, pub-4073866383873410, DIRECT, f08c47fec0942fa0
