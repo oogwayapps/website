@@ -1,9 +1,19 @@
 # oogwayapps.com/app-ads.txt
 #
-# oogwayapps inventory can only be purchased through greedygame.com or through greedygame ads API
-# and cannot be purchased programmatically through open exchanges.
-# Therefore there are no authorized sellers or resellers listed 
-# in this oogwayapps.com/app-ads.txt file.
 
-google.com, pub-7839649756834603, DIRECT, f08c47fec0942fa0 //Premium Google AdX Demand by sid@greedygame.com
+google.com, pub-7839649756834603, DIRECT, f08c47fec0942fa0 //Premium Google AdX Demand by arpit@greedygame.com
 google.com, pub-4073866383873410, DIRECT, f08c47fec0942fa0
+improvedigital.com, 1728, RESELLER
+admixer.net, c9ed39e8-724d-4012-ae61-38a5ac81bb0e, DIRECT
+betweendigital.com, 43070, reseller
+meitu.com, 251, reseller
+streamkey.tv, 3070, reseller, f5ab793he40f11d1
+telaria.com, j5en0-29eta, RESELLER, 1a4e959a1b50034a
+meitu.com, 479, RESELLER
+pubmatic.com, 157654, RESELLER, 5d62403b186f2ace
+adcolony.com, f858ba060bce51ad, RESELLER, 1ad675c9de6b5176
+openx.com, 540899687, RESELLER, 6a698e2ec38604c6
+cmcm.com, 127, RESELLER
+sonobi.com, 2b21773f25, DIRECT, d1a215d9eb5aee9e
+rhythmone.com, 1059622079, RESELLER, a670c89d4a324e47
+contextweb.com, 560606, RESELLER, 89ff185a4c4e857c
