@@ -127,6 +127,8 @@ body {
 .app-header {
   /* text-align: center; */
   color: #555;
+  font-size: 1.6rem;
+  margin: 3rem 0;
   margin-bottom: 2rem;
 }
 

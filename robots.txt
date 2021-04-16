@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /privacy
+Allow: /
+
+
+Sitemap: https://oogwayapps.com/sitemap.xml
