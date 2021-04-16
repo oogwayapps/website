@@ -18,13 +18,17 @@ const quotes = {
 document.addEventListener("DOMContentLoaded", boot);
 
 function boot() {
-  schedule(updateQuote).runOnEvery(3000);
+  // schedule(updateQuote).runOnEvery(3000);
 
+  updateFooter();
+}
+
+function updateFooter() {
   const footer = document.getElementById("footer");
 
   footer.innerHTML = `
   ${new Date().getFullYear()} © Oogway Apps |  
-   <a href="mailto:oogwayapps@gmail.com">Contact Us</a>
+   <a href="mailto:oogwayapps@gmail.com">Contact Us </a>  | <a href="mailto:oogwayapps@gmail.com">Privacy & Policy</a>
   `;
 }
 
