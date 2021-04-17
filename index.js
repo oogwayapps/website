@@ -28,7 +28,7 @@ function updateFooter() {
 
   footer.innerHTML = `
   ${new Date().getFullYear()} © Oogway Apps |  
-   <a href="mailto:oogwayapps@gmail.com">Contact Us </a>  | <a href="mailto:oogwayapps@gmail.com">Privacy & Policy</a>
+   <a href="mailto:oogwayapps@gmail.com">Contact Us </a>  | <a href="/privacy">Privacy & Policy</a>
   `;
 }
 
