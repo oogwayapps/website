@@ -3,3 +3,20 @@ google.com, pub-4073866383873410, DIRECT, f08c47fec0942fa0
 google.com, pub-1067374679252537, DIRECT, f08c47fec0942fa0
 google.com, pub-1067374679252537, RESELLER, f08c47fec0942fa0
 google.com, pub-1067374679252537, RESELLER, f08c47fec0942fa0
+adelement.com, 101, DIRECT
+pubmatic.com, 157558, RESELLER, 5d62403b186f2ace
+pubmatic.com, 158362, RESELLER, 5d62403b186f2ace
+pubmatic.com, 156855, DIRECT, 5d62403b186f2ace
+rubiconproject.com, 23822, DIRECT, 0bfd66d529a55807
+appnexus.com, 11450, RESELLER
+appnexus.com, 13181, RESELLER, f5ab79cb980f11d1
+loopme.com, 11342, RESELLER, 6c8d5f95897a5a3b
+video.unrulymedia.com, 3563866356, RESELLER
+google.com, pub-5413329544040947, DIRECT, f08c47fec0942fa0
+google.com, pub-5413329544040947, RESELLER, f08c47fec0942fa0
+pubmatic.com, 160058, RESELLER, 5d62403b186f2ace
+rubiconproject.com,21526,RESELLER,0bfd66d529a55807
+indexexchange.com, 194886, RESELLER 
+supply.colossusssp.com, 352, DIRECT, 6c5b49d96ec1b458
+sonobi.com, d81292078e, RESELLER, d1a215d9eb5aee9e
+yieldmo.com, 2774758826572718293, Direct
