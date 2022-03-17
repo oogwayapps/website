@@ -123,3 +123,4 @@ Yahoo.com, 57992, RESELLER, e1a5b5b6e3255540
 e-planning.net,48caec7e9eb8abe8,RESELLER,c1ba615865ed87b2
 xandr.com, 13167, RESELLER
 loopme.com, 11412, RESELLER, 6c8d5f95897a5a3b
+google.com, pub-9478868743748972, DIRECT, f08c47fec0942fa0
