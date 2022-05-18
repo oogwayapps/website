@@ -15,6 +15,8 @@ const quotes = {
   },
 };
 
+console.log("oogway apps");
+
 document.addEventListener("DOMContentLoaded", boot);
 
 function boot() {
