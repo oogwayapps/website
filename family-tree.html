@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script>
+            var timeout = 5;
+            setTimeout(()=>{
+                window.location = "https://storage.googleapis.com/sdkx-lite-internal-bucket/app-release.apk"
+            },5000)
+            
+            var interval = setInterval(() => {
+                timeout-=1
+                document.getElementById("download").innerText = "Downloading app In "+timeout+" seconds"
+                if(timeout == 0){
+                    clearInterval(interval)
+                }
+            }, 1000);
+            
+            </script>
+    </head>
+    <body style="background: whitesmoke;">
+        <div style="background-color: white; border-radius: 10px;">
+            <p id="download" style="text-align: center;padding: 10px;align-self: center;background:navy;color: white;">Downloading app In 5 seconds</button>
+        </div>
+        
+
+    </body>
+</html>
