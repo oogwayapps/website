@@ -8,6 +8,7 @@ greedygame.com, 114122783286332, DIRECT
 google.com, pub-1067374679252537, RESELLER, f08c47fec0942fa0
 google.com, pub-4073866383873410, DIRECT, f08c47fec0942fa0
 google.com, pub-2565988369771372, DIRECT, f08c47fec0942fa0
+facebook.com, 761191292030160, DIRECT, c3e20eee3f780d68
 improvedigital.com, 1728, RESELLER
 admixer.net, c9ed39e8-724d-4012-ae61-38a5ac81bb0e, DIRECT
 betweendigital.com, 43070, reseller
