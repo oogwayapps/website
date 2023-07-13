@@ -4375,3 +4375,7 @@ sharethrough.com, OAW69Fon, RESELLER, d53b998a7bd4ecd2
 sonobi.com, 35f7241993, RESELLER, d1a215d9eb5aee9e
 sonobi.com, 83729e979b, RESELLER
 themediagrid.com, 25XPU9, RESELLER, 35d5010d7789b49d
+greedygame.com,596522694280837,DIRECT
+pubnative.net,1007286,RESELLER,d641df8625486a7bvideo
+pubnative.net,1007284,RESELLER,d641df8625486a7bdisplay
+pubnative.net,1007285,RESELLER,d641df8625486a7bnative
