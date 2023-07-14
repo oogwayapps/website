@@ -4379,3 +4379,4 @@ greedygame.com,596522694280837,DIRECT
 pubnative.net,1007286,RESELLER,d641df8625486a7bvideo
 pubnative.net,1007284,RESELLER,d641df8625486a7bdisplay
 pubnative.net,1007285,RESELLER,d641df8625486a7bnative
+greedygame.com,593822842025512,DIRECT
