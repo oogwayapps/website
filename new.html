@@ -12,13 +12,15 @@
     />
     <title>Oogway Apps</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800&display=swap");
+
       @font-face {
-        font-family: "Grifter",sans-serif;
-        src: url("https://storage.googleapis.com/console-dev/raw/1691045566018/grifterbold.woff2");
+        font-family: "Grifter";
+        src: url("https://storage.googleapis.com/console-dev/raw/1691643423866/grifterbold.woff");
       }
 
       :root {
-        --font-head: "Grifter", sans-serif;
+        --font-head: "Grifter", serif;
         --font-body: "Red Hat Display", sans-serif;
       }
 
@@ -232,7 +234,7 @@
 
       .bg-element .heart-image {
         margin: 0;
-        right: -60px;
+        right: -70px;
         filter: drop-shadow(-10px -10px 30px red);
       }
       .bg-element .flash-image {
@@ -258,6 +260,8 @@
         flex-direction: column;
         gap: 80px;
         padding: 50px 0;
+        max-width: 1200px;
+        margin: auto;
       }
 
       .game_card {
@@ -623,6 +627,19 @@
         }
       }
       @media screen and (min-width: 1200px) {
+        /* h1: 104px;
+  banner-body: 44px
+  button: 20px
+  h2: 164px
+  h3: 40px
+  h4: 24px
+  p: 24px
+
+  footer head: 124px
+  footer body: 74px
+  footer button: 24px
+
+  copyright: 20px */
         h1 {
           font-size: clamp(1.875rem, 5rem, 6.5rem);
         }
@@ -717,14 +734,14 @@
         .bg-element .heart-image {
           margin: 0;
           margin-left: auto;
-          margin-right: -130px;
+          margin-right: -100px;
           filter: drop-shadow(-10px -10px 30px red);
         }
         .bg-element .flash-image {
           filter: drop-shadow(10px -10px 20px yellow);
           margin: 0;
           margin-top: 0px;
-          margin-left: -100px;
+          margin-left: -120px;
           margin-right: auto;
         }
 
@@ -754,6 +771,19 @@
         }
         .land-image {
           min-height: 580px;
+        }
+        .bg-element .heart-image {
+          margin: 0;
+          margin-left: auto;
+          margin-right: -15%;
+          filter: drop-shadow(-10px -10px 30px red);
+        }
+        .bg-element .flash-image {
+          filter: drop-shadow(10px -10px 20px yellow);
+          margin: 0;
+          margin-top: 0px;
+          margin-left: -15%;
+          margin-right: auto;
         }
       }
     </style>
@@ -1251,13 +1281,13 @@
 
         // Adjust the parallax effect for the right cloud
         let cloudRight = document.querySelector(".cloud-right");
-        cloudRight.style.transform = `translate(${-scrollPosition * 0.1}px,${
+        cloudRight.style.transform = `translate(${-scrollPosition * 0.3}px,${
           scrollPosition * 0.1
         }px)`; // Adjust the factor to control the parallax effect
 
         // Adjust the parallax effect for the Game Card Heart Image
         let heartImage = document.querySelector(".heart-image");
-        heartImage.style.transform = `translateY(${scrollPosition * 0.1}px)`; // Adjust the factor to control the parallax effect
+        heartImage.style.transform = `translateY(${scrollPosition * 0.3}px)`; // Adjust the factor to control the parallax effect
 
         // Adjust the parallax effect for the Game Card Flash Image
         let containerPosition = document
