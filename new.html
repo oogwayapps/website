@@ -1269,20 +1269,20 @@
 
         // Adjust the parallax effect for the Land Image
         let land = document.querySelector(".land-image");
-        land.style.transform = `translate(${-scrollPosition * 0.1}px,${
-          -scrollPosition * 0.1
+        land.style.transform = `translate(${-scrollPosition * 0.05}px,${
+          -scrollPosition * 0.05
         }px)`; // Adjust the factor to control the parallax effect
 
         // Adjust the parallax effect for the left cloud
         let cloudLeft = document.querySelector(".cloud-left");
-        cloudLeft.style.transform = `translate(${scrollPosition * 0.1}px,${
-          scrollPosition * 0.1
+        cloudLeft.style.transform = `translate(${scrollPosition * 0.05}px,${
+          scrollPosition * 0.05
         }px)`; // Adjust the factor to control the parallax effect
 
         // Adjust the parallax effect for the right cloud
         let cloudRight = document.querySelector(".cloud-right");
-        cloudRight.style.transform = `translate(${-scrollPosition * 0.3}px,${
-          scrollPosition * 0.1
+        cloudRight.style.transform = `translate(${-scrollPosition * 0.05}px,${
+          scrollPosition * 0.05
         }px)`; // Adjust the factor to control the parallax effect
 
         // Adjust the parallax effect for the Game Card Heart Image
@@ -1317,11 +1317,6 @@
         flashFooterImage.style.transform = `translate(${
           footerscrolledDistance * -0.05
         }px,${footerscrolledDistance * 0.05}px)`;
-        // Adjust the parallax effect for the Footer Flash Image
-        // let flashFooterImage = document.querySelector(".flash-footer-image");
-        // flashFooterImage.style.transform = `translate(-${
-        //   scrollPosition * 0.1
-        // }px,${scrollPosition * 0.1}px)`; // Adjust the factor to control the parallax effect
       });
     </script>
   </body>
