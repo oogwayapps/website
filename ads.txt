@@ -4382,3 +4382,35 @@ greedygame.com,596522694280837,DIRECT
 pubnative.net,1007286,RESELLER,d641df8625486a7bvideo
 pubnative.net,1007284,RESELLER,d641df8625486a7bdisplay
 pubnative.net,1007285,RESELLER,d641df8625486a7bnative
+motionspots.com, 166484, DIRECT
+motionspots.com, 166484, RESELLER
+Pubmatic.com, 157113, DIRECT, 5d62403b186f2ace
+adbite.com, 335, DIRECT
+adsolut.in, 17062, DIRECT
+playstream.media, 2192, DIRECT
+aps.amazon.com,5d8ed25e-57cc-441a-b62a-127b34faae4e,DIRECT
+whitemediasolutions.com, 684080, DIRECT
+openx.com, 557904194, RESELLER, 6a698e2ec38604c6
+Adsolut.in, 17164, DIRECT
+Playstream.media, 2294, DIRECT
+rubiconproject.com, 24872, RESELLER, 0bfd66d529a55807
+rubiconproject.com, 24874, RESELLER, 0bfd66d529a55807
+pubmatic.com, 157569, RESELLER, 5d62403b186f2ace
+telaria.com,4pco5-ef5so,RESELLER,1a4e959a1b50034a
+tremorhub.com,4pco5-ef5so,RESELLER,1a4e959a1b50034a
+google.com, pub-9035087792692775, RESELLER, f08c47fec0942fa0
+Studiosis.in, 12144, DIRECT
+thegermanemedia.com,407, RESELLER, 6716225838534735
+google.com, pub-6716225838534735, RESELLER, f08c47fec0942fa0
+whitemediasolutions.com, 1999, RESELLER
+google.com, pub-4586415728471297, RESELLER, f08c47fec0942fa0
+google.com, pub-4090704406626496, RESELLER, f08c47fec0942fa0
+brid.tv, 313, DIRECT
+google.com, pub-3977122154505186, RESELLER, f08c47fec0942fa0
+vidgyor.com, 30000, RESELLER
+google.com, pub-8863191426564274, RESELLER, f08c47fec0942fa0
+google.com, pub-8856559311549217, RESELLER, f08c47fec0942fa0
+datawrkz.com, 2274, DIRECT
+xapads.com, 158389, DIRECT
+152media.info, 152M68, RESELLER
+onetag.com, 7762f41ee0fb798, DIRECT
