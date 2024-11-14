@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Oogway Apps</title>
+    <style>
+      @font-face {
+        font-family: "Grifter", sans-serif;
+        src: url("https://storage.googleapis.com/console-dev/raw/1691045566018/grifterbold.woff2");
+      }
+
+      :root {
+        --font-head: "Grifter", sans-serif;
+        --font-body: "Red Hat Display", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      img {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      main a {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-weight: 500;
+        color: #000;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 15px 30px;
+        max-width: 500px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* -------------------- Mobile base Typography -------------------- */
+      h1 {
+        font-size: 2.75rem;
+      }
+      h2 {
+        font-size: 3.375rem;
+      }
+
+      h1,
+      h2 {
+        font-family: var(--font-head);
+        line-height: normal;
+      }
+
+      h3 {
+        font-size: 1.875rem;
+      }
+
+      h4 {
+        font-size: 1.25rem;
+      }
+
+      p,
+      button,
+      a {
+        font-size: 1rem;
+      }
+
+      h3,
+      h4,
+      p,
+      button,
+      a {
+        font-family: var(--font-body);
+      }
+
+      /* --------------- Navbar Styling --------------- */
+
+      header {
+        position: absolute;
+        top: 0;
+        padding: 30px 6%;
+        z-index: 10;
+        color: #fff;
+        width: 100%;
+      }
+
+      header nav {
+        position: relative;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header .nav_logo svg {
+        max-width: 100px;
+        font-family: var(--font-head);
+      }
+
+      header a {
+        color: #fff;
+        text-align: left;
+        line-height: normal;
+        letter-spacing: -0.16px;
+      }
+
+      /* -------------------- Main Section Styling -------------------- */
+
+      main {
+        position: relative;
+        display: block;
+        overflow: hidden;
+      }
+
+      .banner_gradient_wrap {
+        padding: calc(60px + 30px) 6%;
+        background: transparent linear-gradient(0deg, #06030d 30%, #3b2071 100%)
+          0% 0% no-repeat padding-box;
+      }
+
+      .banner {
+        position: relative;
+        padding: 40px 30px;
+        border-radius: 20px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .banner::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        background: #fff 0% 0% no-repeat padding-box;
+        opacity: 0.2;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+      }
+
+      .banner h1 {
+        position: relative;
+        max-width: 100%;
+        line-height: normal;
+      }
+
+      .banner p {
+        line-height: normal;
+        opacity: 0.8;
+      }
+
+      /* -------------------- Parallax Banner Image -------------------- */
+
+      .banner-image-container {
+        position: relative;
+        display: block;
+      }
+
+      .land-image {
+        position: relative;
+        display: block;
+        max-width: 215px;
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: -100px;
+      }
+
+      .cloud-left,
+      .cloud-right {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        max-width: 110px;
+        max-height: 90px;
+      }
+      .cloud-left {
+        top: 10%;
+        left: -15%;
+      }
+      .cloud-right {
+        right: -15%;
+        bottom: 32%;
+      }
+
+      .bg-element {
+        position: absolute;
+        display: block;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+      }
+
+      .heart-image,
+      .flash-image {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+      }
+
+      .bg-element .heart-image {
+        margin: 0;
+        right: -60px;
+        filter: drop-shadow(-10px -10px 30px red);
+      }
+      .bg-element .flash-image {
+        filter: drop-shadow(10px -10px 20px yellow);
+        margin: 0;
+        left: -50px;
+        top: -0%;
+      }
+
+      /* -------------------- Games Section Styling -------------------- */
+
+      .games_gradient_wrap {
+        padding: 0px 6% 50px;
+        position: relative;
+        background: transparent
+          linear-gradient(180deg, #06030d 0%, #3b2071 100%) 0% 0% no-repeat
+          padding-box;
+      }
+
+      .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        padding: 50px 0;
+      }
+
+      .game_card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .game_image {
+        position: relative;
+        margin: auto;
+      }
+
+      .game_content_wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .game_content_container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .game_content_container h3 {
+        font-weight: 500;
+      }
+
+      .game_btn_container {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .game_content_container p,
+      .game_content_container h4 {
+        opacity: 0.8;
+      }
+
+      .game_btn_container a {
+        position: relative;
+        display: block;
+        background-color: #fff;
+        color: #000;
+        line-height: unset;
+        padding: 15px 0px;
+        width: 100%;
+        height: fit-content;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 6px;
+        max-width: 180px;
+      }
+
+      .game_btn_container .google_btn {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 170px;
+        height: fit-content;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+      }
+
+      /* -------------------- Footer Styling -------------------- */
+
+      footer {
+        position: relative;
+        padding: 40px 30px;
+        border-radius: 20px;
+        width: 100%;
+        height: 100%;
+      }
+
+      footer::after {
+        z-index: 2;
+        position: absolute;
+        display: block;
+        inset: 0;
+        content: "";
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .footer_content h2 {
+        position: relative;
+        opacity: 1;
+        font-size: 2.125rem;
+        max-width: 100%;
+        line-height: normal;
+      }
+
+      .footer_content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 3;
+      }
+
+      .footer_content p {
+        opacity: 0.8;
+        font-family: var(--font-head);
+      }
+
+      .copyright {
+        padding: 50px 0 0;
+        text-align: center;
+      }
+      .copyright span {
+        font-family: var(--font-body);
+      }
+      .copyright a {
+        position: relative;
+        display: inline;
+        background-color: transparent;
+        padding: 0;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: normal;
+        font-family: var(--font-body);
+      }
+
+      .footer-bg-elements {
+        position: relative;
+        display: block;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+      }
+
+      .heart-footer-image,
+      .flash-footer-image {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        margin: 0;
+      }
+
+      .heart-footer-image {
+        bottom: -220px;
+        right: 320px;
+      }
+      .flash-footer-image {
+        bottom: 350px;
+        left: 320px;
+      }
+
+      /* -------------------- Policy Page -------------------- */
+
+      .games_gradient_wrap {
+        padding: 0 5% 50px;
+      }
+      .policy-page {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        padding-top: 100px;
+      }
+
+      .policy-page h2 {
+        font-size: 2rem;
+      }
+
+      .policy-page a {
+        background-color: transparent;
+        text-align: left;
+        color: #fff;
+        padding: 0;
+        text-decoration: underline;
+      }
+
+      .policy-page > div {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .policy-page ul {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 1rem;
+      }
+
+      .policy-page ul li {
+        font-size: 1rem;
+        font-family: var(--font-body);
+      }
+
+      @media screen and (min-width: 768px) {
+        .banner {
+          display: grid;
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+          gap: 50px;
+        }
+        .banner_content a {
+          height: fit-content;
+          max-width: 350px;
+        }
+        .banner-image-container {
+          margin-right: 30px;
+          margin-top: 0;
+          margin-bottom: -120px;
+        }
+        .land-image {
+          max-width: 200px;
+          margin-top: -50px;
+        }
+        .cloud-left,
+        .cloud-right {
+          max-width: 80px;
+          max-height: 60px;
+        }
+        .cloud-left {
+          left: -30%;
+          top: 0%;
+        }
+        .cloud-right {
+          bottom: 50%;
+          right: -35%;
+        }
+        .game_btn_container {
+          justify-content: flex-start;
+        }
+
+        .footer_content a {
+          max-width: 200px;
+        }
+
+        .heart-footer-image {
+          bottom: -180px;
+          right: 290px;
+        }
+        .flash-footer-image {
+          bottom: 300px;
+          left: 280px;
+        }
+      }
+
+      @media screen and (min-width: 860px) {
+        h1 {
+          font-size: 3.8rem;
+        }
+        .cloud-left,
+        .cloud-right {
+          max-width: 100px;
+          max-height: 80px;
+        }
+      }
+
+      @media screen and (min-width: 1024px) {
+        h1 {
+          font-size: 4rem;
+        }
+        h2 {
+          font-size: 8rem;
+        }
+
+        h3 {
+          font-size: 2.5rem;
+        }
+
+        h4 {
+          font-size: 1.5rem;
+        }
+
+        p {
+          font-size: 1.5rem;
+        }
+        a {
+          font-size: 1rem;
+        }
+
+        .banner_content p {
+          font-size: 1.5rem;
+        }
+
+        .footer_content h2 {
+          font-size: 5.25rem;
+        }
+        .footer_content p {
+          font-size: 2.425;
+        }
+        .footer_content a {
+          font-size: 1rem;
+        }
+
+        .banner {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        }
+        .land-image {
+          max-width: 250px;
+          margin-top: -50px;
+        }
+        .cloud-left,
+        .cloud-right {
+          max-width: 100px;
+          max-height: 70px;
+        }
+
+        .heart-footer-image {
+          bottom: -10px;
+          right: 180px;
+        }
+        .flash-footer-image {
+          bottom: 200px;
+          left: 170px;
+        }
+
+        .game_card {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+          place-items: center;
+          gap: 40px;
+          width: 100%;
+        }
+
+        .game_image {
+          max-width: 300px;
+        }
+
+        .game_card:nth-child(2n) {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        }
+        .game_card:nth-child(2n) .game_image {
+          order: 2;
+        }
+      }
+      @media screen and (min-width: 1200px) {
+        h1 {
+          font-size: clamp(1.875rem, 5rem, 6.5rem);
+        }
+        h2 {
+          font-size: 8.5rem;
+        }
+
+        h3 {
+          font-size: 2.5rem;
+        }
+
+        h4 {
+          font-size: 1.5rem;
+        }
+
+        p {
+          font-size: 1.15rem;
+        }
+        a {
+          font-size: 1.25rem;
+        }
+
+        .banner_content p {
+          font-size: 1.75rem;
+        }
+
+        footer {
+          padding: 60px;
+        }
+
+        .footer_content h2 {
+          font-size: 7rem;
+        }
+        .footer_content p {
+          font-size: 3rem;
+        }
+        .footer_content a {
+          font-size: 1.5rem;
+        }
+        .banner {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+          padding: 50px;
+          gap: 0;
+        }
+        .banner::before {
+          height: 100%;
+          margin: auto;
+        }
+        .banner-image-container {
+          margin-right: 0%;
+          margin-top: -80px;
+          margin-bottom: 0px;
+          width: 100%;
+          perspective: 1px;
+        }
+        .land-image {
+          inset: 0;
+          position: absolute;
+          min-width: 200px;
+          max-width: 300px;
+          margin-top: 0px;
+          max-height: 800px;
+          min-height: 500px;
+        }
+        .cloud-left,
+        .cloud-right {
+          max-width: 150px;
+          max-height: 100px;
+        }
+        .cloud-left {
+          left: 0%;
+          top: 15%;
+        }
+        .cloud-right {
+          top: 60%;
+          right: 0%;
+        }
+
+        header,
+        .banner_gradient_wrap,
+        .games_gradient_wrap {
+          padding-left: 8%;
+          padding-right: 8%;
+        }
+
+        .heart-image,
+        .flash-image {
+          position: relative;
+          width: 150px;
+          height: 150px;
+        }
+        .bg-element .heart-image {
+          margin: 0;
+          margin-left: auto;
+          margin-right: -130px;
+          filter: drop-shadow(-10px -10px 30px red);
+        }
+        .bg-element .flash-image {
+          filter: drop-shadow(10px -10px 20px yellow);
+          margin: 0;
+          margin-top: 0px;
+          margin-left: -100px;
+          margin-right: auto;
+        }
+
+        .heart-footer-image,
+        .flash-footer-image {
+          position: absolute;
+          width: 150px;
+          height: 150px;
+          margin: 0;
+        }
+        .heart-footer-image {
+          bottom: 90px;
+          right: 120px;
+        }
+        .flash-footer-image {
+          bottom: 150px;
+          left: 120px;
+        }
+      }
+
+      @media screen and (min-width: 1450px) {
+        h1 {
+          font-size: 6.5rem;
+        }
+        .banner {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        }
+        .land-image {
+          min-height: 580px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header id="navbar" class="navbar">
+      <nav>
+        <div class="nav_logo">
+          <a href="/"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="172.461"
+              height="30.186"
+              viewBox="0 0 172.461 30.186"
+            >
+              <g
+                id="Group_290"
+                data-name="Group 290"
+                transform="translate(-172.792 -244.177)"
+              >
+                <path
+                  id="Path_3999"
+                  data-name="Path 3999"
+                  d="M-36.207-13.569a7.583,7.583,0,0,1,.625-3.162,6.693,6.693,0,0,1,1.667-2.3,7.043,7.043,0,0,1,2.272-1.334,7.508,7.508,0,0,1,2.563-.458,7.508,7.508,0,0,1,2.564.458A7.556,7.556,0,0,1-24.2-19.031a6.979,6.979,0,0,1,1.626,2.3,7.583,7.583,0,0,1,.625,3.162V2.1a7.514,7.514,0,0,1-.625,3.209A6.621,6.621,0,0,1-24.2,7.524,7.148,7.148,0,0,1-26.514,8.9a7.508,7.508,0,0,1-2.564.458A7.508,7.508,0,0,1-31.64,8.9a6.688,6.688,0,0,1-2.272-1.375A6.363,6.363,0,0,1-35.58,5.315a7.514,7.514,0,0,1-.625-3.209ZM-31.955,2.1A2.826,2.826,0,0,0-31.1,4.368a3.018,3.018,0,0,0,2.021.73,3.018,3.018,0,0,0,2.021-.73A2.826,2.826,0,0,0-26.2,2.1V-13.569a2.826,2.826,0,0,0-.855-2.271,3.018,3.018,0,0,0-2.021-.729,3.018,3.018,0,0,0-2.021.729,2.826,2.826,0,0,0-.855,2.271Zm13.51-15.666a7.583,7.583,0,0,1,.625-3.162,6.693,6.693,0,0,1,1.667-2.3,7.043,7.043,0,0,1,2.271-1.334,7.508,7.508,0,0,1,2.564-.458,7.508,7.508,0,0,1,2.564.458,7.556,7.556,0,0,1,2.313,1.334,6.979,6.979,0,0,1,1.626,2.3,7.583,7.583,0,0,1,.625,3.162V2.1a7.514,7.514,0,0,1-.625,3.209,6.621,6.621,0,0,1-1.63,2.218A7.148,7.148,0,0,1-8.758,8.9a7.508,7.508,0,0,1-2.564.458A7.508,7.508,0,0,1-13.886,8.9a6.688,6.688,0,0,1-2.271-1.375,6.363,6.363,0,0,1-1.667-2.209,7.514,7.514,0,0,1-.625-3.209ZM-14.193,2.1a2.826,2.826,0,0,0,.855,2.271,3.018,3.018,0,0,0,2.021.73A3.018,3.018,0,0,0-9.3,4.368,2.826,2.826,0,0,0-8.441,2.1V-13.569A2.826,2.826,0,0,0-9.3-15.84a3.018,3.018,0,0,0-2.021-.729,3.018,3.018,0,0,0-2.021.729,2.826,2.826,0,0,0-.855,2.271ZM-.683-13.569a7.583,7.583,0,0,1,.625-3.162,6.693,6.693,0,0,1,1.667-2.3A7.043,7.043,0,0,1,3.88-20.365a7.508,7.508,0,0,1,2.564-.458,7.508,7.508,0,0,1,2.564.458,7.556,7.556,0,0,1,2.314,1.334,6.979,6.979,0,0,1,1.626,2.3,7.583,7.583,0,0,1,.625,3.162v1.5H9.31v-1.5a2.826,2.826,0,0,0-.855-2.271,3.018,3.018,0,0,0-2.021-.729,3.018,3.018,0,0,0-2.021.729,2.826,2.826,0,0,0-.855,2.271V2.1a2.826,2.826,0,0,0,.855,2.271,3.018,3.018,0,0,0,2.021.73,3.018,3.018,0,0,0,2.021-.73A2.826,2.826,0,0,0,9.31,2.1V-3.482H5.934V-7.234h7.628V2.109a7.514,7.514,0,0,1-.625,3.209,6.621,6.621,0,0,1-1.626,2.206A7.148,7.148,0,0,1,9,8.9a7.417,7.417,0,0,1-5.127,0A6.688,6.688,0,0,1,1.6,7.524,6.363,6.363,0,0,1-.064,5.315,7.514,7.514,0,0,1-.7,2.1Zm40.055-7L34.948,9.105H30.942L27.691-10.154h-.083L24.4,9.105h-4L15.976-20.571h4.5l2.126,18.84h.083l3.334-18.84h3.251l3.459,19.3h.083l2.042-19.3Zm10,19.3L47.281-12.023H47.2L45.114-1.269ZM38.862,9.105l6.627-29.677h3.544L55.658,9.105H51.406l-1.25-6.377H44.364l-1.25,6.377Zm20.553,0V-3.441l-5.84-17.131h4.5l3.418,11.8h.083L65-20.571h4.5L63.662-3.441V9.105Z"
+                  transform="translate(209 265)"
+                  fill="#fff"
+                />
+                <path
+                  id="Path_3998"
+                  data-name="Path 3998"
+                  d="M-13.029-1.275l-2.084-10.754H-15.2L-17.281-1.275ZM-23.533,9.1l6.627-29.677h3.543L-6.736,9.1h-4.246l-1.25-6.377h-5.794L-19.282,9.1Zm18.876,0V-20.573H1.72a9.486,9.486,0,0,1,3.084.458,5.917,5.917,0,0,1,2.423,1.623,6.357,6.357,0,0,1,1.5,2.731,17.073,17.073,0,0,1,.412,4.233,20.984,20.984,0,0,1-.23,3.376,7.058,7.058,0,0,1-.98,2.587A6.206,6.206,0,0,1,5.6-3.295a7.856,7.856,0,0,1-3.835.813H-.4V9.1ZM-.406-16.572V-6.485H1.636a4.345,4.345,0,0,0,2-.375A2.36,2.36,0,0,0,4.679-7.9a3.809,3.809,0,0,0,.4-1.535q.062-.917.062-2.042,0-1.042-.042-1.979a4.283,4.283,0,0,0-.375-1.647A2.367,2.367,0,0,0,3.719-16.19a3.971,3.971,0,0,0-1.909-.382ZM12.312,9.1V-20.573H18.69a9.486,9.486,0,0,1,3.084.458,5.917,5.917,0,0,1,2.417,1.623,6.357,6.357,0,0,1,1.5,2.731,17.073,17.073,0,0,1,.417,4.23,20.984,20.984,0,0,1-.23,3.376,7.058,7.058,0,0,1-.98,2.587A6.206,6.206,0,0,1,22.564-3.3a7.856,7.856,0,0,1-3.835.813H16.564V9.1Zm4.251-25.675V-6.485h2.042a4.345,4.345,0,0,0,2-.375A2.36,2.36,0,0,0,21.649-7.9a3.809,3.809,0,0,0,.4-1.535q.062-.917.062-2.042,0-1.042-.042-1.979a4.283,4.283,0,0,0-.375-1.647,2.367,2.367,0,0,0-1.006-1.084,3.971,3.971,0,0,0-1.913-.382Zm26.467,4.548H38.78v-.959a4.539,4.539,0,0,0-.688-2.522,2.544,2.544,0,0,0-2.313-1.064,2.675,2.675,0,0,0-1.417.333,2.8,2.8,0,0,0-.875.834,3.526,3.526,0,0,0-.458,1.23,8.027,8.027,0,0,0-.125,1.437,14.093,14.093,0,0,0,.062,1.459,2.77,2.77,0,0,0,.312,1.042,2.318,2.318,0,0,0,.73.792,6.7,6.7,0,0,0,1.312.667L38.57-7.481a8.06,8.06,0,0,1,2.3,1.271,5.5,5.5,0,0,1,1.375,1.689,7.891,7.891,0,0,1,.625,2.271,22.48,22.48,0,0,1,.167,2.9,15.275,15.275,0,0,1-.375,3.48,7.33,7.33,0,0,1-1.209,2.731,6,6,0,0,1-2.3,1.834,8.086,8.086,0,0,1-3.46.667,7.569,7.569,0,0,1-2.875-.542,6.84,6.84,0,0,1-2.3-1.5A7.3,7.3,0,0,1,29,5.079a6.771,6.771,0,0,1-.562-2.772V.725h4.251V2.061a3.472,3.472,0,0,0,.688,2.1A2.679,2.679,0,0,0,35.7,5.1a3.737,3.737,0,0,0,1.687-.312,2.244,2.244,0,0,0,.937-.9,3.291,3.291,0,0,0,.4-1.4q.062-.813.062-1.814a17.965,17.965,0,0,0-.083-1.917,3.306,3.306,0,0,0-.333-1.209,2.343,2.343,0,0,0-.763-.753,9.881,9.881,0,0,0-1.272-.625l-3.043-1.25A6.739,6.739,0,0,1,29.6-8.049a10.252,10.252,0,0,1-.939-4.647,10.78,10.78,0,0,1,.458-3.162,7.205,7.205,0,0,1,1.375-2.587,6.3,6.3,0,0,1,2.231-1.725,7.444,7.444,0,0,1,3.23-.647,7.053,7.053,0,0,1,2.9.584,7.462,7.462,0,0,1,2.271,1.542,6.44,6.44,0,0,1,1.917,4.585Z"
+                  transform="translate(302.216 265.002)"
+                  fill="#fff"
+                />
+              </g>
+            </svg>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="games_gradient_wrap">
+        <div class="policy-page">
+          <div>
+            <h1>Terms and Conditions</h1>
+            <p>
+              Welcome to Oogway Apps ("we", "us", or "our")! By accessing or
+              using our mobile apps, websites, and related services
+              (collectively, the "Services"), you ("User", "you", or "your")
+              agree to comply with and be bound by these Terms and Conditions
+              ("Terms"). If you do not agree with these Terms, you must not use
+              our Services.
+            </p>
+            <p>Please read these Terms carefully before using our Services.</p>
+          </div>
+
+          <div>
+            <h2>1. Acceptance of Terms</h2>
+            <p>
+              By accessing or using our Services, you agree to comply with these
+              Terms, our Privacy Policy, and any other policies referenced
+              herein. If you are using the Services on behalf of a company or
+              organization, you represent and warrant that you have the
+              authority to bind that organization to these Terms.
+            </p>
+          </div>
+
+          <div>
+            <h2>2. Eligibility</h2>
+            <p>
+              You must be at least 13 years of age (or 16 years in the European
+              Union) to use our Services. If you are under the required age, you
+              must obtain the consent of a parent or guardian to use our
+              Services. By agreeing to these Terms, you confirm that you are of
+              legal age or have received parental consent.
+            </p>
+          </div>
+
+          <div>
+            <h2>3. Account Registration and Security</h2>
+            <p>
+              To access certain features of our Services, you may need to create
+              an account. You are responsible for providing accurate, complete,
+              and up-to-date information during the registration process. You
+              must also maintain the confidentiality of your account
+              information, including your username and password.
+            </p>
+            <p>
+              You agree to immediately notify us of any unauthorized use of your
+              account or any other security breach. We are not responsible for
+              any loss or damage arising from your failure to protect your
+              account information.
+            </p>
+          </div>
+
+          <div>
+            <h2>4. Use of the Services</h2>
+            <p>
+              You agree to use our Services only for lawful purposes and in
+              accordance with these Terms. You will not:
+            </p>
+            <ul>
+              <li>
+                Violate any applicable laws, regulations, or third-party rights.
+              </li>
+              <li>
+                Engage in any activity that disrupts, interferes with, or
+                damages the Services or the experience of other users.
+              </li>
+              <li>
+                Engage in cheating, hacking, or fraudulent activities, including
+                manipulating game outcomes, exploiting glitches, or using bots.
+              </li>
+              <li>
+                Use offensive, abusive, or discriminatory language in
+                interactions with other users or our support team.
+              </li>
+              <li>Distribute malware or any other harmful software.</li>
+            </ul>
+            <p>
+              You acknowledge that we may suspend or terminate your access to
+              our Services if you violate these Terms or engage in activities
+              that we deem inappropriate.
+            </p>
+          </div>
+
+          <div>
+            <h2>5. Intellectual Property Rights</h2>
+            <p>
+              All content within our Services, including but not limited to
+              graphics, software, code, music, text, and app assets (the
+              "Content"), are owned by Oogway Apps or our licensors and are
+              protected by copyright, trademark, and other intellectual property
+              laws.
+            </p>
+            <p>
+              You are granted a limited, non-exclusive, non-transferable license
+              to access and use the Services solely for personal, non-commercial
+              purposes. You may not copy, distribute, modify, reverse-engineer,
+              or create derivative works based on our Content without prior
+              written permission from us.
+            </p>
+          </div>
+
+          <div>
+            <h2>6. In-App Purchases and Virtual Items</h2>
+            <p>
+              Our Services may include the ability to purchase virtual goods,
+              in-app currency, or other digital products ("Virtual Items").
+              Virtual Items are non-refundable, non-transferable, and cannot be
+              redeemed for real-world currency unless specified otherwise. All
+              in-app purchases are subject to the terms of the applicable
+              payment provider.
+            </p>
+            <p>
+              We reserve the right to modify or discontinue any Virtual Items,
+              features, or content within our Services at any time, without
+              notice.
+            </p>
+          </div>
+
+          <div>
+            <h2>7. Privacy and Data Collection</h2>
+            <p>
+              Your use of our Services is also governed by our Privacy Policy,
+              which explains how we collect, store, and process your personal
+              information. By using our Services, you consent to the collection
+              and processing of your data in accordance with the Privacy Policy.
+            </p>
+          </div>
+
+          <div>
+            <h2>8. User-Generated Content</h2>
+            <p>
+              Our Services may allow you to create, upload, or share content,
+              including text, images, videos, and other media ("User Content").
+              By submitting User Content, you grant us a worldwide,
+              royalty-free, non-exclusive license to use, display, distribute,
+              and modify your content as necessary to provide the Services and
+              promote our Services.
+            </p>
+            <p>
+              You represent and warrant that you have the necessary rights to
+              submit the User Content, and that it does not violate any
+              third-party rights, including intellectual property, privacy, or
+              publicity rights. You agree not to submit any User Content that is
+              offensive, defamatory, illegal, or violates our community
+              guidelines.
+            </p>
+          </div>
+
+          <div>
+            <h2>9. Termination of Access</h2>
+            <p>
+              We may suspend or terminate your account and access to our
+              Services at our sole discretion, without notice, if we believe you
+              have violated these Terms, engaged in illegal activities, or
+              otherwise caused harm to the Services or other users.
+            </p>
+            <p>
+              Upon termination, you must stop using the Services and may lose
+              access to any Virtual Items or purchased content associated with
+              your account.
+            </p>
+          </div>
+
+          <div>
+            <h2>10. Limitation of Liability</h2>
+            <p>
+              To the maximum extent permitted by law, Oogway Apps and its
+              affiliates shall not be liable for any indirect, incidental,
+              special, consequential, or punitive damages, or any loss of
+              profits or data arising from or related to your use of the
+              Services, even if we have been advised of the possibility of such
+              damages.
+            </p>
+            <p>
+              Our liability to you for any claim arising from these Terms or
+              your use of the Services will be limited to the amount you have
+              paid to us (if any) in the past 12 months.
+            </p>
+          </div>
+
+          <div>
+            <h2>11. Indemnification</h2>
+            <p>
+              You agree to indemnify, defend, and hold harmless Oogway Apps, its
+              affiliates, employees, officers, and agents from any and all
+              claims, liabilities, damages, and expenses (including legal fees)
+              arising from your use of the Services, your User Content, or your
+              violation of these Terms.
+            </p>
+          </div>
+
+          <div>
+            <h2>12. Changes to the Terms</h2>
+            <p>
+              We reserve the right to update or modify these Terms at any time.
+              Any changes will be effective upon posting the revised Terms on
+              this page. We encourage you to review these Terms periodically to
+              stay informed about any changes.
+            </p>
+          </div>
+
+          <div>
+            <h2>13. Governing Law and Jurisdiction</h2>
+            <p>
+              These Terms are governed by and construed in accordance with the
+              laws of India. You agree to submit to the exclusive jurisdiction
+              of the courts located in New Delhi, India for any legal actions
+              arising from these Terms or your use of the Services.
+            </p>
+          </div>
+
+          <div>
+            <h2>14. Severability</h2>
+            <p>
+              If any provision of these Terms is found to be invalid, illegal,
+              or unenforceable, the remaining provisions will continue in full
+              force and effect.
+            </p>
+          </div>
+
+          <div>
+            <h2>15. Contact Us</h2>
+            <p>
+              Oogway Apps is managed and operated by GreedyGame Media Private
+              Limited, its subsidiaries, representatives and affiliates. In this
+              agreement, "Oogway Apps" means GreedyGame Media Private Limited.
+              If you have any questions, concerns, or comments about these
+              Terms, please contact us at
+              <a href="mailto:oogwayapps@gmail.com">oogwayapps@gmail.com</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <span>2024 © Oogway Apps | </span
+          ><span><a href="mailto:oogwayapps@gmail.com">Contact Us</a></span>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
