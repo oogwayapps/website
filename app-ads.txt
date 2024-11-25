@@ -1004,3 +1004,7 @@ video.unrulymedia.com, 689559416, RESELLER
 rubiconproject.com, 26064, RESELLER, 0bfd66d529a55807
 smaato.com, 1100050739, RESELLER, 07bcf65f187117b4
 #iron source end
+#pubmatic ortb start
+Pubmatic.com, 165079, RESELLER, 5d62403b186f2ace
+#pubmatic ortb end
+
