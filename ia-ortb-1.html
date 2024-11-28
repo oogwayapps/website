@@ -66,17 +66,38 @@
     <!-- Optional JavaScript -->
     <script>
       (function () {
-        alert('hello')
         var clicked = false;
-        document
-          .querySelector("#wrapper_cec58f805195d86b3057c581cb760602_cl")
-          .addEventListener("click", function () {
-            if (clicked) return;
-            clicked = true;
-            var script = document.createElement("script");
-            script.src = "https://et-nd20.itdsmr.com/script.js";
-            document.body.appendChild(script);
-          });
+
+        // Function to handle the click/tap event
+        function handleClick() {
+          if (clicked) return;
+          clicked = true;
+
+          // Try to open the Play Store URL
+          var storeUrl =
+            "https://play.google.com/store/apps/details?id=io.lumat.privalia";
+
+          // Try multiple methods to handle the navigation
+          if (window.unity) {
+            // If Unity interface is available, use it
+            window.unity.call("OpenURL", storeUrl);
+          } else if (window.location != null) {
+            // Fallback to regular navigation
+            window.location.href = storeUrl;
+          }
+
+          // Load tracking script
+          var script = document.createElement("script");
+          script.src = "https://et-nd20.itdsmr.com/script.js";
+          document.body.appendChild(script);
+        }
+
+        // Add click listener to the wrapper
+        var wrapper = document.querySelector(
+          "#wrapper_cec58f805195d86b3057c581cb760602_cl"
+        );
+        wrapper.addEventListener("click", handleClick);
+        wrapper.addEventListener("touchend", handleClick); // Add touch support
       })();
     </script>
   </body>
