@@ -1008,7 +1008,7 @@ smaato.com, 1100050739, RESELLER, 07bcf65f187117b4
 Pubmatic.com, 165079, RESELLER, 5d62403b186f2ace
 #pubmatic ortb end
 #dec11 start
-yandex.com, 308457403, DIRECT
+yandex.com, 307355807, DIRECT
 betweendigital.com, 43554, RESELLER
 openx.com, 541177349, RESELLER, 6a698e2ec38604c6
 pubmatic.com, 159668, RESELLER, 5d62403b186f2ace
