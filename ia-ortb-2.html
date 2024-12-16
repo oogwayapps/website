@@ -23,7 +23,7 @@
         max-height: 100%;
       }
       .ad-wrapper img {
-        width: 100%;
+        width: 100px;
         height: auto;
         display: block;
       }
@@ -31,6 +31,7 @@
   </head>
   <body>
     <div id="ad-container">
+      hello
       <div class="ad-wrapper" id="wrapper_cec58f805195d86b3057c581cb760602_cl">
         <!-- Ad Link -->
         <a
@@ -42,63 +43,8 @@
             alt="Ad Image"
           />
         </a>
-
-        <!-- Tracking Pixels -->
-        <img
-          src="https://tracker.rtb-greedygame.com/imp?ie=CiRhZDJkMjYyOC1hYjU2LTRkNzUtYmIzNC1hZmNlNjQ2Zjg1ZjMSJDUwZjJmNWZjLTFkNjItN2Q0Ni1hODExLWZiZGZmMjc0YjNkZRokNTBmMmY1ZmMtMWQ2Mi03ZDQ2LWE4MTEtZmJkZmYyNzRiM2RlMhY3Nzg5X1ByaXZhbGlhXzEwMjRYNzY4ONSeBEIZU21hcnR5QWRzX0lBX0Jhbm5lcl9vcGVyYUjr8csCUhJHcmVlZHlnYW1lIHRlc3Rpbmd5LT4gfkaLBT-BAfihUv32xg4_iAEBkAH-_5fAtjKaAQp3cC53YXR0cGFkogEPd3d3LndhdHRwYWQuY29tqgEHQW5kcm9pZLIBDU1PQklMRV9UQUJMRVS6AR5XYXR0cGFkIC0gUmVhZCAmIFdyaXRlIFN0b3JpZXPIAYwS0AG4CNoBA0lOROoBJGI5NjM4OGRkLTU4MTctNDIxOC05MjUyLTRhN2YxZTFiYmRiOfIBJGI5NjM4OGRkLTU4MTctNDIxOC05MjUyLTRhN2YxZTFiYmRiOYoCDWx1bWF0bGFicy5jb22SAgZCQU5ORVKaAgNBUFCiAgNncmSpAgAAAAAAAPA_sAL-nuHAtjK4AsWfBMICGlNtYXJ0eUFkc19JQV9CYW5uZXJfMjQxMDI0ygIHNTQzNzY3NfICA0FETZIDDjEwMy4yMjcuOTYuMTE0mgN6TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDE1OyBTTS1OOTYwVSkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMS4wLjY3NzguODEgTW9iaWxlIFNhZmFyaS81MzcuMzaiAwhTTS1TOTA4RaoDB1NhbXN1bmfCAxlTRVJWRVJfVE9fU0VSVkVSX09QRU5fUlRCygMHT1BFTlJUQtIDCUJlbmdhbHVydeoDCU5PTl9GUkFVRPIDBkJPVE1BTvoDAlYxggQENzc4OcIENkFuZHJvaWQgT1MgMTQgLyBBUEktMzQgKFVQMUEuMjMxMDA1LjAwNy9TOTA4RVhYU0FFWEY4KcoEDUNocm9tZSBNb2JpbGXSBAMxMzHYBAziBAlTbWFydHlBZHPoBKoC8gQSR3JlZWR5Z2FtZSB0ZXN0aW5nkgUHVVNfRUFTVPAFZPgFZKIGAktBqgYGNTYwMDAykggHNTQzNzY3NbIIA1VTRLkIAAAAAAAA8D8&p=${AUCTION_PRICE}"
-          width="1"
-          height="1"
-          alt="Impression Tracker"
-          style="display: none"
-        />
-
-        <!-- Additional Tracking Pixels -->
-        <img
-          src="https://adrta.com/i?clid=tb&amp;paid=bb&amp;avid=1&amp;caid=952763&amp;plid=Privalia_1024X768&amp;publisherId=1002&amp;priceBid=0.1"
-          width="1"
-          height="1"
-          style="display: none"
-          alt="Additional Tracker"
-        />
       </div>
+      world
     </div>
-
-    <!-- Optional JavaScript -->
-    <script>
-      (function () {
-        var clicked = false;
-
-        // Function to handle the click/tap event
-        function handleClick() {
-          if (clicked) return;
-          clicked = true;
-
-          // Try to open the Play Store URL
-          var storeUrl =
-            "https://play.google.com/store/apps/details?id=io.lumat.privalia";
-
-          // Try multiple methods to handle the navigation
-          if (window.unity) {
-            // If Unity interface is available, use it
-            window.unity.call("OpenURL", storeUrl);
-          } else if (window.location != null) {
-            // Fallback to regular navigation
-            window.location.href = storeUrl;
-          }
-
-          // Load tracking script
-          var script = document.createElement("script");
-          script.src = "https://et-nd20.itdsmr.com/script.js";
-          document.body.appendChild(script);
-        }
-
-        // Add click listener to the wrapper
-        var wrapper = document.querySelector(
-          "#wrapper_cec58f805195d86b3057c581cb760602_cl"
-        );
-        wrapper.addEventListener("click", handleClick);
-        wrapper.addEventListener("touchend", handleClick); // Add touch support
-      })();
-    </script>
   </body>
 </html>
