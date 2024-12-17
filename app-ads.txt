@@ -1910,3 +1910,17 @@ goldbach-germany.de, Connekt, RESELLER
 flat-ads.com, 2196901, RESELLER
 playwire.com, 1025119, RESELLER
 #publisher lines end
+inmobi.com, 4eec1a4c9837415c9889705b40ae285b, DIRECT, 83e75a7ae333ca9d
+smartyads.com, 2892, DIRECT, fd2bde0ff2e62c5d
+Pubmatic.com, 156486, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 24244, RESELLER, 0bfd66d529a55807
+onetag.com, 88b71279eecd32c, DIRECT
+onetag.com, 88b71279eecd32c-OB, DIRECT
+appnexus.com, 13099, RESELLER
+pubmatic.com, 161593, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 11006, RESELLER, 0bfd66d529a55807
+Xapads.com, 140873, DIRECT
+google.com, pub-2749054827332983, DIRECT, f08c47fec0942fa0
+Pubmatic.com, 162882, RESELLER, 5d62403b186f2ace
+inmobi.com, c0900989d3194edc94c4f1ae1cd4b9e8, RESELLER, 83e75a7ae333ca9d
+Pubmatic.com, 163319, RESELLER, 5d62403b186f2ace
