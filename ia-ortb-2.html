@@ -23,14 +23,16 @@
 
           function handleMessage(event) {
             console.log("Message received from Unity:", event.data);
+            const data = JSON.parse(event.data);
+            console.log("Data:", data);
 
             // if (event.data.startsWith("Width:")) {
             //   dimensions.width = parseInt(event.data.split(":")[1], 10);
             // } else if (event.data.startsWith("Height:")) {
             //   dimensions.height = parseInt(event.data.split(":")[1], 10);
             // }
-            dimensions.width = event.data.width;
-            dimensions.height = event.data.height;
+            dimensions.width = Number(data.width);
+            dimensions.height = Number(data.height);
             // If both dimensions are received, resolve the promise
             if (dimensions.width !== null && dimensions.height !== null) {
               window.vuplex.removeEventListener("message", handleMessage);
@@ -79,7 +81,7 @@
       }
       setTimeout(() => {
         renderAddToIframe();
-      }, 30000);
+      }, 10000);
     </script>
   </body>
 </html>
