@@ -1924,3 +1924,6 @@ google.com, pub-2749054827332983, DIRECT, f08c47fec0942fa0
 Pubmatic.com, 162882, RESELLER, 5d62403b186f2ace
 inmobi.com, c0900989d3194edc94c4f1ae1cd4b9e8, RESELLER, 83e75a7ae333ca9d
 Pubmatic.com, 163319, RESELLER, 5d62403b186f2ace
+#19th dec start
+facebook.com, 1733377500079487, DIRECT, c3e20eee3f780d68
+#19th dec end
