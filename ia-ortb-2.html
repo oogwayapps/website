@@ -24,12 +24,13 @@
           function handleMessage(event) {
             console.log("Message received from Unity:", event.data);
 
-            if (event.data.startsWith("Width:")) {
-              dimensions.width = parseInt(event.data.split(":")[1], 10);
-            } else if (event.data.startsWith("Height:")) {
-              dimensions.height = parseInt(event.data.split(":")[1], 10);
-            }
-
+            // if (event.data.startsWith("Width:")) {
+            //   dimensions.width = parseInt(event.data.split(":")[1], 10);
+            // } else if (event.data.startsWith("Height:")) {
+            //   dimensions.height = parseInt(event.data.split(":")[1], 10);
+            // }
+            dimensions.width = event.data.width;
+            dimensions.height = event.data.height;
             // If both dimensions are received, resolve the promise
             if (dimensions.width !== null && dimensions.height !== null) {
               window.vuplex.removeEventListener("message", handleMessage);
@@ -41,13 +42,19 @@
 
           // Send requests to Unity
           console.log("Sending message to Unity: GetWidth and GetHeight");
-          window.vuplex.postMessage("GetWidth");
-          window.vuplex.postMessage("GetHeight");
+          // window.vuplex.postMessage("GetWidth");
+          // window.vuplex.postMessage("GetHeight");
+          window.vuplex.postMessage("GetDimensions");
         });
       }
 
       async function renderAddToIframe() {
         const { width, height } = await getDimensionsFromUnity();
+        // const { width, height } = {
+        //   width: 300,
+        //   height: 250,
+        // };
+        console.log("Width:", width, "Height:", height);
         const adRenderer = document.getElementById("gg-ad-renderer");
         adRenderer.style.width = `${width}px`;
         adRenderer.style.height = `${height}px`;
@@ -58,10 +65,12 @@
         iframe.scrolling = "no";
         iframe.frameBorder = "0";
         const res = await fetch(
-          //   "https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456"
+          "https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456"
           //   "https://run.mocky.io/v3/b5394e6f-9bc9-46c2-8190-aeb3e2ecb2ac"
           //   "https://run.mocky.io/v3/ee114871-2a0a-42fe-9962-e3f62bf6e3d8"
-          "https://run.mocky.io/v3/d34f670c-1a81-4511-bd03-bf2b3f7e774d"
+          //   "https://run.mocky.io/v3/d34f670c-1a81-4511-bd03-bf2b3f7e774d"
+          // "https://run.mocky.io/v3/a30f7dfb-6aa2-4dae-b89c-ee56eaa18e15"
+          // "https://run.mocky.io/v3/191795e8-c7f5-44e0-8cf7-7acfb3d3b072"
         );
         const data = await res.json();
         const html = data.seatbid[0].bid[0].adm;
