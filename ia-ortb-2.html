@@ -22,17 +22,17 @@
         align-items: center;
         background: linear-gradient(90deg, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.5));
         backdrop-filter: blur(10px);
-        position: absolute;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         overflow: hidden;
+        position: absolute;
       }
     </style>
   </head>
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.1");
+      console.log("Loaded version: 1.0.2");
 
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
@@ -65,17 +65,31 @@
 
         const res = await fetch("https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456");
         const data = await res.json();
-        const adWidth = 1280; // Assuming fixed width for ad
-        const adHeight = 800; // Assuming fixed height for ad
+        const adWidth = 1280; // Ad width from the mock server
+        const adHeight = 800; // Ad height from the mock server
         const html = data.seatbid[0].bid[0].adm;
 
         const adRenderer = document.getElementById("gg-ad-renderer");
-        adRenderer.style.width = `${adWidth}px`;
-        adRenderer.style.height = `${adHeight}px`;
+
+        // Scale ad to fit within the WebView if necessary
+        let scaledWidth = adWidth;
+        let scaledHeight = adHeight;
+
+        if (adWidth > webViewWidth || adHeight > webViewHeight) {
+          const widthRatio = webViewWidth / adWidth;
+          const heightRatio = webViewHeight / adHeight;
+          const scale = Math.min(widthRatio, heightRatio);
+
+          scaledWidth = Math.floor(adWidth * scale);
+          scaledHeight = Math.floor(adHeight * scale);
+        }
+
+        adRenderer.style.width = `${scaledWidth}px`;
+        adRenderer.style.height = `${scaledHeight}px`;
 
         // Center the ad within the WebView
-        adRenderer.style.left = `${(webViewWidth - adWidth) / 2}px`;
-        adRenderer.style.top = `${(webViewHeight - adHeight) / 2}px`;
+        adRenderer.style.left = `${(webViewWidth - scaledWidth) / 2}px`;
+        adRenderer.style.top = `${(webViewHeight - scaledHeight) / 2}px`;
 
         const iframe = document.createElement("iframe");
         iframe.width = "100%";
