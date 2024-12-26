@@ -36,7 +36,7 @@
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.7");
+      console.log("Loaded version: 1.0.8");
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
         if (!window.vuplex) {
@@ -121,11 +121,22 @@
       }, 3000);
     </script>
     <script>
+      const window = window || globalThis;
       console.log(window);
       setInterval(() => {
         // Detect <a> tags that don't have our custom 'overridden' attribute
         // and update them to add the 'overridden' attribute and send the link
         // URL to the app's C# via window.vuplex.postMessage() when the link is clicked.
+        //get iframe document
+
+        const iframe = document.querySelector("iframe");
+        if (!iframe) {
+          return;
+        }
+        const iframeDocument = iframe.contentDocument;
+        if (!iframeDocument) {
+          return;
+        }
         const newLinks = document.querySelectorAll("a[href]:not([overridden])");
         console.log("Found new links:", newLinks);
         for (const link of newLinks) {
@@ -145,7 +156,7 @@
             event.preventDefault();
           });
         }
-      }, 250);
+      }, 1000);
     </script>
   </body>
 </html>
