@@ -20,7 +20,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(90deg, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.5));
+        background: linear-gradient(
+          90deg,
+          rgba(255, 0, 0, 0.5),
+          rgba(0, 0, 255, 0.5)
+        );
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
@@ -32,8 +36,7 @@
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.4");
-
+      console.log("Loaded version: 1.0.5");
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
         if (!window.vuplex) {
@@ -49,7 +52,10 @@
 
             if (data.width && data.height) {
               window.vuplex.removeEventListener("message", handleMessage);
-              resolve({ width: Number(data.width), height: Number(data.height) });
+              resolve({
+                width: Number(data.width),
+                height: Number(data.height),
+              });
             }
           }
 
@@ -60,10 +66,18 @@
       }
 
       async function renderAddToIframe() {
-        const { width: webViewWidth, height: webViewHeight } = await getDimensionsFromUnity();
-        console.log("WebView Dimensions - Width:", webViewWidth, "Height:", webViewHeight);
+        const { width: webViewWidth, height: webViewHeight } =
+          await getDimensionsFromUnity();
+        console.log(
+          "WebView Dimensions - Width:",
+          webViewWidth,
+          "Height:",
+          webViewHeight
+        );
 
-        const res = await fetch("https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c");
+        const res = await fetch(
+          "https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c"
+        );
         // const res = await fetch("https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456");
         const data = await res.json();
         const adWidth = data.seatbid[0].bid[0].w || 1280; // Ad width from the mock server
@@ -105,6 +119,25 @@
       setTimeout(() => {
         renderAddToIframe();
       }, 3000);
+    </script>
+    <script>
+      setInterval(() => {
+        // Detect <a> tags that don't have our custom 'overridden' attribute
+        // and update them to add the 'overridden' attribute and send the link
+        // URL to the app's C# via window.vuplex.postMessage() when the link is clicked.
+        const newLinks = document.querySelectorAll("a[href]:not([overridden])");
+        for (const link of newLinks) {
+          link.setAttribute("overridden", true);
+          const linkUrl = link.href;
+          link.addEventListener("click", (event) => {
+            // Send the link URL to the C# script.
+            console.log("Sending message to Unity: OpenLink", linkUrl);
+            window.vuplex.postMessage({ type: "OpenLink", url: linkUrl });
+            // Call preventDefault() to prevent the webview from loading the URL.
+            event.preventDefault();
+          });
+        }
+      }, 250);
     </script>
   </body>
 </html>
