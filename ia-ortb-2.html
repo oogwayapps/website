@@ -32,7 +32,7 @@
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.3");
+      console.log("Loaded version: 1.0.4");
 
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
@@ -66,8 +66,8 @@
         const res = await fetch("https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c");
         // const res = await fetch("https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456");
         const data = await res.json();
-        const adWidth = 1280; // Ad width from the mock server
-        const adHeight = 800; // Ad height from the mock server
+        const adWidth = data.seatbid[0].bid[0].w || 1280; // Ad width from the mock server
+        const adHeight = data.seatbid[0].bid[0].h || 800; // Ad height from the mock server
         const html = data.seatbid[0].bid[0].adm;
 
         const adRenderer = document.getElementById("gg-ad-renderer");
