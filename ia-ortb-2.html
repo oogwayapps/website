@@ -4,11 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #gg-ad-renderer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: linear-gradient(
+          90deg,
+          rgba(255, 0, 0, 0.5),
+          rgba(0, 0, 255, 0.5)
+        );
+        /* make the background blur  */
+        backdrop-filter: blur(10px);
+      }
+    </style>
   </head>
   <body>
     <!-- https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456 -->
     <div id="gg-ad-renderer"></div>
     <script>
+      console.log("Loaded version: 1.0.0");
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
         if (!window.vuplex) {
@@ -81,7 +101,7 @@
       }
       setTimeout(() => {
         renderAddToIframe();
-      }, 10000);
+      }, 3000);
     </script>
   </body>
 </html>
