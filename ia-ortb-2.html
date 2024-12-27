@@ -36,7 +36,8 @@
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.8");
+      console.log("Loaded version: 1.0.9");
+
       async function getDimensionsFromUnity() {
         // Ensure Vuplex is ready
         if (!window.vuplex) {
@@ -61,7 +62,32 @@
 
           window.vuplex.addEventListener("message", handleMessage);
           console.log("Sending message to Unity: GetDimensions");
-          window.vuplex.postMessage("GetDimensions");
+          window.vuplex.postMessage({ type: "GetDimensions" });
+        });
+      }
+      async function getAdJsonFromUnity() {
+        // Ensure Vuplex is ready
+        if (!window.vuplex) {
+          await new Promise((resolve) => {
+            window.addEventListener("vuplexready", resolve, { once: true });
+          });
+        }
+
+        return new Promise((resolve) => {
+          function handleMessage(event) {
+            console.log("Message received from Unity:", event.data);
+            const data = JSON.parse(event.data);
+            console.log("data ==>>>", data);
+
+            if (data) {
+              window.vuplex.removeEventListener("message", handleMessage);
+              resolve(data);
+            }
+          }
+
+          window.vuplex.addEventListener("message", handleMessage);
+          console.log("Sending message to Unity: GetAdJson");
+          window.vuplex.postMessage({ type: "GetDemandInfo" });
         });
       }
 
@@ -75,26 +101,31 @@
           webViewHeight
         );
 
-        const res = await fetch(
-          "https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c"
-        );
-        // const res = await fetch("https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456");
-        const data = await res.json();
-        const adWidth = data.seatbid[0].bid[0].w || 1280; // Ad width from the mock server
-        const adHeight = data.seatbid[0].bid[0].h || 800; // Ad height from the mock server
-        const html = data.seatbid[0].bid[0].adm;
-
+        const adJson = await getAdJsonFromUnity();
+        // const res = await fetch(
+        //   // "https://run.mocky.io/v3/b7606072-fb8e-41c2-b7bc-17f54ebde7f0"
+        //   "https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c"
+        //   // "https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456"
+        //   //   "https://run.mocky.io/v3/73da6dea-c313-4d4f-9c9e-0bccf165bc50"
+        // );
+        // const data = await res.json();
+        const adWidth = adJson.w; // Ad width from the mock server
+        const adHeight = adJson.h; // Ad height from the mock server
+        const html = adJson.adm;
+        console.log({
+          adWidth,
+          adHeight,
+        });
         const adRenderer = document.getElementById("gg-ad-renderer");
 
-        // Scale ad to fit within the WebView if necessary
+        // Calculate scaled dimensions while maintaining aspect ratio
         let scaledWidth = adWidth;
         let scaledHeight = adHeight;
+        const widthRatio = webViewWidth / adWidth;
+        const heightRatio = webViewHeight / adHeight;
+        const scale = Math.min(widthRatio, heightRatio);
 
-        if (adWidth > webViewWidth || adHeight > webViewHeight) {
-          const widthRatio = webViewWidth / adWidth;
-          const heightRatio = webViewHeight / adHeight;
-          const scale = Math.min(widthRatio, heightRatio);
-
+        if (scale < 1) {
           scaledWidth = Math.floor(adWidth * scale);
           scaledHeight = Math.floor(adHeight * scale);
         }
@@ -120,43 +151,62 @@
         renderAddToIframe();
       }, 3000);
     </script>
-    <script>
-      const window = window || globalThis;
-      console.log(window);
-      setInterval(() => {
-        // Detect <a> tags that don't have our custom 'overridden' attribute
-        // and update them to add the 'overridden' attribute and send the link
-        // URL to the app's C# via window.vuplex.postMessage() when the link is clicked.
-        //get iframe document
 
+    <script>
+      (async function () {
+        await new Promise((resolve, reject) => {
+          setTimeout(resolve, 10000);
+        });
+        // get the iframe content window
         const iframe = document.querySelector("iframe");
+        // console.log("iframe", iframe);
         if (!iframe) {
           return;
         }
         const iframeDocument = iframe.contentDocument;
+        // console.log("iframeDocument", iframeDocument);
         if (!iframeDocument) {
           return;
         }
-        const newLinks = document.querySelectorAll("a[href]:not([overridden])");
-        console.log("Found new links:", newLinks);
-        for (const link of newLinks) {
-          link.setAttribute("overridden", true);
-          const linkUrl = link.href;
-          link.addEventListener("click", (event) => {
-            // Send the link URL to the C# script.
-            console.log(
-              "Sending message to Unity: OpenLink",
-              linkUrl,
-              link,
-              link?.contentWindow
-            );
-            window.vuplex &&
-              window.vuplex.postMessage({ type: "OpenLink", url: linkUrl });
-            // Call preventDefault() to prevent the webview from loading the URL.
-            event.preventDefault();
+        const iframeWindow = iframe.contentWindow;
+        // console.log("iframeWindow", iframeWindow, iframeDocument);
+        // Intercept navigation triggered via JavaScript or anchor tags
+        const originalOpen = window.open;
+        iframeWindow.open = function (url, target, features) {
+          window.vuplex.postMessage({ type: "OpenLink", url });
+          return null; // Prevent the default behavior
+        };
+
+        // Intercept anchor tag clicks
+        iframeDocument.addEventListener("click", function (event) {
+          const target = event.target.closest("a[href]");
+          // console.log("target", target);
+          if (target) {
+            const linkUrl = target.href;
+            iframeWindow.vuplex.postMessage({
+              type: "OpenLink",
+              url: linkUrl,
+            });
+            event.preventDefault(); // Prevent navigation
+          }
+        });
+
+        // Override window.location changes
+        const originalAssign = iframeWindow.location.assign;
+        const originalReplace = iframeWindow.location.replace;
+        iframeWindow.location.assign = function (url) {
+          iframeWindow.vuplex.postMessage({
+            type: "OpenLink",
+            url,
           });
-        }
-      }, 1000);
+        };
+        iframeWindow.location.replace = function (url) {
+          iframeWindow.vuplex.postMessage({
+            type: "OpenLink",
+            url,
+          });
+        };
+      })();
     </script>
   </body>
 </html>
