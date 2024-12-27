@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Ad Renderer</title>
     <style>
       body {
         margin: 0;
@@ -22,8 +22,8 @@
         align-items: center;
         background: linear-gradient(
           90deg,
-          rgba(255, 0, 0, 0.5),
-          rgba(0, 0, 255, 0.5)
+          rgba(200, 200, 200, 0.5),
+          rgba(220, 220, 220, 0.5)
         );
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -31,182 +31,156 @@
         overflow: hidden;
         position: absolute;
       }
+
+      iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
   <body>
     <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Loaded version: 1.0.9");
-
-      async function getDimensionsFromUnity() {
-        // Ensure Vuplex is ready
-        if (!window.vuplex) {
-          await new Promise((resolve) => {
-            window.addEventListener("vuplexready", resolve, { once: true });
-          });
+      class AdRenderer {
+        constructor() {
+          this.vuplexReady = false;
+          this.adRenderer = document.getElementById("gg-ad-renderer");
+          this.initialize();
         }
 
-        return new Promise((resolve) => {
-          function handleMessage(event) {
-            console.log("Message received from Unity:", event.data);
-            const data = JSON.parse(event.data);
-
-            if (data.width && data.height) {
-              window.vuplex.removeEventListener("message", handleMessage);
-              resolve({
-                width: Number(data.width),
-                height: Number(data.height),
-              });
-            }
+        async initialize() {
+          try {
+            await this.waitForVuplex();
+            await this.renderAd();
+            this.setupLinkInterception();
+          } catch (error) {
+            console.error("Initialization error:", error);
           }
-
-          window.vuplex.addEventListener("message", handleMessage);
-          console.log("Sending message to Unity: GetDimensions");
-          window.vuplex.postMessage({ type: "GetDimensions" });
-        });
-      }
-      async function getAdJsonFromUnity() {
-        // Ensure Vuplex is ready
-        if (!window.vuplex) {
-          await new Promise((resolve) => {
-            window.addEventListener("vuplexready", resolve, { once: true });
-          });
         }
 
-        return new Promise((resolve) => {
-          function handleMessage(event) {
-            console.log("Message received from Unity:", event.data);
-            const data = JSON.parse(event.data);
-            console.log("data ==>>>", data);
-
-            if (data) {
-              window.vuplex.removeEventListener("message", handleMessage);
-              resolve(data);
-            }
-          }
-
-          window.vuplex.addEventListener("message", handleMessage);
-          console.log("Sending message to Unity: GetAdJson");
-          window.vuplex.postMessage({ type: "GetDemandInfo" });
-        });
-      }
-
-      async function renderAddToIframe() {
-        const { width: webViewWidth, height: webViewHeight } =
-          await getDimensionsFromUnity();
-        console.log(
-          "WebView Dimensions - Width:",
-          webViewWidth,
-          "Height:",
-          webViewHeight
-        );
-
-        const adJson = await getAdJsonFromUnity();
-        // const res = await fetch(
-        //   // "https://run.mocky.io/v3/b7606072-fb8e-41c2-b7bc-17f54ebde7f0"
-        //   "https://run.mocky.io/v3/6706ce00-4e71-46e4-87f8-f30c5e60403c"
-        //   // "https://run.mocky.io/v3/53570b47-35fa-4fed-8faf-da7710dd0456"
-        //   //   "https://run.mocky.io/v3/73da6dea-c313-4d4f-9c9e-0bccf165bc50"
-        // );
-        // const data = await res.json();
-        const adWidth = adJson.w; // Ad width from the mock server
-        const adHeight = adJson.h; // Ad height from the mock server
-        const html = adJson.adm;
-        console.log({
-          adWidth,
-          adHeight,
-        });
-        const adRenderer = document.getElementById("gg-ad-renderer");
-
-        // Calculate scaled dimensions while maintaining aspect ratio
-        let scaledWidth = adWidth;
-        let scaledHeight = adHeight;
-        const widthRatio = webViewWidth / adWidth;
-        const heightRatio = webViewHeight / adHeight;
-        const scale = Math.min(widthRatio, heightRatio);
-
-        if (scale < 1) {
-          scaledWidth = Math.floor(adWidth * scale);
-          scaledHeight = Math.floor(adHeight * scale);
-        }
-
-        adRenderer.style.width = `${scaledWidth}px`;
-        adRenderer.style.height = `${scaledHeight}px`;
-
-        // Center the ad within the WebView
-        adRenderer.style.left = `${(webViewWidth - scaledWidth) / 2}px`;
-        adRenderer.style.top = `${(webViewHeight - scaledHeight) / 2}px`;
-
-        const iframe = document.createElement("iframe");
-        iframe.width = "100%";
-        iframe.height = "100%";
-        iframe.scrolling = "no";
-        iframe.frameBorder = "0";
-        iframe.srcdoc = html;
-
-        adRenderer.appendChild(iframe);
-      }
-
-      setTimeout(() => {
-        renderAddToIframe();
-      }, 3000);
-    </script>
-
-    <script>
-      (async function () {
-        await new Promise((resolve, reject) => {
-          setTimeout(resolve, 10000);
-        });
-        // get the iframe content window
-        const iframe = document.querySelector("iframe");
-        // console.log("iframe", iframe);
-        if (!iframe) {
-          return;
-        }
-        const iframeDocument = iframe.contentDocument;
-        // console.log("iframeDocument", iframeDocument);
-        if (!iframeDocument) {
-          return;
-        }
-        const iframeWindow = iframe.contentWindow;
-        // console.log("iframeWindow", iframeWindow, iframeDocument);
-        // Intercept navigation triggered via JavaScript or anchor tags
-        const originalOpen = window.open;
-        iframeWindow.open = function (url, target, features) {
-          window.vuplex.postMessage({ type: "OpenLink", url });
-          return null; // Prevent the default behavior
-        };
-
-        // Intercept anchor tag clicks
-        iframeDocument.addEventListener("click", function (event) {
-          const target = event.target.closest("a[href]");
-          // console.log("target", target);
-          if (target) {
-            const linkUrl = target.href;
-            iframeWindow.vuplex.postMessage({
-              type: "OpenLink",
-              url: linkUrl,
+        async waitForVuplex() {
+          if (!window.vuplex) {
+            await new Promise((resolve) => {
+              window.addEventListener(
+                "vuplexready",
+                () => {
+                  this.vuplexReady = true;
+                  resolve();
+                },
+                { once: true }
+              );
             });
-            event.preventDefault(); // Prevent navigation
+          } else {
+            this.vuplexReady = true;
           }
-        });
+        }
 
-        // Override window.location changes
-        const originalAssign = iframeWindow.location.assign;
-        const originalReplace = iframeWindow.location.replace;
-        iframeWindow.location.assign = function (url) {
-          iframeWindow.vuplex.postMessage({
-            type: "OpenLink",
-            url,
+        async getDimensionsFromUnity() {
+          return new Promise((resolve) => {
+            const handleMessage = (event) => {
+              const data = JSON.parse(event.data);
+              if (data.type === "GetDimensions" && data.dimension) {
+                window.vuplex.removeEventListener("message", handleMessage);
+                resolve({
+                  width: Number(data.dimension.width),
+                  height: Number(data.dimension.height),
+                });
+              }
+            };
+
+            window.vuplex.addEventListener("message", handleMessage);
+            window.vuplex.postMessage({ type: "GetDimensions" });
           });
-        };
-        iframeWindow.location.replace = function (url) {
-          iframeWindow.vuplex.postMessage({
-            type: "OpenLink",
-            url,
+        }
+
+        async getAdJsonFromUnity() {
+          return new Promise((resolve) => {
+            const handleMessage = (event) => {
+              const data = JSON.parse(event.data);
+              if (data.type === "GetDemandInfo" && data.demand) {
+                window.vuplex.removeEventListener("message", handleMessage);
+                resolve(data.demand);
+              }
+            };
+
+            window.vuplex.addEventListener("message", handleMessage);
+            window.vuplex.postMessage({ type: "GetDemandInfo" });
           });
-        };
-      })();
+        }
+
+        async renderAd() {
+          const { width: webViewWidth, height: webViewHeight } =
+            await this.getDimensionsFromUnity();
+          const demand = await this.getAdJsonFromUnity();
+          const { w: adWidth, h: adHeight, adm: html } = demand;
+
+          // New fitting logic to keep ad full width
+          const scale = webViewWidth / adWidth;
+          const scaledHeight = Math.floor(adHeight * scale);
+
+          this.adRenderer.style.width = `${webViewWidth}px`;
+          this.adRenderer.style.height = `${scaledHeight}px`;
+
+          // Center vertically only
+          this.adRenderer.style.left = "0";
+          this.adRenderer.style.top = `${(webViewHeight - scaledHeight) / 2}px`;
+
+          const iframe = document.createElement("iframe");
+          iframe.scrolling = "no";
+          iframe.srcdoc = html;
+          this.adRenderer.appendChild(iframe);
+
+          return iframe;
+        }
+
+        setupLinkInterception() {
+          // Wait for iframe to load
+          const iframe = this.adRenderer.querySelector("iframe");
+          iframe.addEventListener("load", () => {
+            const iframeWindow = iframe.contentWindow;
+            const iframeDocument = iframe.contentDocument;
+            console.log(iframeWindow, iframeDocument);
+            // Intercept window.open
+            iframeWindow.open = (url) => {
+              this.handleNavigation(url);
+              return null;
+            };
+
+            // Intercept anchor clicks
+            iframeDocument.addEventListener(
+              "click",
+              (event) => {
+                const anchor = event.target.closest("a[href]");
+                if (anchor) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  this.handleNavigation(anchor.href);
+                }
+              },
+              true
+            );
+
+            // Override location methods
+            // Object.defineProperty(iframeWindow.location, "href", {
+            //   set: (url) => this.handleNavigation(url),
+            // });
+            // iframeWindow.location.assign = (url) => this.handleNavigation(url);
+            // iframeWindow.location.replace = (url) => this.handleNavigation(url);
+          });
+        }
+
+        handleNavigation(url) {
+          if (this.vuplexReady) {
+            window.vuplex.postMessage({ type: "OpenLink", url });
+          }
+        }
+      }
+
+      // Initialize when DOM is ready
+      document.addEventListener("DOMContentLoaded", () => {
+        new AdRenderer();
+      });
     </script>
   </body>
 </html>
