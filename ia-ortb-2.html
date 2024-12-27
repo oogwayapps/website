@@ -13,15 +13,16 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: #f0f0f0;
+        background: linear-gradient(
+          90deg,
+          rgba(233, 230, 230, 0.5),
+          rgba(237, 237, 239, 0.5)
+        );
       }
 
       #ad-renderer {
         position: absolute;
-        background: linear-gradient(90deg, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.5));
         backdrop-filter: blur(10px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -82,22 +83,20 @@
 
       // Render ad inside iframe
       async function renderAd() {
-        const { width: webViewWidth, height: webViewHeight } = await fetchDimensions();
+        const { width: webViewWidth, height: webViewHeight } =
+          await fetchDimensions();
         const adData = await fetchAdData();
         const { w: adWidth, h: adHeight, adm: adHtml } = adData;
 
         const adRenderer = document.getElementById("ad-renderer");
-        const scale = Math.min(webViewWidth / adWidth, webViewHeight / adHeight, 1);
-        const scaledWidth = Math.floor(adWidth * scale);
-        const scaledHeight = Math.floor(adHeight * scale);
 
+        // Set styles for the container
         Object.assign(adRenderer.style, {
-          width: `${scaledWidth}px`,
-          height: `${scaledHeight}px`,
-          left: `${(webViewWidth - scaledWidth) / 2}px`,
-          top: `${(webViewHeight - scaledHeight) / 2}px`,
+          width: `${webViewWidth}px`,
+          height: `${webViewHeight}px`,
         });
 
+        // Create and append the iframe
         const iframe = document.createElement("iframe");
         iframe.width = "100%";
         iframe.height = "100%";
@@ -105,54 +104,61 @@
         iframe.frameBorder = "0";
         iframe.srcdoc = adHtml;
 
+        adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
+
         setupClickRedirection(iframe);
       }
 
       // Setup click redirection for links in iframe
       function setupClickRedirection(iframe) {
-        setTimeout(() => {
-          const iframeDoc = iframe.contentDocument;
-          const iframeWin = iframe.contentWindow;
+        iframe.addEventListener("load", () => {
+          try {
+            const iframeDoc = iframe.contentDocument;
+            const iframeWin = iframe.contentWindow;
 
-          if (!iframeDoc || !iframeWin) {
-            console.error("[DEBUG] Iframe document or window is missing.");
-            return;
-          }
-
-          const redirectLink = (url) => {
-            console.log("[DEBUG] Redirecting link to:", url);
-            window.vuplex.postMessage({ type: "OpenLink", url });
-          };
-
-          // Intercept anchor tag clicks
-          iframeDoc.addEventListener("click", (event) => {
-            const link = event.target.closest("a[href]");
-            if (link) {
-              console.log("[DEBUG] Anchor tag clicked. Redirecting:", link.href);
-              redirectLink(link.href);
-              event.preventDefault();
+            if (!iframeDoc || !iframeWin) {
+              console.error("[DEBUG] Iframe document or window is missing.");
+              return;
             }
-          });
 
-          // Override `window.open`
-          iframeWin.open = (url) => {
-            console.log("[DEBUG] Window open intercepted. Redirecting:", url);
-            redirectLink(url);
-            return null;
-          };
+            const redirectLink = (url) => {
+              console.log("[DEBUG] Redirecting link to:", url);
+              window.vuplex.postMessage({ type: "OpenLink", url });
+            };
 
-          // Override `location.assign` and `location.replace`
-          const overrideLocation = (method, url) => {
-            console.log(`[DEBUG] Location.${method} intercepted. Redirecting:`, url);
-            redirectLink(url);
-          };
+            // Intercept anchor tag clicks
+            iframeDoc.addEventListener("click", (event) => {
+              const link = event.target.closest("a[href]");
+              if (link) {
+                console.log("[DEBUG] Anchor tag clicked. Redirecting:", link.href);
+                redirectLink(link.href);
+                event.preventDefault();
+              }
+            });
 
-          iframeWin.location.assign = (url) => overrideLocation("assign", url);
-          iframeWin.location.replace = (url) => overrideLocation("replace", url);
+            // Override `window.open`
+            iframeWin.open = (url) => {
+              console.log("[DEBUG] Window open intercepted. Redirecting:", url);
+              redirectLink(url);
+              return null;
+            };
 
-          console.log("[DEBUG] Click redirection setup complete.");
-        }, 3000); // Wait for iframe content to load
+            // Override `location.assign` and `location.replace`
+            const overrideLocation = (method, url) => {
+              console.log(`[DEBUG] Location.${method} intercepted. Redirecting:`, url);
+              redirectLink(url);
+            };
+
+            iframeWin.location.assign = (url) => overrideLocation("assign", url);
+            iframeWin.location.replace = (url) =>
+              overrideLocation("replace", url);
+
+            console.log("[DEBUG] Click redirection setup complete.");
+          } catch (error) {
+            console.error("[ERROR] Failed to set up click redirection:", error);
+          }
+        });
       }
 
       renderAd().catch((error) => {
