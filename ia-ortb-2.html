@@ -82,33 +82,41 @@
       }
 
       // Render ad inside iframe
-      async function renderAd() {
-        const { width: webViewWidth, height: webViewHeight } =
-          await fetchDimensions();
-        const adData = await fetchAdData();
-        const { w: adWidth, h: adHeight, adm: adHtml } = adData;
+      // Render ad inside iframe
+async function renderAd() {
+  const { width: webViewWidth, height: webViewHeight } = await fetchDimensions();
+  const adData = await fetchAdData();
+  const { w: adWidth, h: adHeight, adm: adHtml } = adData;
 
-        const adRenderer = document.getElementById("ad-renderer");
+  const adRenderer = document.getElementById("ad-renderer");
 
-        // Set styles for the container
-        Object.assign(adRenderer.style, {
-          width: `${webViewWidth}px`,
-          height: `${webViewHeight}px`,
-        });
+  // Calculate scale dynamically
+  const scaleX = webViewWidth / adWidth;
+  const scaleY = webViewHeight / adHeight;
+  const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to fit both dimensions
 
-        // Create and append the iframe
-        const iframe = document.createElement("iframe");
-        iframe.width = adWidth * 2 + "px"; //"100%";
-        iframe.height = adHeight * 2 + "px"; //"100%";
-        iframe.scrolling = "no";
-        iframe.frameBorder = "0";
-        iframe.style.transform = 'scale(2)';
-        iframe.style.transformOrigin = 'top left'
-        iframe.srcdoc = adHtml;
+  // Set styles for the container
+  Object.assign(adRenderer.style, {
+    width: `${webViewWidth}px`,
+    height: `${webViewHeight}px`,
+  });
 
-        adRenderer.innerHTML = ""; // Clear previous content
-        adRenderer.appendChild(iframe);
-      }
+  // Create and append the iframe
+  const iframe = document.createElement("iframe");
+  iframe.width = `100%`;
+  iframe.height = `100%`;
+  iframe.scrolling = "no";
+  iframe.frameBorder = "0";
+  iframe.style.transform = `scale(${scale})`;
+  iframe.style.transformOrigin = "top left";
+  iframe.srcdoc = adHtml;
+
+  adRenderer.innerHTML = ""; // Clear previous content
+  adRenderer.appendChild(iframe);
+
+  setupClickRedirection(iframe);
+}
+
 
       // Setup click redirection for links in iframe
       function setupClickRedirection(iframe) {
