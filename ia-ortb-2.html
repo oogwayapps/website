@@ -168,7 +168,7 @@ async function renderAd() {
             overrideLocation("replace", url);
 
           console.log("[DEBUG] Click redirection setup complete.");
-        }, 3000); // Wait for iframe content to load
+        }, 100); // Wait for iframe content to load
       }
 
       renderAd().catch((error) => {
