@@ -83,40 +83,45 @@
 
       // Render ad inside iframe
       // Render ad inside iframe
-async function renderAd() {
-  const { width: webViewWidth, height: webViewHeight } = await fetchDimensions();
-  const adData = await fetchAdData();
-  const { w: adWidth, h: adHeight, adm: adHtml } = adData;
+      async function renderAd() {
+        const { width: webViewWidth, height: webViewHeight } =
+          await fetchDimensions();
+        const adData = await fetchAdData();
+        const { w: adWidth, h: adHeight, adm: adHtml } = adData;
 
-  const adRenderer = document.getElementById("ad-renderer");
+        const adRenderer = document.getElementById("ad-renderer");
 
-  // Calculate scale dynamically
-  const scaleX = webViewWidth / adWidth;
-  const scaleY = webViewHeight / adHeight;
-  const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to fit both dimensions
+        // Calculate scale dynamically
+        const scaleX = webViewWidth / adWidth;
+        const scaleY = webViewHeight / adHeight;
+        const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to fit both dimensions
 
-  // Set styles for the container
-  Object.assign(adRenderer.style, {
-    width: `${webViewWidth}px`,
-    height: `${webViewHeight}px`,
-  });
+        // Set styles for the container
+        Object.assign(adRenderer.style, {
+          width: `${webViewWidth}px`,
+          height: `${webViewHeight}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        });
 
-  // Create and append the iframe
-  const iframe = document.createElement("iframe");
-  iframe.width = `100%`;
-  iframe.height = `100%`;
-  iframe.scrolling = "no";
-  iframe.frameBorder = "0";
-  iframe.style.transform = `scale(${scale})`;
-  iframe.style.transformOrigin = "top left";
-  iframe.srcdoc = adHtml;
+        // Create and append the iframe
+        const iframe = document.createElement("iframe");
+        iframe.width = `${adWidth}px`;
+        iframe.height = `${adHeight}px`;
+        iframe.scrolling = "no";
+        iframe.frameBorder = "0";
+        iframe.style.transform = `scale(${scale})`;
+        iframe.style.transformOrigin = "center center"; // Center align transform origin
+        iframe.style.position = "relative"; // Maintain positioning for centering
+        iframe.srcdoc = adHtml;
 
-  adRenderer.innerHTML = ""; // Clear previous content
-  adRenderer.appendChild(iframe);
+        adRenderer.innerHTML = ""; // Clear previous content
+        adRenderer.appendChild(iframe);
 
-  setupClickRedirection(iframe);
-}
-
+        setupClickRedirection(iframe);
+        return { iframe, adWidth, adHeight };
+      }
 
       // Setup click redirection for links in iframe
       function setupClickRedirection(iframe) {
@@ -171,9 +176,45 @@ async function renderAd() {
         }, 100); // Wait for iframe content to load
       }
 
-      renderAd().catch((error) => {
-        console.error("[ERROR] Error rendering ad:", error);
-      });
+      renderAd()
+        .then(({ iframe, adWidth, adHeight }) => {
+          //listen to iframe load event
+          iframe.addEventListener("load", () => {
+            console.log("[DEBUG] Ad rendered successfully:", iframe);
+            //remove margin form the body of the iframe
+            iframe.contentDocument.body.style.margin = "0px";
+            const allImages = iframe.contentDocument.querySelectorAll("img");
+            //check if there are images in the iframe whose dimensions are simillar to the adWidth and adHeight
+            allImages.forEach((image) => {
+              const originalWidth = image.width;
+              const originalHeight = image.height;
+              //check if the images are of the same dimensions as the ad, ex if originalWidth = 300 and adWidth = 280,290,300,270,etc then also it should be considered
+              //check the width and height difference between the image and the ad should be less than 10%
+              if (
+                originalWidth >= adWidth * 0.9 &&
+                originalWidth <= adWidth * 1.1 &&
+                originalHeight >= adHeight * 0.9 &&
+                originalHeight <= adHeight * 1.1
+              ) {
+                console.log(
+                  "[DEBUG] Image dimensions are similar to ad:",
+                  image
+                );
+                //add a click event listener to the image
+                image.addEventListener("click", (event) => {
+                  console.log("[DEBUG] Image clicked:", image.src);
+                  window.vuplex.postMessage({
+                    type: "OpenLink",
+                    url: image.src,
+                  });
+                });
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.error("[ERROR] Error rendering ad:", error);
+        });
     </script>
   </body>
 </html>
