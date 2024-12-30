@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ad Renderer</title>
+    <title>PubScale</title>
     <style>
       body {
         margin: 0;
@@ -79,7 +79,6 @@
       }
 
       // Render ad inside iframe
-      // Render ad inside iframe
       async function renderAd() {
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
@@ -144,8 +143,9 @@
                 "[DEBUG] Anchor tag clicked. Redirecting:",
                 link.href
               );
-              redirectLink(link.href);
               event.preventDefault();
+              event.stopPropagation();
+              redirectLink(link.href);
             }
           });
 
