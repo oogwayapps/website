@@ -13,11 +13,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: linear-gradient(
-          90deg,
-          rgba(233, 230, 230, 0.5),
-          rgba(237, 237, 239, 0.5)
-        );
+        background: #000000;
       }
 
       #ad-renderer {
@@ -27,6 +23,7 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        background: #000000;
       }
     </style>
   </head>
@@ -200,6 +197,9 @@
                   "[DEBUG] Image dimensions are similar to ad:",
                   image
                 );
+                window.vuplex.postMessage({
+                  type: "BannerAdWebViewImpression",
+                });
                 //add a click event listener to the image
                 image.addEventListener("click", (event) => {
                   console.log("[DEBUG] Image clicked:", image.src);
@@ -213,6 +213,7 @@
           });
         })
         .catch((error) => {
+          window.vuplex.postMessage({ type: "BannerAdFailed" });
           console.error("[ERROR] Error rendering ad:", error);
         });
     </script>
