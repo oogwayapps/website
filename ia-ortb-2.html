@@ -115,7 +115,7 @@
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
 
-        setupClickRedirection(iframe);
+        // setupClickRedirection(iframe);
         return { iframe, adWidth, adHeight };
       }
 
@@ -174,94 +174,7 @@
       }
 
       renderAd()
-        .then(({ iframe, adWidth, adHeight }) => {
-          const POLLING_INTERVAL = 500; // Check every 500ms
-          const TIMEOUT = 5000; // 5 seconds
-          let isImpressionFired = false;
-
-          // Listen to iframe load event
-          iframe.addEventListener("load", () => {
-            console.log("[DEBUG] Ad rendered successfully:", iframe);
-            iframe.contentDocument.body.style.margin = "0px";
-
-            const checkForImages = () => {
-              const allImages = iframe.contentDocument.querySelectorAll("img");
-              allImages.forEach((image) => {
-                const originalWidth = image.width;
-                const originalHeight = image.height;
-
-                // Check if the image dimensions are similar to the ad dimensions
-                if (
-                  originalWidth >= adWidth * 0.9 &&
-                  originalWidth <= adWidth * 1.1 &&
-                  originalHeight >= adHeight * 0.9 &&
-                  originalHeight <= adHeight * 1.1
-                ) {
-                  console.log(
-                    "[DEBUG] Image dimensions are similar to ad:",
-                    image
-                  );
-
-                  // Fire the impression event only once
-                  if (!isImpressionFired) {
-                    isImpressionFired = true;
-                    window.vuplex.postMessage({
-                      type: "BannerAdWebViewImpression",
-                    });
-
-                    // Add a click event listener to the image
-                    image.addEventListener("click", (event) => {
-                      console.log("[DEBUG] Image clicked:", image.src);
-                      window.vuplex.postMessage({
-                        type: "OpenLink",
-                        url: image.src,
-                      });
-                    });
-                  }
-                }
-              });
-            };
-
-            // Poll for images until the timeout
-            const startPolling = () => {
-              const pollingStartTime = Date.now();
-
-              const poll = setInterval(() => {
-                if (isImpressionFired) {
-                  clearInterval(poll);
-                  return;
-                }
-
-                const elapsedTime = Date.now() - pollingStartTime;
-
-                checkForImages();
-
-                // Stop polling and fire a failure event if no image is found within the timeout
-                if (elapsedTime >= TIMEOUT) {
-                  clearInterval(poll);
-                  if (!isImpressionFired) {
-                    console.error(
-                      "[ERROR] No similar-sized image found within the timeout."
-                    );
-                    window.vuplex.postMessage({ type: "BannerAdFailed" });
-                  }
-                }
-              }, POLLING_INTERVAL);
-            };
-
-            startPolling();
-          });
-
-          // Fire the failure event if the iframe fails to load
-          iframe.addEventListener("error", () => {
-            console.error("[ERROR] Iframe failed to load.");
-            window.vuplex.postMessage({ type: "BannerAdFailed" });
-          });
-        })
-        .catch((error) => {
-          console.error("[ERROR] Error rendering ad:", error);
-          window.vuplex.postMessage({ type: "BannerAdFailed" });
-        });
+      
     </script>
 <!-- Hotjar Tracking Code for Oogway apps IA Page -->
 <script>
