@@ -30,6 +30,7 @@
   <body>
     <div id="ad-renderer"></div>
     <script>
+      console.log('Version: 1.2.1')
       // Utility function to wait for Vuplex
       async function waitForVuplex() {
         if (!window.vuplex) {
@@ -43,20 +44,25 @@
       async function fetchDimensions() {
         await waitForVuplex();
         return new Promise((resolve) => {
-          const onMessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === "GetDimensions" && data.dimension) {
-              console.log("[DEBUG] Dimensions received:", data.dimension);
-              window.vuplex.removeEventListener("message", onMessage);
-              resolve({
-                width: Number(data.dimension.width),
-                height: Number(data.dimension.height),
+          resolve({
+                width: Number(800),
+                height: Number(250),
               });
-            }
-          };
-          window.vuplex.addEventListener("message", onMessage);
-          console.log("[DEBUG] Requesting dimensions from Unity...");
-          window.vuplex.postMessage({ type: "GetDimensions" });
+
+          // const onMessage = (event) => {
+          //   const data = JSON.parse(event.data);
+          //   if (data.type === "GetDimensions" && data.dimension) {
+          //     console.log("[DEBUG] Dimensions received:", data.dimension);
+          //     window.vuplex.removeEventListener("message", onMessage);
+          //     resolve({
+          //       width: Number(data.dimension.width),
+          //       height: Number(data.dimension.height),
+          //     });
+          //   }
+          // };
+          // window.vuplex.addEventListener("message", onMessage);
+          // console.log("[DEBUG] Requesting dimensions from Unity...");
+          // window.vuplex.postMessage({ type: "GetDimensions" });
         });
       }
 
