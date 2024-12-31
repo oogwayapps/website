@@ -30,7 +30,7 @@
   <body>
     <div id="ad-renderer"></div>
     <script>
-      console.log('Version: 1.3.1')
+      console.log('Version: 1.3.4')
       // Utility function to wait for Vuplex
       async function waitForVuplex() {
         if (!window.vuplex) {
@@ -209,15 +209,6 @@
                     isImpressionFired = true;
                     window.vuplex.postMessage({
                       type: "BannerAdWebViewImpression",
-                    });
-
-                    // Add a click event listener to the image
-                    image.addEventListener("click", (event) => {
-                      console.log("[DEBUG] Image clicked:", image.src);
-                      window.vuplex.postMessage({
-                        type: "OpenLink",
-                        url: image.src,
-                      });
                     });
                   }
                 }
