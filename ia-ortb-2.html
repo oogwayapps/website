@@ -191,6 +191,11 @@
               allImages.forEach((image) => {
                 const originalWidth = image.width;
                 const originalHeight = image.height;
+                //if image width and height are 1, it is a tracking pixel and make them display none
+                if (originalWidth === 1 && originalHeight === 1) {
+                  image.style.display = "none";
+                  return;
+                }
 
                 // Check if the image dimensions are similar to the ad dimensions
                 if (
