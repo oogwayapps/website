@@ -3,102 +3,296 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ad Rendering</title>
+    <title>PubScale</title>
     <style>
       body {
         margin: 0;
         padding: 0;
-        font-family: Arial, sans-serif;
-      }
-      #ad-container {
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: #f4f4f4;
+        background: #000000;
       }
-      .ad-wrapper {
-        position: relative;
-        max-width: 100%;
-        max-height: 100%;
-      }
-      .ad-wrapper img {
-        width: 100%;
-        height: auto;
-        display: block;
+
+      #ad-renderer {
+        position: absolute;
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: #000000;
       }
     </style>
   </head>
   <body>
-    <div id="ad-container">
-      <div class="ad-wrapper" id="wrapper_cec58f805195d86b3057c581cb760602_cl">
-        <!-- Ad Link -->
-        <a
-          href="https://play.google.com/store/apps/details?id=io.lumat.privalia"
-          target="_blank"
-        >
-          <img
-            src="https://cdn.chongdaads.com/Privalia_creatives/Privalia_1024X768.jpg"
-            alt="Ad Image"
-          />
-        </a>
-
-        <!-- Tracking Pixels -->
-        <img
-          src="https://tracker.rtb-greedygame.com/imp?ie=CiRhZDJkMjYyOC1hYjU2LTRkNzUtYmIzNC1hZmNlNjQ2Zjg1ZjMSJDUwZjJmNWZjLTFkNjItN2Q0Ni1hODExLWZiZGZmMjc0YjNkZRokNTBmMmY1ZmMtMWQ2Mi03ZDQ2LWE4MTEtZmJkZmYyNzRiM2RlMhY3Nzg5X1ByaXZhbGlhXzEwMjRYNzY4ONSeBEIZU21hcnR5QWRzX0lBX0Jhbm5lcl9vcGVyYUjr8csCUhJHcmVlZHlnYW1lIHRlc3Rpbmd5LT4gfkaLBT-BAfihUv32xg4_iAEBkAH-_5fAtjKaAQp3cC53YXR0cGFkogEPd3d3LndhdHRwYWQuY29tqgEHQW5kcm9pZLIBDU1PQklMRV9UQUJMRVS6AR5XYXR0cGFkIC0gUmVhZCAmIFdyaXRlIFN0b3JpZXPIAYwS0AG4CNoBA0lOROoBJGI5NjM4OGRkLTU4MTctNDIxOC05MjUyLTRhN2YxZTFiYmRiOfIBJGI5NjM4OGRkLTU4MTctNDIxOC05MjUyLTRhN2YxZTFiYmRiOYoCDWx1bWF0bGFicy5jb22SAgZCQU5ORVKaAgNBUFCiAgNncmSpAgAAAAAAAPA_sAL-nuHAtjK4AsWfBMICGlNtYXJ0eUFkc19JQV9CYW5uZXJfMjQxMDI0ygIHNTQzNzY3NfICA0FETZIDDjEwMy4yMjcuOTYuMTE0mgN6TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDE1OyBTTS1OOTYwVSkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMS4wLjY3NzguODEgTW9iaWxlIFNhZmFyaS81MzcuMzaiAwhTTS1TOTA4RaoDB1NhbXN1bmfCAxlTRVJWRVJfVE9fU0VSVkVSX09QRU5fUlRCygMHT1BFTlJUQtIDCUJlbmdhbHVydeoDCU5PTl9GUkFVRPIDBkJPVE1BTvoDAlYxggQENzc4OcIENkFuZHJvaWQgT1MgMTQgLyBBUEktMzQgKFVQMUEuMjMxMDA1LjAwNy9TOTA4RVhYU0FFWEY4KcoEDUNocm9tZSBNb2JpbGXSBAMxMzHYBAziBAlTbWFydHlBZHPoBKoC8gQSR3JlZWR5Z2FtZSB0ZXN0aW5nkgUHVVNfRUFTVPAFZPgFZKIGAktBqgYGNTYwMDAykggHNTQzNzY3NbIIA1VTRLkIAAAAAAAA8D8&p=${AUCTION_PRICE}"
-          width="1"
-          height="1"
-          alt="Impression Tracker"
-          style="display: none"
-        />
-
-        <!-- Additional Tracking Pixels -->
-        <img
-          src="https://adrta.com/i?clid=tb&amp;paid=bb&amp;avid=1&amp;caid=952763&amp;plid=Privalia_1024X768&amp;publisherId=1002&amp;priceBid=0.1"
-          width="1"
-          height="1"
-          style="display: none"
-          alt="Additional Tracker"
-        />
-      </div>
-    </div>
-
-    <!-- Optional JavaScript -->
+    <div id="ad-renderer"></div>
     <script>
-      (function () {
-        var clicked = false;
+      console.log("Version: 1.3.4");
+      // Utility function to wait for Vuplex
+      async function waitForVuplex() {
+        if (!window.vuplex) {
+          await new Promise((resolve) => {
+            window.addEventListener("vuplexready", resolve, { once: true });
+          });
+        }
+      }
 
-        // Function to handle the click/tap event
-        function handleClick() {
-          if (clicked) return;
-          clicked = true;
+      // Fetch dimensions from Unity
+      async function fetchDimensions() {
+        await waitForVuplex();
+        return new Promise((resolve) => {
+          const onMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "GetDimensions" && data.dimension) {
+              console.log("[DEBUG] Dimensions received:", data.dimension);
+              window.vuplex.removeEventListener("message", onMessage);
+              resolve({
+                width: Number(data.dimension.width),
+                height: Number(data.dimension.height),
+              });
+            }
+          };
+          window.vuplex.addEventListener("message", onMessage);
+          console.log("[DEBUG] Requesting dimensions from Unity...");
+          window.vuplex.postMessage({ type: "GetDimensions" });
+        });
+      }
 
-          // Try to open the Play Store URL
-          var storeUrl =
-            "https://play.google.com/store/apps/details?id=io.lumat.privalia";
+      // Fetch ad JSON from Unity
+      async function fetchAdData() {
+        await waitForVuplex();
+        return new Promise((resolve) => {
+          const onMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "GetDemandInfo" && data.demand) {
+              console.log("[DEBUG] Ad data received:", data.demand);
+              window.vuplex.removeEventListener("message", onMessage);
+              resolve(data.demand);
+            }
+          };
+          window.vuplex.addEventListener("message", onMessage);
+          console.log("[DEBUG] Requesting ad data from Unity...");
+          window.vuplex.postMessage({ type: "GetDemandInfo" });
+        });
+      }
 
-          // Try multiple methods to handle the navigation
-          if (window.unity) {
-            // If Unity interface is available, use it
-            window.unity.call("OpenURL", storeUrl);
-          } else if (window.location != null) {
-            // Fallback to regular navigation
-            window.location.href = storeUrl;
+      // Render ad inside iframe
+      async function renderAd() {
+        const { width: webViewWidth, height: webViewHeight } =
+          await fetchDimensions();
+        const adData = await fetchAdData();
+        const { w: adWidth, h: adHeight, adm: adHtml } = adData;
+
+        const adRenderer = document.getElementById("ad-renderer");
+
+        // Calculate scale dynamically
+        const scaleX = webViewWidth / adWidth;
+        const scaleY = webViewHeight / adHeight;
+        const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to fit both dimensions
+
+        // Set styles for the container
+        Object.assign(adRenderer.style, {
+          width: `${webViewWidth}px`,
+          height: `${webViewHeight}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        });
+
+        // Create and append the iframe
+        const iframe = document.createElement("iframe");
+        iframe.width = `${adWidth}px`;
+        iframe.height = `${adHeight}px`;
+        iframe.scrolling = "no";
+        iframe.frameBorder = "0";
+        iframe["data-hj-allow-iframe"] = true;
+        iframe.style.transform = `scale(${scale})`;
+        iframe.style.transformOrigin = "center center"; // Center align transform origin
+        iframe.style.position = "relative"; // Maintain positioning for centering
+        iframe.srcdoc = adHtml;
+
+        adRenderer.innerHTML = ""; // Clear previous content
+        adRenderer.appendChild(iframe);
+
+        setupClickRedirection(iframe);
+        addHotjarScript(iframe);
+        return { iframe, adWidth, adHeight };
+      }
+
+      function addHotjarScript(iframe) {
+        setTimeout(() => {
+          const hotjarScript = document.createElement("script");
+          const iframeDoc = iframe.contentDocument;
+          const iframeWin = iframe.contentWindow;
+
+          if (!iframeDoc || !iframeWin) {
+            console.error("[DEBUG] Iframe document or window is missing.");
+            return;
           }
 
-          // Load tracking script
-          var script = document.createElement("script");
-          script.src = "https://et-nd20.itdsmr.com/script.js";
-          document.body.appendChild(script);
-        }
+          hotjarScript.innerHTML = `
+            (function (h, o, t, j, a, r) {
+            h.hj =
+                h.hj ||
+                function () {
+                (h.hj.q = h.hj.q || []).push(arguments);
+                };
+            h._hjSettings = { hjid: 5253291, hjsv: 6 };
+            a = o.getElementsByTagName("head")[0];
+            r = o.createElement("script");
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+            })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
+        `;
+          //add before the body tag ends
+          iframeDoc.body.appendChild(hotjarScript);
+        }, 100);
+      }
 
-        // Add click listener to the wrapper
-        var wrapper = document.querySelector(
-          "#wrapper_cec58f805195d86b3057c581cb760602_cl"
-        );
-        wrapper.addEventListener("click", handleClick);
-        wrapper.addEventListener("touchend", handleClick); // Add touch support
-      })();
+      // Setup click redirection for links in iframe
+      function setupClickRedirection(iframe) {
+        setTimeout(() => {
+          const iframeDoc = iframe.contentDocument;
+          const iframeWin = iframe.contentWindow;
+
+          if (!iframeDoc || !iframeWin) {
+            console.error("[DEBUG] Iframe document or window is missing.");
+            return;
+          }
+
+          const redirectLink = (url) => {
+            console.log("[DEBUG] Redirecting link to:", url);
+            window.vuplex.postMessage({ type: "OpenLink", url });
+          };
+
+          // Intercept anchor tag clicks
+          iframeDoc.addEventListener("click", (event) => {
+            const link = event.target.closest("a[href]");
+            if (link) {
+              console.log(
+                "[DEBUG] Anchor tag clicked. Redirecting:",
+                link.href
+              );
+              event.preventDefault();
+              event.stopPropagation();
+              redirectLink(link.href);
+            }
+          });
+
+          // Override `window.open`
+          iframeWin.open = (url) => {
+            console.log("[DEBUG] Window open intercepted. Redirecting:", url);
+            redirectLink(url);
+            return null;
+          };
+
+          // Override `location.assign` and `location.replace`
+          const overrideLocation = (method, url) => {
+            console.log(
+              `[DEBUG] Location.${method} intercepted. Redirecting:`,
+              url
+            );
+            redirectLink(url);
+          };
+
+          iframeWin.location.assign = (url) => overrideLocation("assign", url);
+          iframeWin.location.replace = (url) =>
+            overrideLocation("replace", url);
+
+          console.log("[DEBUG] Click redirection setup complete.");
+        }, 100); // Wait for iframe content to load
+      }
+
+      renderAd()
+        .then(({ iframe, adWidth, adHeight }) => {
+          const POLLING_INTERVAL = 500; // Check every 500ms
+          const TIMEOUT = 5000; // 5 seconds
+          let isImpressionFired = false;
+
+          // Listen to iframe load event
+          iframe.addEventListener("load", () => {
+            console.log("[DEBUG] Ad rendered successfully:", iframe);
+            iframe.contentDocument.body.style.margin = "0px";
+
+            const checkForImages = () => {
+              const allImages = iframe.contentDocument.querySelectorAll("img");
+              allImages.forEach((image) => {
+                const originalWidth = image.width;
+                const originalHeight = image.height;
+                //if image width and height are 1, it is a tracking pixel and make them display none
+                if (originalWidth === 1 && originalHeight === 1) {
+                  image.style.display = "none";
+                  return;
+                }
+
+                // Check if the image dimensions are similar to the ad dimensions
+                if (
+                  originalWidth >= adWidth * 0.5 &&
+                  originalWidth <= adWidth * 1.1 &&
+                  originalHeight >= adHeight * 0.5 &&
+                  originalHeight <= adHeight * 1.1
+                ) {
+                  console.log(
+                    "[DEBUG] Image dimensions are similar to ad:",
+                    image
+                  );
+
+                  // Fire the impression event only once
+                  if (!isImpressionFired) {
+                    isImpressionFired = true;
+                    console.log("[DEBUG] ImpressionFired", image);
+                    window.vuplex.postMessage({
+                      type: "BannerAdWebViewImpression",
+                    });
+                  }
+                }
+              });
+            };
+
+            // Poll for images until the timeout
+            const startPolling = () => {
+              const pollingStartTime = Date.now();
+
+              const poll = setInterval(() => {
+                if (isImpressionFired) {
+                  clearInterval(poll);
+                  return;
+                }
+
+                const elapsedTime = Date.now() - pollingStartTime;
+
+                checkForImages();
+
+                // Stop polling and fire a failure event if no image is found within the timeout
+                if (elapsedTime >= TIMEOUT) {
+                  clearInterval(poll);
+                  if (!isImpressionFired) {
+                    console.error(
+                      "[ERROR] No similar-sized image found within the timeout."
+                    );
+                    window.vuplex.postMessage({ type: "BannerAdFailed" });
+                  }
+                }
+              }, POLLING_INTERVAL);
+            };
+
+            startPolling();
+          });
+
+          // Fire the failure event if the iframe fails to load
+          iframe.addEventListener("error", () => {
+            console.error("[ERROR] Iframe failed to load.");
+            window.vuplex.postMessage({ type: "BannerAdFailed" });
+          });
+        })
+        .catch((error) => {
+          console.error("[ERROR] Error rendering ad:", error);
+          window.vuplex.postMessage({ type: "BannerAdFailed" });
+        });
     </script>
   </body>
 </html>
