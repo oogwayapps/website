@@ -449,7 +449,10 @@
 
           iframe.addEventListener("error", () => {
             console.error("[ERROR] Iframe failed to load.");
-            window.vuplex.postMessage({ type: "BannerAdFailed" });
+            window.vuplex.postMessage({
+              type: "BannerAdFailed",
+              payload: JSON.stringify({ reason: "Iframe load failed" }),
+            });
           });
         })
         .catch((error) => {
