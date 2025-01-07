@@ -129,9 +129,13 @@
             return;
           }
 
-          const redirectLink = (url) => {
+          const redirectLink = (url, reason = "") => {
             console.log("[DEBUG] Redirecting link to:", url);
-            window.vuplex.postMessage({ type: "OpenLink", url });
+            window.vuplex.postMessage({
+              type: "OpenLink",
+              url,
+              payload: JSON.stringify({ reason }),
+            });
           };
 
           // Intercept anchor tag clicks
@@ -144,28 +148,29 @@
               );
               event.preventDefault();
               event.stopPropagation();
-              redirectLink(link.href);
+              redirectLink(link.href, "anchor clicked");
             }
           });
 
           // Override `window.open`
           iframeWin.open = (url) => {
             console.log("[DEBUG] Window open intercepted. Redirecting:", url);
-            redirectLink(url);
+            redirectLink(ur, "window open");
             return null;
           };
 
           // Override `location.assign` and `location.replace`
-          const overrideLocation = (method, url) => {
+          const overrideLocation = (method, url, reason = "") => {
             console.log(
               `[DEBUG] Location.${method} intercepted. Redirecting:`,
               url
             );
-            redirectLink(url);
+            redirectLink(url, reason);
           };
-          iframeWin.location.assign = (url) => overrideLocation("assign", url);
+          iframeWin.location.assign = (url) =>
+            overrideLocation("assign", url, "location assign");
           iframeWin.location.replace = (url) =>
-            overrideLocation("replace", url);
+            overrideLocation("replace", url, "location replace");
 
           console.log("[DEBUG] Click redirection setup complete.");
 
@@ -366,7 +371,7 @@
             );
             if (isAnchorValid) {
               impressionFired = true;
-              onSuccess();
+              onSuccess(" anchor bg found");
               return true;
             }
           }
@@ -375,7 +380,7 @@
           for (const image of allImages) {
             if (checkImageTag(image, adWidth, adHeight)) {
               impressionFired = true;
-              onSuccess();
+              onSuccess("image found");
               return true;
             }
           }
@@ -385,7 +390,7 @@
           for (const button of allButtons) {
             if (checkButtonTag(button, adWidth, adHeight)) {
               impressionFired = true;
-              onSuccess();
+              onSuccess("button found");
               return true;
             }
           }
@@ -434,10 +439,11 @@
               iframe,
               adWidth,
               adHeight,
-              () => {
+              (reason) => {
                 console.log("[DEBUG] Impression detected!");
                 window.vuplex.postMessage({
                   type: "BannerAdWebViewImpression",
+                  payload: JSON.stringify({ reason }),
                 });
               },
               () => {
