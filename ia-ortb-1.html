@@ -16,7 +16,7 @@
         background: #000000;
       }
 
-      #ad-renderer {
+      #gg-ad-renderer {
         position: absolute;
         backdrop-filter: blur(10px);
         display: flex;
@@ -28,9 +28,9 @@
     </style>
   </head>
   <body>
-    <div id="ad-renderer"></div>
+    <div id="gg-ad-renderer"></div>
     <script>
-      console.log("Version: 1.3.4");
+      console.log("Version: 1.1.0");
       // Utility function to wait for Vuplex
       async function waitForVuplex() {
         if (!window.vuplex) {
@@ -79,14 +79,14 @@
         });
       }
 
-       // Render ad inside iframe
+      // Render ad inside iframe
       async function renderAd() {
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
         const adData = await fetchAdData();
         const { w: adWidth, h: adHeight, adm: adHtml } = adData;
 
-        const adRenderer = document.getElementById("ad-renderer");
+        const adRenderer = document.getElementById("gg-ad-renderer");
 
         // Calculate scale dynamically
         const scaleX = webViewWidth / adWidth;
@@ -125,19 +125,22 @@
 
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
-        setupClickRedirection(iframe);
         return { iframe, adWidth, adHeight };
       }
-      // Setup click redirection for links in iframe
+
       function setupClickRedirection(iframe) {
+        // Wait for iframe content to load
         setTimeout(() => {
           const iframeDoc = iframe.contentDocument;
           const iframeWin = iframe.contentWindow;
+
+          // Validate iframe
           if (!iframeDoc || !iframeWin) {
-            console.error("[DEBUG] Iframe document or window is missing.");
+            console.log("[DEBUG] Iframe document or window is missing.");
             return;
           }
 
+          // Helper function for link redirection
           const redirectLink = (url, reason = "") => {
             console.log("[DEBUG] Redirecting link to:", url);
             window.vuplex.postMessage({
@@ -147,7 +150,7 @@
             });
           };
 
-          // Intercept anchor tag clicks
+          // Handle anchor tag clicks
           iframeDoc.addEventListener("click", (event) => {
             const link = event.target.closest("a[href]");
             if (link) {
@@ -161,308 +164,317 @@
             }
           });
 
-          // Override `window.open`
+          // Override window.open
           iframeWin.open = (url) => {
             console.log("[DEBUG] Window open intercepted. Redirecting:", url);
             redirectLink(url, "window open");
             return null;
           };
 
-          // Override `location.assign` and `location.replace`
-          const overrideLocation = (method, url, reason = "") => {
+          // Override location navigation methods
+          const overrideLocation = (method, url) => {
             console.log(
               `[DEBUG] Location.${method} intercepted. Redirecting:`,
               url
             );
-            redirectLink(url, reason);
+            redirectLink(url, `location ${method}`);
           };
-          iframeWin.location.assign = (url) =>
-            overrideLocation("assign", url, "location assign");
+
+          iframeWin.location.assign = (url) => overrideLocation("assign", url);
           iframeWin.location.replace = (url) =>
-            overrideLocation("replace", url, "location replace");
+            overrideLocation("replace", url);
 
-          console.log("[DEBUG] Click redirection setup complete.");
-
-          // Setup MutationObserver for nested iframes
-          const observeNestedIframes = () => {
-            // Handle existing iframes
-            const existingIframes = iframeDoc.querySelectorAll("iframe");
-            existingIframes.forEach((nestedIframe) => {
-              if (!nestedIframe.dataset.redirectionSetup) {
-                setupClickRedirection(nestedIframe);
-                nestedIframe.dataset.redirectionSetup = "true";
+          // Wait for nested iframe content to be available
+          const waitForIframeContent = (nestedIframe) => {
+            return new Promise((resolve) => {
+              if (nestedIframe.contentDocument) {
+                resolve();
+                return;
               }
+
+              const checkContent = setInterval(() => {
+                if (nestedIframe.contentDocument) {
+                  clearInterval(checkContent);
+                  clearTimeout(timeout);
+                  resolve();
+                }
+              }, 100);
+
+              // Timeout after 5 seconds
+              const timeout = setTimeout(() => {
+                clearInterval(checkContent);
+                resolve();
+              }, 5000);
             });
+          };
+
+          // Handle nested iframes
+          const handleNestedIframe = async (nestedIframe) => {
+            if (nestedIframe.dataset.redirectionSetup) return;
+
+            try {
+              await waitForIframeContent(nestedIframe);
+
+              if (nestedIframe.contentDocument) {
+                nestedIframe.dataset.redirectionSetup = "true";
+                setupClickRedirection(nestedIframe);
+              }
+            } catch (error) {
+              console.error("[DEBUG] Error handling nested iframe:", error);
+            }
+          };
+
+          // Set up observer for nested iframes
+          const setupIframeObserver = () => {
+            // Handle existing iframes
+            iframeDoc.querySelectorAll("iframe").forEach(handleNestedIframe);
 
             // Create observer for future iframes
             const observer = new MutationObserver((mutations) => {
               mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
-                  if (
-                    node.nodeName === "IFRAME" &&
-                    !node.dataset.redirectionSetup
-                  ) {
-                    setupClickRedirection(node);
-                    node.dataset.redirectionSetup = "true";
+                  // Direct iframe nodes
+                  if (node.nodeName === "IFRAME") {
+                    handleNestedIframe(node);
                   }
-                  // Check for iframes added within other elements
+                  // Iframes nested in other elements
                   if (node.querySelectorAll) {
-                    const nestedIframes = node.querySelectorAll(
-                      "iframe:not([data-redirection-setup])"
-                    );
-                    nestedIframes.forEach((nestedIframe) => {
-                      setupClickRedirection(nestedIframe);
-                      nestedIframe.dataset.redirectionSetup = "true";
-                    });
+                    node
+                      .querySelectorAll("iframe:not([data-redirection-setup])")
+                      .forEach(handleNestedIframe);
                   }
                 });
               });
             });
 
-            // Start observing with appropriate configuration
             observer.observe(iframeDoc.body, {
               childList: true,
               subtree: true,
             });
 
-            // Store observer reference on iframe document to prevent memory leaks
+            // Store observer reference for cleanup
             iframeDoc._iframeObserver = observer;
           };
 
-          // Ensure body exists before setting up observer
+          // Initialize observer once body is available
           if (iframeDoc.body) {
-            observeNestedIframes();
+            setupIframeObserver();
           } else {
-            // Wait for body if it doesn't exist yet
-            iframeDoc.addEventListener(
-              "DOMContentLoaded",
-              observeNestedIframes
-            );
+            iframeDoc.addEventListener("DOMContentLoaded", setupIframeObserver);
           }
-        }, 100); // Wait for iframe content to load
+
+          console.log("[DEBUG] Click redirection setup complete.");
+        }, 100);
       }
+      // Helper functions for dimension checking
+      const isDimensionMatch = (width, height, adWidth, adHeight) => {
+        return (
+          width >= adWidth * 0.5 &&
+          width <= adWidth * 1.5 &&
+          height >= adHeight * 0.5 &&
+          height <= adHeight * 1.5
+        );
+      };
 
-      function getCleanDomStructure(document) {
-        if (!document) {
-          console.error("[DEBUG] Document is missing.");
-          return;
-        }
-
-        // Remove all script, styles, and meta tags
-        const allScripts = document.querySelectorAll("script");
-        allScripts.forEach((script) => script.remove());
-        const allStyles = document.querySelectorAll("style");
-        allStyles.forEach((style) => style.remove());
-
-        const allMetaTags = document.querySelectorAll("meta");
-        allMetaTags.forEach((meta) => meta.remove());
-
-        // remove all images with width and height equal to 1
-        const allImages = document.querySelectorAll("img");
-        allImages.forEach((image) => {
-          if (image.width <= 1 && image.height <= 1) {
-            image.remove();
-          }
-        });
-        console.log(allImages);
-
-        console.log("[DEBUG] Cleaned DOM structure.");
-        console.log(document);
-      }
-
-      function getBackgroundImageUrl(element) {
-        if (!element) return null;
-
+      const getBackgroundImageDimensions = (element) => {
         const computedStyle = window.getComputedStyle(element);
         const background =
           computedStyle.background || computedStyle.backgroundImage;
         const urlMatch = background.match(/url\(["']?(.*?)["']?\)/);
 
-        return urlMatch ? urlMatch[1] : null;
-      }
+        if (!urlMatch) return Promise.resolve(null);
 
-      function checkAnchorTag(anchor, adWidth, adHeight) {
-        const backgroundImage = getBackgroundImageUrl(anchor);
-
-        if (backgroundImage) {
-          console.log(
-            "[DEBUG] Anchor background image found:",
-            backgroundImage
-          );
-
+        return new Promise((resolve) => {
           const image = new Image();
-          image.src = backgroundImage;
+          image.src = urlMatch[1];
+          image.onload = () =>
+            resolve({ width: image.width, height: image.height });
+          image.onerror = () => resolve(null);
+        });
+      };
 
-          return new Promise((resolve) => {
-            image.onload = function () {
-              const { width, height } = image;
-
-              console.log(
-                "[DEBUG] Anchor background dimensions:",
-                width,
-                height
-              );
-
-              if (
-                width >= adWidth * 0.5 &&
-                width <= adWidth * 1.5 &&
-                height >= adHeight * 0.5 &&
-                height <= adHeight * 1.5
-              ) {
-                console.log("[DEBUG] Anchor background dimensions match.");
-                resolve(true);
-              } else {
-                resolve(false);
-              }
-            };
-          });
-        }
-
-        return Promise.resolve(false);
-      }
-
-      function checkImageTag(image, adWidth, adHeight) {
-        const { width, height } = image;
-
-        console.log("[DEBUG] Image dimensions:", width, height);
-
-        if (width === 1 && height === 1) {
-          console.log("[DEBUG] Tracking pixel found, hiding image.");
-          image.style.display = "none";
-          return false;
-        }
-
-        if (
-          width >= adWidth * 0.5 &&
-          width <= adWidth * 1.5 &&
-          height >= adHeight * 0.5 &&
-          height <= adHeight * 1.5
-        ) {
-          console.log("[DEBUG] Image dimensions match.");
-          return true;
-        }
-
-        return false;
-      }
-
-      //write a function to check button element and if clientWidth is more than 50px
-      function checkButtonTag(button, adWidth, adHeight) {
-        const { clientWidth, clientHeight } = button;
-
-        console.log("[DEBUG] Button dimensions:", clientWidth, clientHeight);
-
-        if (clientWidth >= 50) {
-          console.log("[DEBUG] Button dimensions match.");
-          return true;
-        }
-
-        return false;
-      }
-      function startPolling(iframe, adWidth, adHeight, onSuccess, onFailure) {
-        const POLLING_INTERVAL = 500;
-        const TIMEOUT = 5000;
-        const pollingStartTime = Date.now();
-        let impressionFired = false;
-
-        // Function to check elements and fire impression
-        const checkElements = async () => {
-          if (impressionFired) return true;
-
-          const allAnchorTags = iframe.contentDocument.querySelectorAll("a");
-          const allImages = iframe.contentDocument.querySelectorAll("img");
-
-          function waitForNestedIframeContent(nestedIframe, callback) {
-            const interval = setInterval(() => {
-              if (nestedIframe.contentDocument) {
-                clearInterval(interval); // Stop checking
-                callback(nestedIframe.contentDocument);
-              }
-            }, 100); // Check every 100ms
+      // Individual check functions that return promises
+      const checkImages = async (document, adWidth, adHeight) => {
+        const images = document.querySelectorAll("img");
+        for (const img of images) {
+          if (img.width === 1 && img.height === 1) {
+            img.style.display = "none";
+            continue;
           }
-
-          // Iterate over nested iframes and wait for their content
-          const nestedIframes =
-            iframe.contentDocument.querySelectorAll("iframe");
-          for (const nestedIframe of nestedIframes) {
-            waitForNestedIframeContent(nestedIframe, (nestedContentDoc) => {
-              const allImages = nestedContentDoc.querySelectorAll("img");
-              console.log("allImages2", allImages);
-              for (const image of allImages) {
-                if (checkImageTag(image, adWidth, adHeight)) {
-                  impressionFired = true;
-                  onSuccess("image found in nested iframe");
-                  return true;
-                }
-              }
-            });
+          if (isDimensionMatch(img.width, img.height, adWidth, adHeight)) {
+            return { type: "image", element: img };
           }
+        }
+        return null;
+      };
 
-          // Check all anchor tags first
-          for (const anchor of allAnchorTags) {
-            const isAnchorValid = await checkAnchorTag(
-              anchor,
+      const checkAnchors = async (document, adWidth, adHeight) => {
+        const anchors = document.querySelectorAll("a");
+        for (const anchor of anchors) {
+          const dimensions = await getBackgroundImageDimensions(anchor);
+          if (
+            dimensions &&
+            isDimensionMatch(
+              dimensions.width,
+              dimensions.height,
               adWidth,
               adHeight
-            );
-            if (isAnchorValid) {
-              impressionFired = true;
-              onSuccess(" anchor bg found");
-              return true;
-            }
+            )
+          ) {
+            return { type: "anchor", element: anchor };
           }
+        }
+        return null;
+      };
 
-          // Check all images
-          for (const image of allImages) {
-            if (checkImageTag(image, adWidth, adHeight)) {
-              impressionFired = true;
-              onSuccess("image found");
-              return true;
-            }
+      const checkButtons = async (document, adWidth, adHeight) => {
+        const buttons = document.querySelectorAll("button");
+        for (const button of buttons) {
+          if (button.clientWidth >= 50) {
+            return { type: "button", element: button };
           }
+        }
+        return null;
+      };
 
-          // Check all buttons
-          const allButtons = iframe.contentDocument.querySelectorAll("button");
-          for (const button of allButtons) {
-            if (checkButtonTag(button, adWidth, adHeight)) {
-              impressionFired = true;
-              onSuccess("button found");
-              return true;
-            }
+      const checkDivBackgrounds = async (document, adWidth, adHeight) => {
+        const divs = document.querySelectorAll("div");
+        for (const div of divs) {
+          const dimensions = await getBackgroundImageDimensions(div);
+          if (
+            dimensions &&
+            isDimensionMatch(
+              dimensions.width,
+              dimensions.height,
+              adWidth,
+              adHeight
+            )
+          ) {
+            return { type: "div", element: div };
           }
+        }
+        return null;
+      };
 
-          return false;
-        };
-
-        // Initial check immediately
-        checkElements();
-
-        // Start polling
-        const poll = setInterval(async () => {
-          const elapsedTime = Date.now() - pollingStartTime;
-
-          // Check for timeout first
-          if (elapsedTime >= TIMEOUT) {
-            clearInterval(poll);
-            if (!impressionFired) {
-              onFailure();
-            }
+      // Function to get content from nested iframes
+      const getNestedIframeContent = (iframe) => {
+        return new Promise((resolve) => {
+          if (iframe.contentDocument) {
+            resolve(iframe.contentDocument);
             return;
           }
 
-          // Continue checking elements
-          const found = await checkElements();
-          if (found) {
-            clearInterval(poll);
+          const checkContent = setInterval(() => {
+            if (iframe.contentDocument) {
+              clearInterval(checkContent);
+              resolve(iframe.contentDocument);
+            }
+          }, 100);
+
+          // Timeout after 2 seconds
+          setTimeout(() => {
+            clearInterval(checkContent);
+            resolve(null);
+          }, 2000);
+        });
+      };
+
+      // Main polling function
+      function startPolling(iframe, adWidth, adHeight, onSuccess, onFailure) {
+        const POLLING_INTERVAL = 500;
+        const TIMEOUT = 5000;
+        const startTime = Date.now();
+        let impressionFired = false;
+        let timeoutId = null;
+        let intervalId = null;
+
+        const runCheck = async (checkFn, document) => {
+          if (impressionFired) return null;
+          const result = await checkFn(document, adWidth, adHeight);
+          if (result && !impressionFired) {
+            impressionFired = true;
+            clearTimeout(timeoutId);
+            clearInterval(intervalId);
+            onSuccess(`${result.type} found`);
+            return result;
           }
+          return null;
+        };
+
+        const checkAllElements = async (document) => {
+          if (!document || impressionFired) return false;
+
+          // Create an array of check promises
+          const checkPromises = [
+            runCheck(checkImages, document),
+            runCheck(checkAnchors, document),
+            runCheck(checkButtons, document),
+            runCheck(checkDivBackgrounds, document),
+          ];
+
+          // Check nested iframes
+          const nestedIframes = document.querySelectorAll("iframe");
+          for (const nestedIframe of nestedIframes) {
+            if (impressionFired) break;
+            const nestedDoc = await getNestedIframeContent(nestedIframe);
+            if (nestedDoc) {
+              checkPromises.push(
+                ...[
+                  runCheck(checkImages, nestedDoc),
+                  runCheck(checkAnchors, nestedDoc),
+                  runCheck(checkButtons, nestedDoc),
+                  runCheck(checkDivBackgrounds, nestedDoc),
+                ]
+              );
+            }
+          }
+
+          try {
+            // Use Promise.race to get the first successful result
+            const result = await Promise.race([
+              Promise.all(checkPromises).then((results) =>
+                results.find((r) => r !== null)
+              ),
+              new Promise((resolve) => setTimeout(() => resolve(null), 1000)), // Timeout for each check cycle
+            ]);
+
+            return result !== null;
+          } catch (error) {
+            console.error("Error during checks:", error);
+            return false;
+          }
+        };
+
+        // Set up global timeout
+        timeoutId = setTimeout(() => {
+          if (!impressionFired) {
+            clearInterval(intervalId);
+            onFailure();
+          }
+        }, TIMEOUT);
+
+        // Initial check
+        checkAllElements(iframe.contentDocument);
+
+        // Start polling
+        intervalId = setInterval(async () => {
+          if (impressionFired || Date.now() - startTime >= TIMEOUT) {
+            clearInterval(intervalId);
+            return;
+          }
+
+          await checkAllElements(iframe.contentDocument);
         }, POLLING_INTERVAL);
 
-        // Cleanup function in case we need to stop polling externally
         return {
           stop: () => {
-            clearInterval(poll);
+            clearTimeout(timeoutId);
+            clearInterval(intervalId);
+            impressionFired = true;
           },
         };
       }
+
       // Main function
       renderAd()
         .then(({ iframe, adWidth, adHeight }) => {
@@ -479,14 +491,11 @@
           }, 10000); // 10 seconds timeout
 
           int = setInterval(() => {
-            console.log(">>>>", iframe?.contentDocument);
             const document = iframe?.contentDocument;
             if (document) {
               clearTimeout(timeout); // Clear timeout if document is available
               clearInterval(int); // Stop polling
-              const images = document.querySelectorAll("img");
-              console.log(">>>>", images);
-
+              setupClickRedirection(iframe);
               startPolling(
                 iframe,
                 adWidth,
