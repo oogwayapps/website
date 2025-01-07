@@ -111,7 +111,18 @@
         iframe.style.transform = `scale(${scale})`;
         iframe.style.transformOrigin = "center center"; // Center align transform origin
         iframe.style.position = "relative"; // Maintain positioning for centering
-        iframe.srcdoc = adHtml;
+        iframe.srcdoc =
+          ` <style>
+    /* Hide 1x1 tracker images */
+    img[width="1"][height="1"],
+    img[style*="width: 1px"][style*="height: 1px"] {
+      display: none !important;
+      border: 11px solid red;
+    }
+    body {
+      margin: 0px !important;
+    }
+  </style>` + adHtml;
 
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
