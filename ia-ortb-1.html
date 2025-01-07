@@ -165,7 +165,7 @@
           // Override `window.open`
           iframeWin.open = (url) => {
             console.log("[DEBUG] Window open intercepted. Redirecting:", url);
-            redirectLink(ur, "window open");
+            redirectLink(url, "window open");
             return null;
           };
 
