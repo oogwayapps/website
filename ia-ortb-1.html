@@ -79,7 +79,7 @@
         });
       }
 
-      // Render ad inside iframe
+       // Render ad inside iframe
       async function renderAd() {
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
@@ -117,7 +117,7 @@
     img[width="1"][height="1"],
     img[style*="width: 1px"][style*="height: 1px"] {
       display: none !important;
-    }
+     }
     body {
       margin: 0px !important;
     }
@@ -125,7 +125,6 @@
 
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
-
         setupClickRedirection(iframe);
         return { iframe, adWidth, adHeight };
       }
@@ -372,6 +371,32 @@
           const allAnchorTags = iframe.contentDocument.querySelectorAll("a");
           const allImages = iframe.contentDocument.querySelectorAll("img");
 
+          function waitForNestedIframeContent(nestedIframe, callback) {
+            const interval = setInterval(() => {
+              if (nestedIframe.contentDocument) {
+                clearInterval(interval); // Stop checking
+                callback(nestedIframe.contentDocument);
+              }
+            }, 100); // Check every 100ms
+          }
+
+          // Iterate over nested iframes and wait for their content
+          const nestedIframes =
+            iframe.contentDocument.querySelectorAll("iframe");
+          for (const nestedIframe of nestedIframes) {
+            waitForNestedIframeContent(nestedIframe, (nestedContentDoc) => {
+              const allImages = nestedContentDoc.querySelectorAll("img");
+              console.log("allImages2", allImages);
+              for (const image of allImages) {
+                if (checkImageTag(image, adWidth, adHeight)) {
+                  impressionFired = true;
+                  onSuccess("image found in nested iframe");
+                  return true;
+                }
+              }
+            });
+          }
+
           // Check all anchor tags first
           for (const anchor of allAnchorTags) {
             const isAnchorValid = await checkAnchorTag(
@@ -441,27 +466,47 @@
       // Main function
       renderAd()
         .then(({ iframe, adWidth, adHeight }) => {
-          iframe.addEventListener("load", () => {
-            console.log("[DEBUG] Ad rendered successfully");
-            iframe.contentDocument.body.style.margin = "0px";
-            // getCleanDomStructure(iframe.contentDocument);
-            startPolling(
-              iframe,
-              adWidth,
-              adHeight,
-              (reason) => {
-                console.log("[DEBUG] Impression detected!");
-                window.vuplex.postMessage({
-                  type: "BannerAdWebViewImpression",
-                  payload: JSON.stringify({ reason }),
-                });
-              },
-              () => {
-                console.error("[ERROR] No impression detected!");
-                window.vuplex.postMessage({ type: "BannerAdFailedImpression" });
-              }
+          let int;
+          let timeout = setTimeout(() => {
+            clearInterval(int);
+            console.error(
+              "[ERROR] Iframe content not available within timeout."
             );
-          });
+            window.vuplex.postMessage({
+              type: "BannerAdFailed",
+              payload: JSON.stringify({ reason: "Iframe load timeout" }),
+            });
+          }, 10000); // 10 seconds timeout
+
+          int = setInterval(() => {
+            console.log(">>>>", iframe?.contentDocument);
+            const document = iframe?.contentDocument;
+            if (document) {
+              clearTimeout(timeout); // Clear timeout if document is available
+              clearInterval(int); // Stop polling
+              const images = document.querySelectorAll("img");
+              console.log(">>>>", images);
+
+              startPolling(
+                iframe,
+                adWidth,
+                adHeight,
+                (reason) => {
+                  console.log("[DEBUG] Impression detected!");
+                  window.vuplex.postMessage({
+                    type: "BannerAdWebViewImpression",
+                    payload: JSON.stringify({ reason }),
+                  });
+                },
+                () => {
+                  console.error("[ERROR] No impression detected!");
+                  window.vuplex.postMessage({
+                    type: "BannerAdFailedImpression",
+                  });
+                }
+              );
+            }
+          }, 1000);
 
           iframe.addEventListener("error", () => {
             console.error("[ERROR] Iframe failed to load.");
