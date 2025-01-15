@@ -78,8 +78,7 @@
           window.vuplex.postMessage({ type: "GetDemandInfo" });
         });
       }
-
-      // Render ad inside iframe
+  // Render ad inside iframe
       async function renderAd() {
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
@@ -268,19 +267,42 @@
       }
       // Helper functions for dimension checking
       const isDimensionMatch = (width, height, adWidth, adHeight) => {
+        // Ensure width and height are not zero
+        if (width === 0 || height === 0) {
+          return false;
+        }
+
+        // Check if dimensions are within the acceptable range
         return (
-          width >= adWidth * 0.5 &&
-          width <= adWidth * 1.5 &&
-          height >= adHeight * 0.5 &&
-          height <= adHeight * 1.5
+          width >= adWidth * 0.2 &&
+          width <= adWidth * 1.2 &&
+          height >= adHeight * 0.2 &&
+          height <= adHeight * 1.2
         );
       };
 
       const getBackgroundImageDimensions = (element) => {
         const computedStyle = window.getComputedStyle(element);
-        const background =
-          computedStyle.background || computedStyle.backgroundImage;
-        const urlMatch = background.match(/url\(["']?(.*?)["']?\)/);
+
+        // Try to get the background image URL from backgroundImage property
+        let backgroundImage = computedStyle.backgroundImage || "";
+
+        // If backgroundImage is not directly set, check for custom property
+        if (!backgroundImage || backgroundImage === "none") {
+          // Look for custom properties like --creative-image-url
+          for (let property of computedStyle) {
+            if (
+              property.startsWith("--") &&
+              computedStyle.getPropertyValue(property).includes("url(")
+            ) {
+              backgroundImage = computedStyle.getPropertyValue(property).trim();
+              break;
+            }
+          }
+        }
+
+        // Extract URL from the backgroundImage string
+        const urlMatch = backgroundImage.match(/url\(["']?(.*?)["']?\)/);
 
         if (!urlMatch) return Promise.resolve(null);
 
@@ -295,7 +317,21 @@
 
       // Individual check functions that return promises
       const checkImages = async (document, adWidth, adHeight) => {
-        const images = document.querySelectorAll("img");
+        const getAllImages = (root) => {
+          const images = [...root.querySelectorAll("img")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              images.push(...getAllImages(element.shadowRoot));
+            }
+          });
+
+          return images;
+        };
+
+        const images = getAllImages(document);
+
         for (const img of images) {
           if (img.width === 1 && img.height === 1) {
             img.style.display = "none";
@@ -305,11 +341,26 @@
             return { type: "image", element: img };
           }
         }
+
         return null;
       };
 
       const checkAnchors = async (document, adWidth, adHeight) => {
-        const anchors = document.querySelectorAll("a");
+        const getAllAnchors = (root) => {
+          const anchors = [...root.querySelectorAll("a")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              anchors.push(...getAllAnchors(element.shadowRoot));
+            }
+          });
+
+          return anchors;
+        };
+
+        const anchors = getAllAnchors(document);
+
         for (const anchor of anchors) {
           const dimensions = await getBackgroundImageDimensions(anchor);
           if (
@@ -324,21 +375,52 @@
             return { type: "anchor", element: anchor };
           }
         }
+
         return null;
       };
 
       const checkButtons = async (document, adWidth, adHeight) => {
-        const buttons = document.querySelectorAll("button");
+        const getAllButtons = (root) => {
+          const buttons = [...root.querySelectorAll("button")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              buttons.push(...getAllButtons(element.shadowRoot));
+            }
+          });
+
+          return buttons;
+        };
+
+        const buttons = getAllButtons(document);
+
         for (const button of buttons) {
           if (button.clientWidth >= 50) {
             return { type: "button", element: button };
           }
         }
+
         return null;
       };
 
       const checkDivBackgrounds = async (document, adWidth, adHeight) => {
-        const divs = document.querySelectorAll("div");
+        const getAllDivs = (root) => {
+          const divs = [...root.querySelectorAll("div")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              divs.push(...getAllDivs(element.shadowRoot));
+            }
+          });
+
+          return divs;
+        };
+
+        // Get all div elements from the document and shadow roots
+        const divs = getAllDivs(document);
+
         for (const div of divs) {
           const dimensions = await getBackgroundImageDimensions(div);
           if (
@@ -353,6 +435,7 @@
             return { type: "div", element: div };
           }
         }
+
         return null;
       };
 
@@ -377,6 +460,27 @@
             resolve(null);
           }, 2000);
         });
+      };
+
+      // Recursive function to get all nested iframes
+      const getAllNestedIframes = async (iframe) => {
+        const nestedIframes = [];
+
+        const traverseIframe = async (iframeElement) => {
+          const contentDoc = await getNestedIframeContent(iframeElement);
+          if (contentDoc) {
+            nestedIframes.push(iframeElement);
+
+            // Recursively check for more nested iframes
+            const childIframes = contentDoc.querySelectorAll("iframe");
+            for (const childIframe of childIframes) {
+              await traverseIframe(childIframe);
+            }
+          }
+        };
+
+        await traverseIframe(iframe);
+        return nestedIframes;
       };
 
       // Main polling function
@@ -412,8 +516,8 @@
             runCheck(checkDivBackgrounds, document),
           ];
 
-          // Check nested iframes
-          const nestedIframes = document.querySelectorAll("iframe");
+          // Check nested iframes recursively
+          const nestedIframes = await getAllNestedIframes(iframe);
           for (const nestedIframe of nestedIframes) {
             if (impressionFired) break;
             const nestedDoc = await getNestedIframeContent(nestedIframe);
@@ -501,7 +605,7 @@
                 adWidth,
                 adHeight,
                 (reason) => {
-                  console.log("[DEBUG] Impression detected!");
+                  console.log("[DEBUG] Impression detected!", reason);
                   window.vuplex.postMessage({
                     type: "BannerAdWebViewImpression",
                     payload: JSON.stringify({ reason }),
