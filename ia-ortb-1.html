@@ -78,14 +78,24 @@
           window.vuplex.postMessage({ type: "GetDemandInfo" });
         });
       }
-  // Render ad inside iframe
+
+        // Render ad inside iframe
       async function renderAd() {
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
         const adData = await fetchAdData();
-        const { w: adWidth, h: adHeight, adm: adHtml } = adData;
+        let { w: adWidth, h: adHeight, adm: adHtml } = adData;
 
         const adRenderer = document.getElementById("gg-ad-renderer");
+
+        // Handle case where adWidth or adHeight is 0 or null
+        if (!adWidth || !adHeight) {
+          console.warn(
+            "Invalid ad dimensions received. Falling back to default size."
+          );
+          adWidth = 300; // Default width
+          adHeight = 250; // Default height
+        }
 
         // Calculate scale dynamically
         const scaleX = webViewWidth / adWidth;
@@ -112,18 +122,19 @@
         iframe.style.position = "relative"; // Maintain positioning for centering
         iframe.srcdoc =
           ` <style>
-    /* Hide 1x1 tracker images */
-    img[width="1"][height="1"],
-    img[style*="width: 1px"][style*="height: 1px"] {
-      display: none !important;
-     }
-    body {
-      margin: 0px !important;
-    }
-  </style>` + adHtml;
+      /* Hide 1x1 tracker images */
+      img[width="1"][height="1"],
+      img[style*="width: 1px"][style*="height: 1px"] {
+        display: none !important;
+      }
+      body {
+        margin: 0px !important;
+      }
+    </style>` + adHtml;
 
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
+
         return { iframe, adWidth, adHeight };
       }
 
