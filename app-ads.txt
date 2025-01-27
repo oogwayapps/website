@@ -2117,3 +2117,6 @@ appnexus.com, 14416, reseller
 rubiconproject.com, 20086, reseller, 0bfd66d529a5
 pubmatic.com, 161853, reseller, 5d62403b186f2ace
 #27th dec end
+#27th jan-25 start
+radiantfusion.co, 219451889, DIRECT
+#27th jan-25 end
