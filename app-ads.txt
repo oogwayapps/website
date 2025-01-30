@@ -2120,3 +2120,20 @@ pubmatic.com, 161853, reseller, 5d62403b186f2ace
 #27th jan-25 start
 radiantfusion.co, 219451889, DIRECT
 #27th jan-25 end
+#30th jan-25 start
+motorik.io, 132, DIRECT
+pubmatic.com, 164043, RESELLER, 5d62403b186f2ace
+adform.com, 3159, RESELLER, 9f5210a2f0999e323062
+freewheel.tv, 1608050, RESELLER
+freewheel.tv, 1608057, RESELLER
+appnexus.com, 16796, RESELLER, f5ab79cb980f11d1
+lijit.com, 533827, RESELLER, fafdf38b16bf6b2b #SOVRN
+speroll.com, ed3d2c21991e3bef5e069713af9fa6ca3, DIRECT
+xandr.com,17080,RESELLER,f5ab79cb980f11d1
+video.unrulymedia.com, 962111114, DIRECT
+video.unrulymedia.com, 7575462025446190623, RESELLER
+lijit.com, 499384, DIRECT, fafdf38b16bf6b2b
+improvedigital.com, 1479, RESELLER
+freewheel.tv, 1608738, RESELLER
+freewheel.tv, 1608741, RESELLER
+#30th jan-25 end
