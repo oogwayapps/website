@@ -2196,3 +2196,38 @@ amxrtb.com, 105199734, RESELLER
 onetag.com, 87f58fe90234d0e, RESELLER
 iqzone.com, IQ326, RESELLER
 # 7th Feb-25 end
+#10th Feb-25 start
+bidinfluence.com, 501780, DIRECT, 
+decenterads.com, 301495, DIRECT
+improvedigital.com, 2418, RESELLER
+lijit.com, 467506, DIRECT, fafdf38b16bf6b2b #SOVRN
+openx.com, 538959099, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 161899, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 17960, RESELLER, 0bfd66d529a55807
+appnexus.com, 1019, RESELLER, f5ab79cb980f11d1
+video.unrulymedia.com, 12444764291, RESELLER
+contextweb.com, 558511, RESELLER, 89ff185a4c4e857c
+152media.info,152M966,RESELLER
+appnexus.com, 11924, RESELLER, f5ab79cb980f11d1
+vidoomy.com, 5975555, RESELLER
+adform.com, 2742, RESELLER 
+freewheel.tv, 1608122, RESELLER
+freewheel.tv, 1608124, RESELLER
+sabio.us, 100156, RESELLER, 96ed93aaa9795702
+freewheel.tv, 1606620, RESELLER
+freewheel.tv, 1606633, RESELLER
+lkqd.net, 1100053847, DIRECT, 59c49fa9598a0117
+chocolateplatform.com, 21204, RESELLER
+pubmatic.com, 160888, RESELLER, 5d62403b186f2ace
+smartadserver.com, 4395, RESELLER, 060d053dcf45cbf3
+sharethrough.com, OAW69Fon, RESELLER, d53b998a7bd4ecd2
+aidentity.ai, dd52104aa5, RESELLER
+lijit.com, 467506, DIRECT, fafdf38b16bf6b2b #SOVRN
+openx.com, 538959099, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 161899, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 17960, RESELLER, 0bfd66d529a55807
+appnexus.com, 1019, RESELLER, f5ab79cb980f11d1
+video.unrulymedia.com, 12444764291, RESELLER
+contextweb.com, 558511, RESELLER, 89ff185a4c4e857c
+adpixis.com, 1034, RESELLER
+#10th Feb-25 end
