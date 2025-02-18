@@ -1607,7 +1607,8 @@ const adEvent = new OmidSessionClient.default.AdEvents(adSessionClient)
                 () => {
                   console.error("[ERROR] No impression detected!");
                   window.vuplex.postMessage({
-                    type: "BannerAdFailedImpression",
+                    type: "BannerAdWebViewImpression",
+                payload: JSON.stringify({ reason: 'test' }),
                   });
                 }
               );
