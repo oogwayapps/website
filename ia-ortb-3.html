@@ -939,20 +939,20 @@ new module$exports$omid$complianceVerificationScript$ComplianceVerificationClien
 
       // Fetch ad JSON from Unity
       async function fetchAdData() {
-        const url =
-          "https://run.mocky.io/v3/f55a38ee-4963-42d5-a6d2-1bf672376d51";
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log(data);
-        // const ad = data[0].seatbid[0].bid[0];
-        const ad = data[0];
+        // const url =
+        //   "https://run.mocky.io/v3/f55a38ee-4963-42d5-a6d2-1bf672376d51";
+        // const response = await fetch(url);
+        // const data = await response.json();
+        // console.log(data);
+        // // const ad = data[0].seatbid[0].bid[0];
+        // const ad = data[0];
 
-        const { w, h, adm } = ad;
-        return {
-          w,
-          h,
-          adm,
-        };
+        // const { w, h, adm } = ad;
+        // return {
+        //   w,
+        //   h,
+        //   adm,
+        // };
         await waitForVuplex();
         return new Promise((resolve) => {
           const onMessage = (event) => {
