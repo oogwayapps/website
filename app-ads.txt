@@ -2242,3 +2242,43 @@ mangomob.net, 4f1g8h5j3k, DIRECT
 mangox.io, 6l3z9x2c5v, DIRECT
 mangomob.net, 2b9n6m1p5q, RESELLER
 #17th feb end
+#19th feb start
+aniview.com, 6229e046286f660f8b1f0456, RESELLER, 78b21b97965ec3f8
+amxrtb.com, 105199583, RESELLER, 3adbe8d09f15cf6c
+google.com, pub-6346866704322274, RESELLER, f08c47fec0942fa0
+rubiconproject.com, 13918, RESELLER, 0bfd66d529a55807
+appnexus.com, 9284, RESELLER, f5ab79cb980f11d1
+appnexus.com, 15799, RESELLER, f5ab79cb980f11d1
+nextmillennium.io, 16203, RESELLER, 65bd090fa4a1e3d6
+pubmatic.com, 161593, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 11006, RESELLER, 0bfd66d529a55807
+onetag.com, 57e618150c70d90, RESELLER
+openx.com, 540862677, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 161335, RESELLER, 5d62403b186f2ace
+richaudience.com, 1ru8dKmJJV, RESELLER
+rubiconproject.com, 13510, RESELLER, 0bfd66d529a55807
+pubmatic.com, 81564, RESELLER, 5d62403b186f2ace
+pubmatic.com, 156538, RESELLER, 5d62403b186f2ace
+appnexus.com, 8233, RESELLER, f5ab79cb980f11d1
+rubiconproject.com, 13510, RESELLER, 0bfd66d529a55807
+pubmatic.com, 156557, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 18694, RESELLER, 0bfd66d529a55807
+openx.com, 540274407, RESELLER, 6a698e2ec38604c6
+33across.com, 0013300001kQj2HAAS, RESELLER, bbea06d9c4d2853c
+smaato.com, 1100047713, RESELLER, 07bcf65f187117b4
+yahoo.com, 59531, RESELLER, e1a5b5b6e3255540
+smartadserver.com, 4342, RESELLER
+smartadserver.com, 4012, RESELLER
+sharethrough.com, zLsEa05k, RESELLER, d53b998a7bd4ecd2
+sharethrough.com, UXUWG46h, RESELLER, d53b998a7bd4ecd2
+appnexus.com, 1019, RESELLER, f5ab79cb980f11d1
+openx.com, 538959099, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 137711, RESELLER, 5d62403b186f2ace
+pubmatic.com, 156212, RESELLER, 5d62403b186f2ace
+video.unrulymedia.com, 2444764291, RESELLER, 6f752381ad5ec0e5
+rubiconproject.com, 17960, RESELLER, 0bfd66d529a55807
+lijit.com, 376385, RESELLER, fafdf38b16bf6b2b
+themediagrid.com, PRLEZI, RESELLER, 35d5010d7789b49d
+video.unrulymedia.com, 3350674472, RESELLER, 6f752381ad5ec0e5
+appnexus.com, 12637, RESELLER, f5ab79cb980f11d1
+#19th feb end
