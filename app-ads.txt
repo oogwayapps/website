@@ -2682,4 +2682,11 @@ smartadserver.com, 4233-OB, RESELLER, 060d053dcf45cbf3
 smartadserver.com, 4233, RESELLER, 060d053dcf45cbf3
 adtelligent.com,764223,RESELLER
 152media.info,152M944,RESELLER
+
+ezmob.com, 780758269, reseller
+flat-ads.com, 2210140, DIRECT
+pubmatic.com, 165239, RESELLER, 5d62403b186f2ace
+pubmatic.com, 163875, RESELLER, 5d62403b186f2ace
+video.unrulymedia.com, 174356361, RESELLER
+pubmatic.com, 165239, RESELLER, 5d62403b186f2ace
 # 25th Feb end
