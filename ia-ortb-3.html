@@ -143,34 +143,34 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
         const adData = await fetchAdData();
         let { w: adWidth, h: adHeight, adm: adHtml } = adData;
     try{
-           function startOmidAdSession() {
-                    try {
-                      const context = {
-                        partner: "PubScale",
-                        apiVersion: "1.0",
-                        environment: "app",
-                        accessMode: "full",
-                         customReferenceData: "",
-                        underEvaluation: true,
-                        contentUrl: window.location.href,
-                        impressionType: "beginToRender"
-                      };
+//            function startOmidAdSession() {
+//                     try {
+//                       const context = {
+//                         partner: "PubScale",
+//                         apiVersion: "1.0",
+//                         environment: "app",
+//                         accessMode: "full",
+//                          customReferenceData: "",
+//                         underEvaluation: true,
+//                         contentUrl: window.location.href,
+//                         impressionType: "beginToRender"
+//                       };
 
-                      const adSessionClient = new OmidSessionClient.default.AdSession(context);
-adSessionClient.start();
-const adEvent = new OmidSessionClient.default.AdEvents(adSessionClient)
-                      console.log(adEvent)
-                      adEvent.loaded()
-                       adEvent.impressionOccurred()
-                      // console.log(adSessionClient.getAdSessionId())
-                      // adSessionClient.start();
-                      console.log("OMID ad session started successfully");
-                    } catch (error) {
-                      console.error("Error starting OMID ad session:", error);
-                    }
-                  }
+//                       const adSessionClient = new OmidSessionClient.default.AdSession(context);
+// adSessionClient.start();
+// const adEvent = new OmidSessionClient.default.AdEvents(adSessionClient)
+//                       console.log(adEvent)
+//                       adEvent.loaded()
+//                        adEvent.impressionOccurred()
+//                       // console.log(adSessionClient.getAdSessionId())
+//                       // adSessionClient.start();
+//                       console.log("OMID ad session started successfully");
+//                     } catch (error) {
+//                       console.error("Error starting OMID ad session:", error);
+//                     }
+//                   }
 
-      startOmidAdSession()
+//       startOmidAdSession()
         }catch(err){
           console.log(err)
         }
