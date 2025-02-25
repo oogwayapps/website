@@ -125,6 +125,16 @@
           }
         });
       }
+
+      function forceGeometryChange(adElement) {
+    // var adElement = document.getElementById('ad-container');
+        const adElement = document.getElementById("gg-ad-renderer");
+    if (adElement) {
+        adElement.style.transform = 'scale(1.01)';  // Slight movement
+        setTimeout(() => adElement.style.transform = 'scale(1.0)', 100);
+    }
+}
+setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
       // Render ad inside iframe
       async function renderAd() {
     
