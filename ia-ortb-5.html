@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PubScale</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #000000;
+      }
+
+      #gg-ad-renderer {
+        position: absolute;
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: #000000;
+      }
+    </style>
+    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omsdk-v1.js"></script>
+    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omid-session-client-v1.js"></script>
+    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omid-compliance-verification-script-v1.js"></script>
+  </head>
+  <body>
+    <div id="gg-ad-renderer"></div>
+    <script>
+      console.log("Version: 1.1.0");
+      // Utility function to wait for Vuplex
+      async function waitForVuplex() {
+        if (!window.vuplex) {
+          await new Promise((resolve) => {
+            window.addEventListener("vuplexready", resolve, { once: true });
+          });
+        }
+      }
+
+      // Fetch dimensions from Unity
+      async function fetchDimensions() {
+        await waitForVuplex();
+        return new Promise((resolve) => {
+          const onMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "GetDimensions" && data.dimension) {
+              console.log("[DEBUG] Dimensions received:", data.dimension);
+              window.vuplex.removeEventListener("message", onMessage);
+              resolve({
+                width: Number(data.dimension.width),
+                height: Number(data.dimension.height),
+              });
+            }
+          };
+          window.vuplex.addEventListener("message", onMessage);
+          console.log("[DEBUG] Requesting dimensions from Unity...");
+          window.vuplex.postMessage({ type: "GetDimensions" });
+        });
+      }
+
+      // Fetch ad JSON from Unity
+      async function fetchAdData() {
+        // const url =
+        //   "https://run.mocky.io/v3/f55a38ee-4963-42d5-a6d2-1bf672376d51";
+        // const response = await fetch(url);
+        // const data = await response.json();
+        // console.log(data);
+        // // const ad = data[0].seatbid[0].bid[0];
+        // const ad = data[0];
+
+        // const { w, h, adm } = ad;
+        // return {
+        //   w,
+        //   h,
+        //   adm,
+        // };
+        await waitForVuplex();
+        return new Promise((resolve) => {
+          const onMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "GetDemandInfo" && data.demand) {
+              console.log("[DEBUG] Ad data received:", data.demand);
+              window.vuplex.removeEventListener("message", onMessage);
+              resolve(data.demand);
+            }
+          };
+          window.vuplex.addEventListener("message", onMessage);
+          console.log("[DEBUG] Requesting ad data from Unity...");
+          window.vuplex.postMessage({ type: "GetDemandInfo" });
+        });
+      }
+
+      // Initialize OMID before anything else
+    //   function initializeOMID() {
+    //     return new Promise((resolve, reject) => {
+    //       // await new Promise(res=> setTimeout(res,3000))
+    //       try {
+    //         // Wait for OMID to be available
+    //         if (typeof omidBridge === "undefined") {
+    //           reject(new Error("OMID Bridge not found"));
+    //           return;
+    //         }
+
+    //         // Initialize OMID Bridge
+    //         omidBridge.init({
+    //           onInitialized: () => {
+    //             console.log("OMID initialized successfully");
+    //             resolve();
+    //           },
+    //           onError: (error) => {
+    //             console.error("OMID initialization error:", error);
+    //             reject(error);
+    //           },
+    //         });
+    //       } catch (error) {
+    //         console.error("Error during OMID initialization:", error);
+    //         reject(error);
+    //       }
+    //     });
+    //   }
+
+    //   function forceGeometryChange() {
+    //     // var adElement = document.getElementById('ad-container');
+    //     const adElement = document.getElementById("gg-ad-renderer");
+    //     if (adElement) {
+    //       adElement.style.transform = "scale(1.01)"; // Slight movement
+    //       setTimeout(() => (adElement.style.transform = "scale(1.0)"), 100);
+    //     }
+    //   }
+      setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
+      // Render ad inside iframe
+      async function renderAd() {
+        const { width: webViewWidth, height: webViewHeight } =
+          await fetchDimensions();
+        const adData = await fetchAdData();
+        let { w: adWidth, h: adHeight, adm: adHtml } = adData;
+        try {
+          //            function startOmidAdSession() {
+          //                     try {
+          //                       const context = {
+          //                         partner: "PubScale",
+          //                         apiVersion: "1.0",
+          //                         environment: "app",
+          //                         accessMode: "full",
+          //                          customReferenceData: "",
+          //                         underEvaluation: true,
+          //                         contentUrl: window.location.href,
+          //                         impressionType: "beginToRender"
+          //                       };
+          //                       const adSessionClient = new OmidSessionClient.default.AdSession(context);
+          // adSessionClient.start();
+          // const adEvent = new OmidSessionClient.default.AdEvents(adSessionClient)
+          //                       console.log(adEvent)
+          //                       adEvent.loaded()
+          //                        adEvent.impressionOccurred()
+          //                       // console.log(adSessionClient.getAdSessionId())
+          //                       // adSessionClient.start();
+          //                       console.log("OMID ad session started successfully");
+          //                     } catch (error) {
+          //                       console.error("Error starting OMID ad session:", error);
+          //                     }
+          //                   }
+          //       startOmidAdSession()
+        } catch (err) {
+          console.log(err);
+        }
+        const adRenderer = document.getElementById("gg-ad-renderer");
+
+        // Handle case where adWidth or adHeight is 0 or null
+        if (!adWidth || !adHeight) {
+          console.warn(
+            "Invalid ad dimensions received. Falling back to default size."
+          );
+          adWidth = 300; // Default width
+          adHeight = 250; // Default height
+        }
+
+        // Calculate scale dynamically
+        const scaleX = webViewWidth / adWidth;
+        const scaleY = webViewHeight / adHeight;
+        const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to fit both dimensions
+
+        // Set styles for the container
+        Object.assign(adRenderer.style, {
+          width: `${webViewWidth}px`,
+          height: `${webViewHeight}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        });
+
+        // Create and append the iframe
+        const iframe = document.createElement("iframe");
+        iframe.width = `${adWidth}px`;
+        iframe.height = `${adHeight}px`;
+        iframe.scrolling = "no";
+        iframe.frameBorder = "0";
+        iframe.style.transform = `scale(${scale})`;
+        iframe.style.transformOrigin = "center center"; // Center align transform origin
+        iframe.style.position = "relative"; // Maintain positioning for centering
+        iframe.srcdoc =
+          ` <style>
+      /* Hide 1x1 tracker images */
+      img[width="1"][height="1"],
+      img[style*="width: 1px"][style*="height: 1px"] {
+        display: none !important;
+      }
+      body {
+        margin: 0px !important;
+      }
+    </style>` + adHtml;
+        adRenderer.innerHTML = ""; // Clear previous content
+        adRenderer.appendChild(iframe);
+
+        return { iframe, adWidth, adHeight };
+      }
+
+      function setupClickRedirection(iframe) {
+        // Wait for iframe content to load
+        setTimeout(() => {
+          const iframeDoc = iframe.contentDocument;
+          const iframeWin = iframe.contentWindow;
+
+          // Validate iframe
+          if (!iframeDoc || !iframeWin) {
+            console.log("[DEBUG] Iframe document or window is missing.");
+            return;
+          }
+
+          // Helper function for link redirection
+          const redirectLink = (url, reason = "") => {
+            console.log("[DEBUG] Redirecting link to:", url);
+            window.vuplex.postMessage({
+              type: "OpenLink",
+              url,
+              payload: JSON.stringify({ reason }),
+            });
+          };
+
+          // Handle anchor tag clicks
+          iframeDoc.addEventListener("click", (event) => {
+            const link = event.target.closest("a[href]");
+            if (link) {
+              console.log(
+                "[DEBUG] Anchor tag clicked. Redirecting:",
+                link.href
+              );
+              event.preventDefault();
+              event.stopPropagation();
+              redirectLink(link.href, "anchor clicked");
+            }
+          });
+
+          // Override window.open
+          iframeWin.open = (url) => {
+            console.log("[DEBUG] Window open intercepted. Redirecting:", url);
+            redirectLink(url, "window open");
+            return null;
+          };
+
+          // Override location navigation methods
+          const overrideLocation = (method, url) => {
+            console.log(
+              `[DEBUG] Location.${method} intercepted. Redirecting:`,
+              url
+            );
+            redirectLink(url, `location ${method}`);
+          };
+
+          iframeWin.location.assign = (url) => overrideLocation("assign", url);
+          iframeWin.location.replace = (url) =>
+            overrideLocation("replace", url);
+
+          // Wait for nested iframe content to be available
+          const waitForIframeContent = (nestedIframe) => {
+            return new Promise((resolve) => {
+              if (nestedIframe.contentDocument) {
+                resolve();
+                return;
+              }
+
+              const checkContent = setInterval(() => {
+                if (nestedIframe.contentDocument) {
+                  clearInterval(checkContent);
+                  clearTimeout(timeout);
+                  resolve();
+                }
+              }, 100);
+
+              // Timeout after 5 seconds
+              const timeout = setTimeout(() => {
+                clearInterval(checkContent);
+                resolve();
+              }, 5000);
+            });
+          };
+
+          // Handle nested iframes
+          const handleNestedIframe = async (nestedIframe) => {
+            if (nestedIframe.dataset.redirectionSetup) return;
+
+            try {
+              await waitForIframeContent(nestedIframe);
+
+              if (nestedIframe.contentDocument) {
+                nestedIframe.dataset.redirectionSetup = "true";
+                setupClickRedirection(nestedIframe);
+              }
+            } catch (error) {
+              console.error("[DEBUG] Error handling nested iframe:", error);
+            }
+          };
+
+          // Set up observer for nested iframes
+          const setupIframeObserver = () => {
+            // Handle existing iframes
+            iframeDoc.querySelectorAll("iframe").forEach(handleNestedIframe);
+
+            // Create observer for future iframes
+            const observer = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                  // Direct iframe nodes
+                  if (node.nodeName === "IFRAME") {
+                    handleNestedIframe(node);
+                  }
+                  // Iframes nested in other elements
+                  if (node.querySelectorAll) {
+                    node
+                      .querySelectorAll("iframe:not([data-redirection-setup])")
+                      .forEach(handleNestedIframe);
+                  }
+                });
+              });
+            });
+
+            observer.observe(iframeDoc.body, {
+              childList: true,
+              subtree: true,
+            });
+
+            // Store observer reference for cleanup
+            iframeDoc._iframeObserver = observer;
+          };
+
+          // Initialize observer once body is available
+          if (iframeDoc.body) {
+            setupIframeObserver();
+          } else {
+            iframeDoc.addEventListener("DOMContentLoaded", setupIframeObserver);
+          }
+
+          console.log("[DEBUG] Click redirection setup complete.");
+        }, 100);
+      }
+      // Helper functions for dimension checking
+      const isDimensionMatch = (width, height, adWidth, adHeight) => {
+        // Ensure width and height are not zero
+        if (width === 0 || height === 0) {
+          return false;
+        }
+
+        // Check if dimensions are within the acceptable range
+        return (
+          width >= adWidth * 0.2 &&
+          width <= adWidth * 1.2 &&
+          height >= adHeight * 0.2 &&
+          height <= adHeight * 1.2
+        );
+      };
+
+      const getBackgroundImageDimensions = (element) => {
+        const computedStyle = window.getComputedStyle(element);
+
+        // Try to get the background image URL from backgroundImage property
+        let backgroundImage = computedStyle.backgroundImage || "";
+
+        // If backgroundImage is not directly set, check for custom property
+        if (!backgroundImage || backgroundImage === "none") {
+          // Look for custom properties like --creative-image-url
+          for (let property of computedStyle) {
+            if (
+              property.startsWith("--") &&
+              computedStyle.getPropertyValue(property).includes("url(")
+            ) {
+              backgroundImage = computedStyle.getPropertyValue(property).trim();
+              break;
+            }
+          }
+        }
+
+        // Extract URL from the backgroundImage string
+        const urlMatch = backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+
+        if (!urlMatch) return Promise.resolve(null);
+
+        return new Promise((resolve) => {
+          const image = new Image();
+          image.src = urlMatch[1];
+          image.onload = () =>
+            resolve({ width: image.width, height: image.height });
+          image.onerror = () => resolve(null);
+        });
+      };
+
+      // Individual check functions that return promises
+      const checkImages = async (document, adWidth, adHeight) => {
+        const getAllImages = (root) => {
+          const images = [...root.querySelectorAll("img")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              images.push(...getAllImages(element.shadowRoot));
+            }
+          });
+
+          return images;
+        };
+
+        const images = getAllImages(document);
+
+        for (const img of images) {
+          if (img.width === 1 && img.height === 1) {
+            img.style.display = "none";
+            continue;
+          }
+          if (isDimensionMatch(img.width, img.height, adWidth, adHeight)) {
+            return { type: "image", element: img };
+          }
+        }
+
+        return null;
+      };
+
+      const checkAnchors = async (document, adWidth, adHeight) => {
+        const getAllAnchors = (root) => {
+          const anchors = [...root.querySelectorAll("a")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              anchors.push(...getAllAnchors(element.shadowRoot));
+            }
+          });
+
+          return anchors;
+        };
+
+        const anchors = getAllAnchors(document);
+
+        for (const anchor of anchors) {
+          const dimensions = await getBackgroundImageDimensions(anchor);
+          if (
+            dimensions &&
+            isDimensionMatch(
+              dimensions.width,
+              dimensions.height,
+              adWidth,
+              adHeight
+            )
+          ) {
+            return { type: "anchor", element: anchor };
+          }
+        }
+
+        return null;
+      };
+
+      const checkButtons = async (document, adWidth, adHeight) => {
+        const getAllButtons = (root) => {
+          const buttons = [...root.querySelectorAll("button")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              buttons.push(...getAllButtons(element.shadowRoot));
+            }
+          });
+
+          return buttons;
+        };
+
+        const buttons = getAllButtons(document);
+
+        for (const button of buttons) {
+          if (button.clientWidth >= 50) {
+            return { type: "button", element: button };
+          }
+        }
+
+        return null;
+      };
+
+      const checkDivBackgrounds = async (document, adWidth, adHeight) => {
+        const getAllDivs = (root) => {
+          const divs = [...root.querySelectorAll("div")];
+
+          // Traverse shadow roots if available
+          root.querySelectorAll("*").forEach((element) => {
+            if (element.shadowRoot) {
+              divs.push(...getAllDivs(element.shadowRoot));
+            }
+          });
+
+          return divs;
+        };
+
+        // Get all div elements from the document and shadow roots
+        const divs = getAllDivs(document);
+
+        for (const div of divs) {
+          const dimensions = await getBackgroundImageDimensions(div);
+          if (
+            dimensions &&
+            isDimensionMatch(
+              dimensions.width,
+              dimensions.height,
+              adWidth,
+              adHeight
+            )
+          ) {
+            return { type: "div", element: div };
+          }
+        }
+
+        return null;
+      };
+
+      // Function to get content from nested iframes
+      const getNestedIframeContent = (iframe) => {
+        return new Promise((resolve) => {
+          if (iframe.contentDocument) {
+            resolve(iframe.contentDocument);
+            return;
+          }
+
+          const checkContent = setInterval(() => {
+            if (iframe.contentDocument) {
+              clearInterval(checkContent);
+              resolve(iframe.contentDocument);
+            }
+          }, 100);
+
+          // Timeout after 2 seconds
+          setTimeout(() => {
+            clearInterval(checkContent);
+            resolve(null);
+          }, 2000);
+        });
+      };
+
+      // Recursive function to get all nested iframes
+      const getAllNestedIframes = async (iframe) => {
+        const nestedIframes = [];
+
+        const traverseIframe = async (iframeElement) => {
+          const contentDoc = await getNestedIframeContent(iframeElement);
+          if (contentDoc) {
+            nestedIframes.push(iframeElement);
+
+            // Recursively check for more nested iframes
+            const childIframes = contentDoc.querySelectorAll("iframe");
+            for (const childIframe of childIframes) {
+              await traverseIframe(childIframe);
+            }
+          }
+        };
+
+        await traverseIframe(iframe);
+        return nestedIframes;
+      };
+
+      // Main polling function
+      function startPolling(iframe, adWidth, adHeight, onSuccess, onFailure) {
+        const POLLING_INTERVAL = 500;
+        const TIMEOUT = 5000;
+        const startTime = Date.now();
+        let impressionFired = false;
+        let timeoutId = null;
+        let intervalId = null;
+
+        const runCheck = async (checkFn, document) => {
+          if (impressionFired) return null;
+          const result = await checkFn(document, adWidth, adHeight);
+          if (result && !impressionFired) {
+            impressionFired = true;
+            clearTimeout(timeoutId);
+            clearInterval(intervalId);
+            onSuccess(`${result.type} found`);
+            return result;
+          }
+          return null;
+        };
+
+        const checkAllElements = async (document) => {
+          if (!document || impressionFired) return false;
+
+          // Create an array of check promises
+          const checkPromises = [
+            runCheck(checkImages, document),
+            runCheck(checkAnchors, document),
+            runCheck(checkButtons, document),
+            runCheck(checkDivBackgrounds, document),
+          ];
+
+          // Check nested iframes recursively
+          const nestedIframes = await getAllNestedIframes(iframe);
+          for (const nestedIframe of nestedIframes) {
+            if (impressionFired) break;
+            const nestedDoc = await getNestedIframeContent(nestedIframe);
+            if (nestedDoc) {
+              checkPromises.push(
+                ...[
+                  runCheck(checkImages, nestedDoc),
+                  runCheck(checkAnchors, nestedDoc),
+                  runCheck(checkButtons, nestedDoc),
+                  runCheck(checkDivBackgrounds, nestedDoc),
+                ]
+              );
+            }
+          }
+
+          try {
+            // Use Promise.race to get the first successful result
+            const result = await Promise.race([
+              Promise.all(checkPromises).then((results) =>
+                results.find((r) => r !== null)
+              ),
+              new Promise((resolve) => setTimeout(() => resolve(null), 1000)), // Timeout for each check cycle
+            ]);
+
+            return result !== null;
+          } catch (error) {
+            console.error("Error during checks:", error);
+            return false;
+          }
+        };
+
+        // Set up global timeout
+        timeoutId = setTimeout(() => {
+          if (!impressionFired) {
+            clearInterval(intervalId);
+            onFailure();
+          }
+        }, TIMEOUT);
+
+        // Initial check
+        checkAllElements(iframe.contentDocument);
+
+        // Start polling
+        intervalId = setInterval(async () => {
+          if (impressionFired || Date.now() - startTime >= TIMEOUT) {
+            clearInterval(intervalId);
+            return;
+          }
+
+          await checkAllElements(iframe.contentDocument);
+        }, POLLING_INTERVAL);
+
+        return {
+          stop: () => {
+            clearTimeout(timeoutId);
+            clearInterval(intervalId);
+            impressionFired = true;
+          },
+        };
+      }
+
+      renderAd()
+        .then(({ iframe, adWidth, adHeight }) => {
+          const POLLING_INTERVAL = 500; // Check every 500ms
+          const TIMEOUT = 5000; // 5 seconds
+          let isImpressionFired = false;
+
+          // Listen to iframe load event
+          iframe.addEventListener("load", () => {
+            console.log("[DEBUG] Ad rendered successfully:", iframe);
+            iframe.contentDocument.body.style.margin = "0px";
+
+            const checkForImages = () => {
+              const allImages = iframe.contentDocument.querySelectorAll("img");
+              allImages.forEach((image) => {
+                const originalWidth = image.width;
+                const originalHeight = image.height;
+                //if image width and height are 1, it is a tracking pixel and make them display none
+                if (originalWidth === 1 && originalHeight === 1) {
+                  image.style.display = "none";
+                  return;
+                }
+
+                // Check if the image dimensions are similar to the ad dimensions
+                if (
+                  originalWidth >= adWidth * 0.5 &&
+                  originalWidth <= adWidth * 1.1 &&
+                  originalHeight >= adHeight * 0.5 &&
+                  originalHeight <= adHeight * 1.1
+                ) {
+                  console.log(
+                    "[DEBUG] Image dimensions are similar to ad:",
+                    image
+                  );
+
+                  // Fire the impression event only once
+                  if (!isImpressionFired) {
+                    isImpressionFired = true;
+                    console.log("[DEBUG] ImpressionFired", image);
+                    window.vuplex.postMessage({
+                      type: "BannerAdWebViewImpression",
+                    });
+                  }
+                }
+              });
+            };
+
+            // Poll for images until the timeout
+            const startPolling = () => {
+              const pollingStartTime = Date.now();
+
+              const poll = setInterval(() => {
+                if (isImpressionFired) {
+                  clearInterval(poll);
+                  return;
+                }
+
+                const elapsedTime = Date.now() - pollingStartTime;
+
+                checkForImages();
+
+                // Stop polling and fire a failure event if no image is found within the timeout
+                if (elapsedTime >= TIMEOUT) {
+                  clearInterval(poll);
+                  if (!isImpressionFired) {
+                    console.error(
+                      "[ERROR] No similar-sized image found within the timeout."
+                    );
+                    window.vuplex.postMessage({ type: "BannerAdFailed" });
+                  }
+                }
+              }, POLLING_INTERVAL);
+            };
+
+            startPolling();
+          });
+
+          // Fire the failure event if the iframe fails to load
+          iframe.addEventListener("error", () => {
+            console.error("[ERROR] Iframe failed to load.");
+            window.vuplex.postMessage({ type: "BannerAdFailed" });
+          });
+        })
+        .catch((error) => {
+          console.error("[ERROR] Error rendering ad:", error);
+          window.vuplex.postMessage({ type: "BannerAdFailed" });
+        });
+    </script>
+  </body>
+</html>
