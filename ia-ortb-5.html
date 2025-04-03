@@ -623,6 +623,13 @@
                     type: "BannerAdWebViewImpression",
                     payload: JSON.stringify({ reason }),
                   });
+                   setTimeout(() => {
+                                      window.vuplex.postMessage({
+                    // type: "BannerAdFailedImpression",
+                     type: "BannerAdWebViewImpression",
+                     payload: JSON.stringify({ reason: 'test2' }),
+                  });
+                  },3000)
                 },
                 () => {
                   console.error("[ERROR] No impression detected!");
