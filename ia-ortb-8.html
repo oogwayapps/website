@@ -633,8 +633,8 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                     type: "BannerAdWebViewImpression",
                     payload: JSON.stringify({ reason }),
                   });
-                  widnow.omidBridge.publishLoadedEvent({})
-                  widnow.omidBridge.publishImpressionEvent({})
+                  window.omidBridge.publishLoadedEvent({})
+                  window.omidBridge.publishImpressionEvent({})
 
                 },
                 () => {
@@ -645,8 +645,8 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                      payload: JSON.stringify({ reason: 'test' }),
                   });
 
-              widnow.omidBridge.publishLoadedEvent({})
-                  widnow.omidBridge.publishImpressionEvent({})
+              window.omidBridge.publishLoadedEvent({})
+                  window.omidBridge.publishImpressionEvent({})
                 }
               );
             }
