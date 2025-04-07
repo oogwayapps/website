@@ -633,13 +633,9 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                     type: "BannerAdWebViewImpression",
                     payload: JSON.stringify({ reason }),
                   });
-                   setTimeout(() => {
-                                      window.vuplex.postMessage({
-                    // type: "BannerAdFailedImpression",
-                     type: "BannerAdWebViewImpression",
-                     payload: JSON.stringify({ reason: 'test2' }),
-                  });
-                  },3000)
+                  widnow.omidBridge.publishLoadedEvent({})
+                  widnow.omidBridge.publishImpressionEvent({})
+
                 },
                 () => {
                   console.error("[ERROR] No impression detected!");
@@ -649,13 +645,8 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                      payload: JSON.stringify({ reason: 'test' }),
                   });
 
-                  setTimeout(() => {
-                                      window.vuplex.postMessage({
-                    // type: "BannerAdFailedImpression",
-                     type: "BannerAdWebViewImpression",
-                     payload: JSON.stringify({ reason: 'test2' }),
-                  });
-                  },3000)
+              widnow.omidBridge.publishLoadedEvent({})
+                  widnow.omidBridge.publishImpressionEvent({})
                 }
               );
             }
