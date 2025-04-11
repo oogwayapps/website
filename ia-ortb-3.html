@@ -26,10 +26,9 @@
         background: #000000;
       }
     </style>
-    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omsdk-v1.js" ></script>
+ <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omsdk-v1.js"></script>
     <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omid-session-client-v1.js"></script>
-    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omid-compliance-verification-script-v1.js"></script>
-
+    <script src="https://storage.googleapis.com/static-dev-dot-pubscale-dot-com-bucket/lib/omsdk/omid-compliance-verification-script-v1.js"></script> 
   </head>
   <body>
     <div id="gg-ad-renderer"></div>
@@ -67,20 +66,6 @@
 
       // Fetch ad JSON from Unity
       async function fetchAdData() {
-        // const url =
-        //   "https://run.mocky.io/v3/f55a38ee-4963-42d5-a6d2-1bf672376d51";
-        // const response = await fetch(url);
-        // const data = await response.json();
-        // console.log(data);
-        // // const ad = data[0].seatbid[0].bid[0];
-        // const ad = data[0];
-
-        // const { w, h, adm } = ad;
-        // return {
-        //   w,
-        //   h,
-        //   adm,
-        // };
         await waitForVuplex();
         return new Promise((resolve) => {
           const onMessage = (event) => {
@@ -96,36 +81,6 @@
           window.vuplex.postMessage({ type: "GetDemandInfo" });
         });
       }
-
-       // Initialize OMID before anything else
-      function initializeOMID() {
-        return new Promise((resolve, reject) => {
-          // await new Promise(res=> setTimeout(res,3000))
-          try {
-            // Wait for OMID to be available
-            if (typeof omidBridge === 'undefined') {
-              reject(new Error('OMID Bridge not found'));
-              return;
-            }
-
-            // Initialize OMID Bridge
-            omidBridge.init({
-              onInitialized: () => {
-                console.log('OMID initialized successfully');
-                resolve();
-              },
-              onError: (error) => {
-                console.error('OMID initialization error:', error);
-                reject(error);
-              }
-            });
-          } catch (error) {
-            console.error('Error during OMID initialization:', error);
-            reject(error);
-          }
-        });
-      }
-
       function forceGeometryChange() {
     // var adElement = document.getElementById('ad-container');
         const adElement = document.getElementById("gg-ad-renderer");
@@ -135,45 +90,14 @@
     }
 }
 setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
-      // Render ad inside iframe
+      
+     // Render ad inside iframe
       async function renderAd() {
-    
         const { width: webViewWidth, height: webViewHeight } =
           await fetchDimensions();
         const adData = await fetchAdData();
         let { w: adWidth, h: adHeight, adm: adHtml } = adData;
-    try{
-//            function startOmidAdSession() {
-//                     try {
-//                       const context = {
-//                         partner: "PubScale",
-//                         apiVersion: "1.0",
-//                         environment: "app",
-//                         accessMode: "full",
-//                          customReferenceData: "",
-//                         underEvaluation: true,
-//                         contentUrl: window.location.href,
-//                         impressionType: "beginToRender"
-//                       };
 
-//                       const adSessionClient = new OmidSessionClient.default.AdSession(context);
-// adSessionClient.start();
-// const adEvent = new OmidSessionClient.default.AdEvents(adSessionClient)
-//                       console.log(adEvent)
-//                       adEvent.loaded()
-//                        adEvent.impressionOccurred()
-//                       // console.log(adSessionClient.getAdSessionId())
-//                       // adSessionClient.start();
-//                       console.log("OMID ad session started successfully");
-//                     } catch (error) {
-//                       console.error("Error starting OMID ad session:", error);
-//                     }
-//                   }
-
-//       startOmidAdSession()
-        }catch(err){
-          console.log(err)
-        }
         const adRenderer = document.getElementById("gg-ad-renderer");
 
         // Handle case where adWidth or adHeight is 0 or null
@@ -199,7 +123,7 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
           alignItems: "center",
         });
 
-      // Create and append the iframe
+        // Create and append the iframe
         const iframe = document.createElement("iframe");
         iframe.width = `${adWidth}px`;
         iframe.height = `${adHeight}px`;
@@ -219,12 +143,13 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
         margin: 0px !important;
       }
     </style>` + adHtml;
+
         adRenderer.innerHTML = ""; // Clear previous content
         adRenderer.appendChild(iframe);
 
         return { iframe, adWidth, adHeight };
       }
- 
+
       function setupClickRedirection(iframe) {
         // Wait for iframe content to load
         setTimeout(() => {
@@ -677,91 +602,66 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
         };
       }
 
-       renderAd()
+      // Main function
+      renderAd()
         .then(({ iframe, adWidth, adHeight }) => {
-          const POLLING_INTERVAL = 500; // Check every 500ms
-          const TIMEOUT = 5000; // 5 seconds
-          let isImpressionFired = false;
+          let int;
+          let timeout = setTimeout(() => {
+            clearInterval(int);
+            console.error(
+              "[ERROR] Iframe content not available within timeout."
+            );
+            window.vuplex.postMessage({
+              type: "BannerAdFailed",
+              payload: JSON.stringify({ reason: "Iframe load timeout" }),
+            });
+          }, 10000); // 10 seconds timeout
 
-          // Listen to iframe load event
-          iframe.addEventListener("load", () => {
-            console.log("[DEBUG] Ad rendered successfully:", iframe);
-            iframe.contentDocument.body.style.margin = "0px";
+          int = setInterval(() => {
+            const document = iframe?.contentDocument;
+            if (document) {
+              clearTimeout(timeout); // Clear timeout if document is available
+              clearInterval(int); // Stop polling
+              setupClickRedirection(iframe);
+              startPolling(
+                iframe,
+                adWidth,
+                adHeight,
+                (reason) => {
+                  console.log("[DEBUG] Impression detected!", reason);
+                  window.vuplex.postMessage({
+                    type: "BannerAdWebViewImpression",
+                    payload: JSON.stringify({ reason }),
+                  });
+                  window.omidBridge.publishLoadedEvent({})
+                  window.omidBridge.publishImpressionEvent({})
 
-            const checkForImages = () => {
-              const allImages = iframe.contentDocument.querySelectorAll("img");
-              allImages.forEach((image) => {
-                const originalWidth = image.width;
-                const originalHeight = image.height;
-                //if image width and height are 1, it is a tracking pixel and make them display none
-                if (originalWidth === 1 && originalHeight === 1) {
-                  image.style.display = "none";
-                  return;
+                },
+                () => {
+                  console.error("[ERROR] No impression detected!");
+                  window.vuplex.postMessage({
+                    // type: "BannerAdFailedImpression",
+                     type: "BannerAdWebViewImpression",
+                     payload: JSON.stringify({ reason: 'test' }),
+                  });
+
+              window.omidBridge.publishLoadedEvent({})
+                  window.omidBridge.publishImpressionEvent({})
                 }
+              );
+            }
+          }, 1000);
 
-                // Check if the image dimensions are similar to the ad dimensions
-                if (
-                  originalWidth >= adWidth * 0.5 &&
-                  originalWidth <= adWidth * 1.1 &&
-                  originalHeight >= adHeight * 0.5 &&
-                  originalHeight <= adHeight * 1.1
-                ) {
-                  console.log(
-                    "[DEBUG] Image dimensions are similar to ad:",
-                    image
-                  );
-
-                  // Fire the impression event only once
-                  if (!isImpressionFired) {
-                    isImpressionFired = true;
-                    console.log("[DEBUG] ImpressionFired", image);
-                    window.vuplex.postMessage({
-                      type: "BannerAdWebViewImpression",
-                    });
-                  }
-                }
-              });
-            };
-
-            // Poll for images until the timeout
-            const startPolling = () => {
-              const pollingStartTime = Date.now();
-
-              const poll = setInterval(() => {
-                if (isImpressionFired) {
-                  clearInterval(poll);
-                  return;
-                }
-
-                const elapsedTime = Date.now() - pollingStartTime;
-
-                checkForImages();
-
-                // Stop polling and fire a failure event if no image is found within the timeout
-                if (elapsedTime >= TIMEOUT) {
-                  clearInterval(poll);
-                  if (!isImpressionFired) {
-                    console.error(
-                      "[ERROR] No similar-sized image found within the timeout."
-                    );
-                    window.vuplex.postMessage({ type: "BannerAdFailed" });
-                  }
-                }
-              }, POLLING_INTERVAL);
-            };
-
-            startPolling();
-          });
-
-          // Fire the failure event if the iframe fails to load
           iframe.addEventListener("error", () => {
             console.error("[ERROR] Iframe failed to load.");
-            window.vuplex.postMessage({ type: "BannerAdFailed" });
+            window.vuplex.postMessage({
+              type: "BannerAdFailed",
+              payload: JSON.stringify({ reason: "Iframe load failed" }),
+            });
           });
         })
         .catch((error) => {
           console.error("[ERROR] Error rendering ad:", error);
-          window.vuplex.postMessage({ type: "BannerAdFailed" });
         });
     </script>
   </body>
