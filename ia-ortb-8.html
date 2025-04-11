@@ -639,14 +639,9 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                 },
                 () => {
                   console.error("[ERROR] No impression detected!");
-                  window.vuplex.postMessage({
-                    // type: "BannerAdFailedImpression",
-                     type: "BannerAdWebViewImpression",
-                     payload: JSON.stringify({ reason: 'test' }),
+                   window.vuplex.postMessage({
+                    type: "BannerAdFailedImpression",
                   });
-
-              window.omidBridge.publishLoadedEvent({})
-                  window.omidBridge.publishImpressionEvent({})
                 }
               );
             }
