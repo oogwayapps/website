@@ -633,8 +633,10 @@ setInterval(forceGeometryChange, 5000); // Trigger every 5 sec
                     type: "BannerAdWebViewImpression",
                     payload: JSON.stringify({ reason }),
                   });
-                  window.omidBridge.publishLoadedEvent({})
-                  window.omidBridge.publishImpressionEvent({})
+                  if(window.omidBridge && typeof window.omidBridge.publishLoadedEvent === 'function' && && typeof window.omidBridge.publishLoadedEvent === 'function'){ 
+                    window.omidBridge.publishLoadedEvent({})
+                    window.omidBridge.publishImpressionEvent({})
+                  }
 
                 },
                 () => {
