@@ -91,6 +91,9 @@
             if (data.type === "OnTap") {
               console.log("[DEBUG] onClick called:", data);
               console.log('iframe',iframe)
+              if(iframe){
+                iframe.click()
+              }
               window.vuplex.removeEventListener("message", onMessage);
   
             }
