@@ -5022,3 +5022,73 @@ bigo.sg, 196, RESELLER
 pubnative.net, 1009485, RESELLER, d641df8625486a7b
 openx.com, 540543195, RESELLER, 6a698e2ec38604c6
 #dec 11 end
+#21st Apr start
+motorik.io, 44, DIRECT
+lijit.com, 533827, RESELLER, fafdf38b16bf6b2b #SOVRN
+appnexus.com, 16796, RESELLER, f5ab79cb980f11d1
+pubmatic.com, 164043, RESELLER, 5d62403b186f2ace
+freewheel.tv, 1608057-524565, RESELLER
+freewheel.tv, sg1250571, RESELLER
+freewheel.tv, 535247-r-524565, RESELLER
+freewheel.tv, 535247-r-523319, RESELLER
+adform.com, 3159, RESELLER, 9f5210a2f0999e32
+vaayamedia.com, VM1010, DIRECT
+ergadx.com, 5101, DIRECT
+Pubmatic.com, 160881, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 23102, RESELLER, 0bfd66d529a55807
+smartyads.com, 2892, DIRECT, fd2bde0ff2e62c5d
+adform.com, 2795, RESELLER
+video.unrulymedia.com, 3563866356, DIRECT
+pubmatic.com, 161970, RESELLER, 5d62403b186f2ace
+improvedigital.com, 2345, DIRECT
+admatic.de, ade-pub-453927513, DIRECT, uufps1dh5stc6euk
+rubiconproject.com, 25100, RESELLER, 0bfd66d529a55807
+singularads.com, 554841, RESELLER
+Escalax.io, 16, DIRECT
+ppc.buzz, b7b16ecf8ca53723593894116071700c35849, RESELLER
+improvedigital.com, 2557, RESELLER
+152media.info, 152M988, RESELLER
+appnexus.com, 3153, RESELLER, f5ab79cb980f11d1
+onetag.com, 5adb88524e24e50, RESELLER
+tappx.com, 43393, RESELLER, 9f375a07da0318ec
+pubmatic.com, 158111, RESELLER, 5d62403b186f2ace
+bidinfluence.com, 502117, DIRECT
+eskimi.com, 2020000857, RESELLER
+rubiconproject.com, 26250, RESELLER, 0bfd66d529a55807
+video.unrulymedia.com, 498216989, RESELLER
+appnexus.com, 15670, RESELLER
+smartadserver.com, 4998, RESELLER
+lijit.com, 502284, RESELLER, fafdf38b16bf6b2b
+pubmatic.com, 162270, RESELLER, 5d62403b186f2ace
+onetag.com, 8c90176af2e65c8, RESELLER
+contextweb.com, 562818, RESELLER
+video.unrulymedia.com, 516878781, RESELLER
+pubmatic.com, 159277, RESELLER
+openx.com, 543878511, RESELLER, 6a698e2ec38604c6
+pubnative.net, 1007449, RESELLER, d641df8625486a7b
+sharethrough.com, MAC8ESmG, RESELLER
+smaato.com, 1100047589, RESELLER, 07bcf65f187117b4
+vdo.ai, 915813794, RESELLER
+video.unrulymedia.com, 612539011, RESELLER
+rubiconproject.com, 15268, RESELLER, 0bfd66d529a55807
+appnexus.com, 6849, RESELLER
+xad.com, 963, RESELLER, 81cbf0a75a5e0e9a
+inmobi.com, ba5fd3fb82c5412989b23c3eec71baf7, RESELLER, 83e75a7ae333ca9d
+improvedigital.com, 1699, RESELLER
+improvedigital.com, 2418, RESELLER
+bidinfluence.com, 502119, DIRECT
+bidinfluence.com, 502120, DIRECT
+bidinfluence.com, 502121, DIRECT
+adtarget.com.tr, 776754, DIRECT
+pubmatic.com, 159078, DIRECT, 5d62403b186f2ace
+adform.com, 2600, DIRECT
+stroeer.com, 17938, DIRECT
+amxrtb.com, 105199853, DIRECT
+appnexus.com, 12290, RESELLER
+lijit.com, 260380, RESELLER
+pubmatic.com, 161527, RESELLER
+rubiconproject.com, 23844, RESELLER
+adform.com, 2865, RESELLER
+openx.com, 559680764, RESELLER
+smartadserver.com, 3056, RESELLER
+#21st Apr end
