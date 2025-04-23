@@ -2774,3 +2774,9 @@ adform.com, 2865, RESELLER
 openx.com, 559680764, RESELLER
 smartadserver.com, 3056, RESELLER
 #21st Apr end
+#23rd Apr start
+vaayamedia.com, VM1010, DIRECT
+ergadx.com, 5101, DIRECT
+Pubmatic.com, 160881, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 23102, RESELLER, 0bfd66d529a55807
+#23 Apr end
