@@ -2805,3 +2805,6 @@ amxrtb.com, 105199734, RESELLER
 onetag.com, 87f58fe90234d0e, RESELLER
 iqzone.com, IQ326, RESELLER
 #24th Apr end
+#29th Apr start
+vaayamedia.com, VM1015, DIRECT
+#29th Apr end
