@@ -4053,4 +4053,7 @@ unity.com, 4116592, DIRECT, 96cabb5fbdde37a7
 bid-matrix.com, f2c71a45ea149366, RESELLER
 blueseasx.com, 203613, RESELLER, 7998eac5087f6110
 richaudience.com, q3KyMB36ue, RESELLER
+lijit.com, 558045, RESELLER, fafdf38b16bf6b2b
+improvedigital.com, 2534, RESELLER
+video.unrulymedia.com, 389957698, RESELLER
 #Unity new end
