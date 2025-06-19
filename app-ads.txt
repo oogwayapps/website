@@ -4057,3 +4057,40 @@ lijit.com, 558045, RESELLER, fafdf38b16bf6b2b
 improvedigital.com, 2534, RESELLER
 video.unrulymedia.com, 389957698, RESELLER
 #Unity new end
+#19th jun start
+cuedart.com, 326042173, RESELLER
+risecodes.com, 68078b24e1cc400001fd2b17, DIRECT
+openx.com, 537140488, RESELLER, 6a698e2ec38604c6
+contextweb.com ,562615,RESELLER,89ff185a4c4e857c
+sonobi.com, 4a289cdd79, RESELLER, d1a215d9eb5aee9e
+loopme.com, 11362, RESELLER, 6c8d5f95897a5a3b
+smartadserver.com, 4284, RESELLER
+yieldmo.com, 2754490424016969782, RESELLER
+33across.com, 0010b00002Xbn7QAAR, RESELLER, bbea06d9c4d2853c
+programmaticx.ai, 100409, DIRECT, b42d42eb28400efa
+targetbetter.com, 6409, DIRECT,
+video.unrulymedia.com, 640018708, RESELLER
+conversantmedia.com, 100957, RESELLER
+zetaglobal.net, 927, RESELLER
+inmobi.com, ae6d6d3e5c77453b8361651a9ce29870, RESELLER, 83e75a7ae333ca9d
+instreamatic.com, 207, RESELLER
+trustedstack.com, TSV5NEQDW, RESELLER
+axonix.com, 59183, RESELLER
+themediagrid.com, 8ZRKBE, RESELLER
+media.net, 8CU4YBH24, RESELLER
+improvedigital.com, 2385, RESELLER
+onetag.com, 847013a8430d672, RESELLER
+adform.com, 3243, RESELLER, 9f5210a2f0999e32
+opera.com, pub10858417946048, RESELLER, 55a0c5fd61378de3
+adtarget.com.tr, 767601, RESELLER
+adyoulike.com, 95dcbc06a550cd02bc6ad7371dd000c7, RESELLER
+lijit.com, 554656, RESELLER
+trustedstack.com, TSLAU41Q2, RESELLER
+improvedigital.com, 2558, RESELLER
+freewheel.tv, sg1248339, RESELLER
+freewheel.tv, 534996-r-524565, RESELLER
+freewheel.tv, 534996-r-523319, RESELLER
+Pubsfusion.com, 100253, RESELLER
+conversantmedia.com, 100969, RESELLER, 03113cd04947736d
+inmobi.com, 9098ab5aeb2447d1995b7fc3249abe67, RESELLER, 83e75a7ae333ca9d
+#19th jun end
