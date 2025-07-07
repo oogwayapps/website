@@ -4094,3 +4094,24 @@ Pubsfusion.com, 100253, RESELLER
 conversantmedia.com, 100969, RESELLER, 03113cd04947736d
 inmobi.com, 9098ab5aeb2447d1995b7fc3249abe67, RESELLER, 83e75a7ae333ca9d
 #19th jun end
+#7th july start
+appnexus.com,17566,RESELLER,f5ab79cb980f11d1
+adscholars.com, 221557, DIRECT
+ergadx.com, 5258, DIRECT
+Pubmatic.com, 162147, RESELLER, 5d62403b186f2ace
+themediagrid.com, LMF4E8, RESELLER, 35d5010d7789b49d
+inmobi.com, a465db258ac44b2abb4e100fa019be3c, RESELLER, 83e75a7ae333ca9d
+criteo.com,B-059856,RESELLER,9fac4a4a87c2a44f
+criteo.com, B-070724, RESELLER, 9fac4a4a87c2a44f
+aniview.com, 6852a873667265249f0cdbc9, RESELLER, 78b21b97965ec3f8
+app-stock.com, 412213, DIRECT, ed8c126ea5971415
+app-stock.com, 412213, RESELLER, ed8c126ea5971415
+flairads.com, 206656, DIRECT
+chocolateplatform.com, 21683 , RESELLER
+inmobi.com, fe4db13744124582a6a2b18964560ce7, RESELLER,         83e75a7ae333ca9d
+voisetech.com, 1127, RESELLER, 9009ef0379162448
+admixer.net, 1046d8dc-f1a9-439d-a8a5-3401fda83729, DIRECT
+e-planning.net,ec771b05828a67fa,RESELLER,c1ba615865ed87b2
+krushmedia.com, AJxF6R192a9M6CaTvK, DIRECT
+Pubsfusion.com, 100253, DIRECT
+#7th july end
