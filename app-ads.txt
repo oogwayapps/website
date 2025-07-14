@@ -4115,3 +4115,17 @@ e-planning.net,ec771b05828a67fa,RESELLER,c1ba615865ed87b2
 krushmedia.com, AJxF6R192a9M6CaTvK, DIRECT
 Pubsfusion.com, 100253, DIRECT
 #7th july end
+#14th july start
+adsolut.in, 17932, RESELLER
+playstream.media, 3063, DIRECT
+amxrtb.com, 105199329, RESELLER
+152media.info,152M694,RESELLER
+Felixads.com, 8cb22bdd0b7ba1ab13d742e22eed8da235432, RESELLER
+Felixads.com , 22267646181, DIRECT
+decenterads.com, 500208, RESELLER
+nexverse.ai, 24090, RESELLER
+inmobi.com, 9ee4d8a2685f422eacd68b95d1f3c019, RESELLER, 83e75a7ae333ca9d
+flat-ads.com,3486008,DIRECT
+targetbetter.com, 6409, DIRECT
+adsolut.in, 17932, DIRECT
+#14th july end
