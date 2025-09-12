@@ -3574,7 +3574,8 @@ conversantmedia.com, 100718, RESELLER, 03113cd04947736d
 improvedigital.com, 2446, RESELLER
 freewheel.tv, 1581157, RESELLER
 flat-ads.com, 3396200, DIRECT
-Felixads.com, 8cb22bdd0b7ba1ab13d742e22eed8da235432, RESELLER, Felixads.com , 22267646181, DIRECT
+Felixads.com, 8cb22bdd0b7ba1ab13d742e22eed8da235432, RESELLER
+Felixads.com , 22267646181, DIRECT
 lemmatechnologies.com, 1393, RESELLER, 7829010c5bebd1fb
 streamlyn.com, bsrvptr20044, DIRECT
 kickads.mobi, 97, DIRECT
