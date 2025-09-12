@@ -657,7 +657,8 @@ adtelligent.com, 640813, RESELLER
 pubmatic.com, 157113, RESELLER, 5d62403b186f2ace
 motionspots.com, 166484, RESELLER
 opera.com,pub7319665936192, RESELLER, 55a0c5fd61378de3
-inmobi.com,30f3830cfef249a3ad46ee1a0bba7af3pubmatic.com, 158565, RESELLER, 5d62403b186f2ace
+inmobi.com,30f3830cfef249a3ad46ee1a0bba7af3
+pubmatic.com, 158565, RESELLER, 5d62403b186f2ace
 appnexus.com,13227,RESELLER,f5ab79cb980f11d1
 adyoulike.com,22389b7165228ff4ecbe2b72818ae524,RESELLER, 4ad745ead2958bf7
 pubmatic.com, 157704, RESELLER, 5d62403b186f2ace
@@ -1213,7 +1214,8 @@ bidmachine.io, 162, RESELLER
 bidmachine.io, 67, RESELLER
 contextweb.com, 159668, RESELLER, 89ff185a4c4e857c
 contextweb.com, 562944, RESELLER, 89ff185a4c4e857c
-sharethrough.com, 6qlnf8SYexchange.admazing.co, am3, RESELLER
+sharethrough.com, 6qlnf8SY
+exchange.admazing.co, am3, RESELLER
 google.com, pub-5930543772857614, RESELLER,f08c47fec0942fa0
 improvedigital.com, 1604, RESELLER
 improvedigital.com, 2052, RESELLER
@@ -2069,7 +2071,7 @@ rubiconproject.com, 24244, RESELLER, 0bfd66d529a55807
 Escalax.io, 16, DIRECT
 cas.ai, 922e6092, DIRECT
 pubmatic.com, 163753, DIRECT, 5d62403b186f2ace
-pubmatic.com, 165995, DIRECT, 5d62403b186f2ace"
+pubmatic.com, 165995, DIRECT, 5d62403b186f2ace
 blasto.ai, 365, DIRECT, 7e936b1feafdaa61
 lijit.com, 522380, DIRECT, fafdf38b16bf6b2b
 video.unrulymedia.com, 436431924, RESELLER
@@ -2084,7 +2086,7 @@ themediagrid.com, RVQDTI, direct, 35d5010d7789b49d
 lijit.com, 240095, direct, fafdf38b16bf6b2b
 
 rtbflairads.com,f0c1f296-9784-45fb-8de4-3d4dd9017f9f,Reseller
-ergadx.com, 5035, DIRECT
+ergadx.com, 5035, DIRECT
 rubiconproject.com, 23104, RESELLER, 0bfd66d529a55807
 rubiconproject.com, 23102, RESELLER, 0bfd66d529a55807
 Pubmatic.com, 160881, RESELLER, 5d62403b186f2ace
